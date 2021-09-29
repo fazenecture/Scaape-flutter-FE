@@ -6,7 +6,7 @@ import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/home_screen.dart';
 import 'package:scaape/screens/profile_page.dart';
 import 'package:scaape/screens/signIn_page.dart';
-
+import 'package:scaape/screens/onboardingScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -36,21 +36,22 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Color(0xFF222831),
         scaffoldBackgroundColor: Color(0xFF222831),
         textTheme: TextTheme(
-          title: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
+          subtitle1: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
         ),
       ),
       home: //Login(),
           FutureBuilder(
-        future: getCurrentUser(),
-        builder: (context, snapshot) {
+          future: getCurrentUser(),
+          builder: (context, snapshot) {
           if (snapshot.hasData) {
             return HomeScreen();
           } else {
-            return SignInScreen();
-          }
+            return OnBoarding();
+           }
         },
       ),
       routes: {
+        OnBoarding.id:(context)=>OnBoarding(),
         ProfileScreen.id: (context) => ProfileScreen(),
         HomePageView.id: (context) => HomePageView(),
         HomeScreen.id: (context) => HomeScreen(),

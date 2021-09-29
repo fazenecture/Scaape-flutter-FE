@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
-import 'package:http/http.dart' as http;
+
+import 'package:http/http.dart';
 import 'package:scaape/networking/google_signin.dart';
 import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/home_screen.dart';
@@ -91,15 +92,29 @@ class _SignInScreenState extends State<SignInScreen> {
                   User? user =
                       await Authentication.signInWithGoogle(context: context);
                   if (user != null) {
-                    databaseReference.child("UserDetails").child("${user.uid}").set({
-                      'Email' : '${user.email}',
-                      'Name': '${user.displayName}',
-                      'Profileimage': '${user.photoURL}',
-                      'Vaccine': false,
-                      'Verified': false
-                    });
-                    print(user.displayName);
-                    Navigator.pushReplacementNamed(context, HomeScreen.id);
+                    // databaseReference.child("UserDetails").child("${user.uid}").set({
+                    //   'Email' : '${user.email}',
+                    //   'Name': '${user.displayName}',
+                    //   'Profileimage': '${user.photoURL}',
+                    //   'Vaccine': false,
+                    //   'Verified': false
+                    // });
+                    try{
+                      // String url='http://65.0.121.93/api/createUser';
+                      // Map<String,String> headers={"Content-type":"application/json"};
+                      // String json='{"UserId": "${user.uid}","EmailId": "${user.email}","BirthDate": "783783","Gender": "Male","Name": "${user.displayName}","ProfileImg": "${user.photoURL}","InstaId": "sgvsed","Vaccine": true}';
+                      // Response response=await put(Uri.parse(url),headers:headers,body:json);
+                      // print(user.displayName);
+                      // int statusCode = response.statusCode;
+                      // print(statusCode);
+                      // print(response.body);
+                      Navigator.pushReplacementNamed(context,GenderSelectionPage.id);
+                    }
+                    catch(e){
+                      print(e);
+                    }
+
+
                   } else {
                     print('Kuch to gadbad hai');
                   }
