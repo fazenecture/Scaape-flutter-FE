@@ -20,9 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Container(
       color: Colors.orange,
     ),
-    Container(
-      color: Colors.blue,
-    ),
+    AddScaape(),
     NotificationScreen(),
     ProfileScreen(),
 

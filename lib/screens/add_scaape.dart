@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 class AddScaape extends StatefulWidget {
   double? latitude;
   double? longitude;
-
+  static String id = 'AddScape';
   @override
   _AddScaapeState createState() => _AddScaapeState();
 }
@@ -39,7 +39,7 @@ class _AddScaapeState extends State<AddScaape> {
             Row(
               children: [
                 Image.asset(
-                  'images/logolite.png',
+                  'images/logo.png',
                   height: 30,
                   width: 30,
                 ),

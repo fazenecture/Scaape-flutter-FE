@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:scaape/screens/homePage.dart';
 
 class GenderSelectionPage extends StatefulWidget {
   static String id = 'genderSelectionPage';
@@ -276,6 +277,8 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                       GestureDetector(
                         onTap: () {
                           print(getGender());
+                          //TODO: Add images and instagram page
+                          Navigator.pushNamed(context,HomePageView.id) ;
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.25,

@@ -5,8 +5,10 @@ import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/home_screen.dart';
 import 'package:scaape/screens/profile_page.dart';
+import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/signIn_page.dart';
 import 'package:scaape/screens/onboardingScreen.dart';
+import 'package:scaape/screens/add_scaape.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -51,6 +53,8 @@ class _MyAppState extends State<MyApp> {
         },
       ),
       routes: {
+        AddScaape.id:(context)=>AddScaape(),
+        HomePageView.id:(context)=>HomeScreen(),
         OnBoarding.id:(context)=>OnBoarding(),
         ProfileScreen.id: (context) => ProfileScreen(),
         HomePageView.id: (context) => HomePageView(),
