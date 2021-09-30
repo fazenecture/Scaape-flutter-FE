@@ -21,15 +21,17 @@ class _UserChatState extends State<UserChat> {
     var user = FirebaseAuth.instance.currentUser;
     var check=isMe?"yes":"no";
     String? name=user!.displayName;
+    String id=user.uid;
     try{
       FirebaseFirestore.instance.collection("first").add({
         'text':_enteredMessage,
         'createdAt':Timestamp.now(),
         'isMe':check,
+        'userId':id,
         'username':name,
       });
       setState(() {
-        messages.add(Message(text: text, isMe: isMe));
+        messages.add(Message(text: text, isMe: isMe,username: name));
       });
       _controller.clear();
     }
@@ -56,13 +58,14 @@ class _UserChatState extends State<UserChat> {
               return Center(child: CircularProgressIndicator(),);
               }
               final chatDocs=snapshot.data!.docs;
+              var users = FirebaseAuth.instance.currentUser;
 
               return
                   ListView.builder(itemCount: chatDocs.length,
                     reverse: true,
                     itemBuilder:(context, index) {
                       //return MessageBubble(messages[messages.length-index-1].text,messages[messages.length-index-1].isMe);
-                      return MessageBubble(chatDocs[index]['text'],true);
+                      return MessageBubble(chatDocs[index]['username'],chatDocs[index]['text'],chatDocs[index]['userId']==users!.uid);
                       },
 
               );

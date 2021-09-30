@@ -4,7 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble(this.message,this.isMe);
+  MessageBubble(this.userName,this.message,this.isMe);
+  final String userName;
   final String message;
   final bool isMe;
 
@@ -29,6 +30,8 @@ class MessageBubble extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 14,horizontal: 16),
                 child: Column(crossAxisAlignment: isMe?CrossAxisAlignment.end:CrossAxisAlignment.start,
                   children: [
+                    Text(userName,style:TextStyle(fontWeight:FontWeight.bold,
+                        color:isMe?Colors.black:Colors.blue),),
                     Text(message,textAlign: isMe?TextAlign.end:TextAlign.start,
                       style: TextStyle(
                           color:isMe?Colors.black:Colors.blue),),],)
