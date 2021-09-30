@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/screens/chat.dart';
 import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/home_screen.dart';
@@ -9,6 +10,7 @@ import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/signIn_page.dart';
 import 'package:scaape/screens/onboardingScreen.dart';
 import 'package:scaape/screens/add_scaape.dart';
+import 'package:scaape/screens/usersChat.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -48,11 +50,13 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasData) {
             return HomeScreen();
           } else {
-            return OnBoarding();
+            return ScaapeChat();
            }
         },
       ),
       routes: {
+        UserChat.id:(context)=>UserChat(),
+        ScaapeChat.id:(context)=>ScaapeChat(),
         AddScaape.id:(context)=>AddScaape(),
         HomePageView.id:(context)=>HomeScreen(),
         OnBoarding.id:(context)=>OnBoarding(),

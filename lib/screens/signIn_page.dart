@@ -108,10 +108,19 @@ class _SignInScreenState extends State<SignInScreen> {
                       // int statusCode = response.statusCode;
                       // print(statusCode);
                       // print(response.body);
-                      Navigator.pushReplacementNamed(context,GenderSelectionPage.id);
+                      Navigator.pushReplacementNamed(context,GenderSelectionPage.id,arguments: {
+                        'UUID':'${user.uid}',
+                        'Email' : '${user.email}',
+                        'Name': '${user.displayName}',
+                        'ProfileImage': '${user.photoURL}',
+                        'Vaccine': false,
+                        'Verified': false
+                      } );
                     }
                     catch(e){
                       print(e);
+
+
                     }
 
 

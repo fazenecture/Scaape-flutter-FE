@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scaape/screens/homePage.dart';
-
+import 'package:http/http.dart';
 class GenderSelectionPage extends StatefulWidget {
   static String id = 'genderSelectionPage';
   @override
@@ -102,6 +102,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final signInData=ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -275,9 +276,19 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                       ),
                       SizedBox(width: 15,),
                       GestureDetector(
-                        onTap: () {
-                          print(getGender());
+                        onTap: () async{
+                          print((selectedDate.toString()).substring(0,9));
+                          String url='http://65.0.121.93: 4000/api/createUser';
+                          Map<String,String> headers={"Content-type":"application/json"};
+                          //String json='{"UserId": "${signInData['UUID']}","EmailId": "${signInData['Email']}","BirthDate": "783783","Gender": "${getGender()}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImage']}","InstaId": "sgvsed","Vaccine": true}';
+                          String json='{"UserId": "3","EmailId": "4","BirthDate": "783783","Gender": "sdf","Name": "dgdg","ProfileImg": "dfgd","InstaId": "sgvsed","Vaccine": true}';
+                          Response response=await put(Uri.parse(url),headers:headers,body:json);
+                          //print(user.displayName);
+                          int statusCode = response.statusCode;
+                          print(statusCode);
+                          print(response.body);
                           //TODO: Add images and instagram page
+
                           Navigator.pushNamed(context,HomePageView.id) ;
                         },
                         child: Container(

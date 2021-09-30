@@ -17,9 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List pageList = [
     HomePageView(),
-    Container(
-      color: Colors.orange,
-    ),
+    ScaapeChat(),
     AddScaape(),
     NotificationScreen(),
     ProfileScreen(),
