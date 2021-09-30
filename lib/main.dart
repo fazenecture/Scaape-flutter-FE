@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasData) {
             return HomeScreen();
           } else {
-            return ScaapeChat();
+            return OnBoarding();
            }
         },
       ),
