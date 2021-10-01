@@ -51,27 +51,27 @@ class _UserChatState extends State<UserChat> {
             //   itemBuilder:(context, index) {
             //     return MessageBubble(messages[messages.length-index-1].text,messages[messages.length-index-1].isMe);
             //   },) ,
-            StreamBuilder(stream:FirebaseFirestore.instance.collection('first')
-            .orderBy('createdAt',descending: true).snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if(snapshot.connectionState==ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator(),);
-              }
-              final chatDocs=snapshot.data!.docs;
-              var users = FirebaseAuth.instance.currentUser;
+              StreamBuilder(stream:FirebaseFirestore.instance.collection('first')
+              .orderBy('createdAt',descending: true).snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if(snapshot.connectionState==ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(),);
+                }
+                final chatDocs=snapshot.data!.docs;
+                var users = FirebaseAuth.instance.currentUser;
 
-              return
-                  ListView.builder(itemCount: chatDocs.length,
-                    reverse: true,
-                    itemBuilder:(context, index) {
-                      //return MessageBubble(messages[messages.length-index-1].text,messages[messages.length-index-1].isMe);
-                      return MessageBubble(chatDocs[index]['username'],chatDocs[index]['text'],chatDocs[index]['userId']==users!.uid);
-                      },
+                return
+                    ListView.builder(itemCount: chatDocs.length,
+                      reverse: true,
+                      itemBuilder:(context, index) {
+                        //return MessageBubble(messages[messages.length-index-1].text,messages[messages.length-index-1].isMe);
+                        return MessageBubble(chatDocs[index]['username'],chatDocs[index]['text'],chatDocs[index]['userId']==users!.uid);
+                        },
 
-              );
+                );
 
-                },
-              )
+                  },
+                )
              ),
             Container(
               margin: EdgeInsets.only(top: 8),
