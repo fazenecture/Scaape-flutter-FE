@@ -47,13 +47,12 @@ class _MyAppState extends State<MyApp> {
           FutureBuilder(
           future: getCurrentUser(),
           builder: (context, snapshot) {
-          // if (snapshot.hasData) {
-          //   return HomeScreen();
-          // } else {
-            //return OnBoarding();
-           // }
-            return SignInScreen();
-        },
+          if (snapshot.hasData) {
+            return HomeScreen();
+          } else {
+            return OnBoarding();
+           }
+          },
       ),
       routes: {
         UserChat.id:(context)=>UserChat(),

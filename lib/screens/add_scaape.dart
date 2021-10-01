@@ -265,77 +265,104 @@ class _AddScaapeState extends State<AddScaape> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.dialog(
-                        Scaffold(
-                          body: Container(
-                            child: GoogleMap(
-                              markers: _markers,
-                              onTap: (latlong) {
-                                print(latlong.latitude);
-                                print(latlong.longitude);
-                                setState(
-                                  () {
-                                    lat = latlong.latitude;
-                                    lon = latlong.longitude;
-                                  },
-                                );
-
-                                Get.defaultDialog(
-                                  title: 'Scaape Location',
-                                  middleText:
-                                      'Your Scaape Location is: ${lat!.toStringAsFixed(2)} and ${lon!.toStringAsFixed(2)} ',
-                                  actions: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Get.back(AddressPage());
-                                        setState(() {
-                                          widget.latitude = lat;
-                                          widget.longitude = lon;
-                                        });
-                                        Get.close(2);
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          Color(0xffff4265),
-                                        ),
-                                      ),
-                                      child: Text("confirm".tr),
-                                    )
-                                  ],
-                                );
-                              },
-                              mapType: MapType.normal,
-                              onMapCreated: (GoogleMapController controller) {
-                                _controller.complete(controller);
-                              },
-                              initialCameraPosition: CameraPosition(
-                                  target: LatLng(18.5204, 73.8567), zoom: 10),
-                            ),
-                          ),
+              child: Container(
+                width: medq.width * 0.8,
+                //height: medq.height * 0.08,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7.0),
+                  color: const Color(0xff393e46),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Location",
+                        hintStyle: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: medq.height * 0.02,
+                          color: const Color(0x5cffffff),
+                          fontWeight: FontWeight.w300,
                         ),
-                      );
-                    },
-                    child: buildButtons(
-                      medq,
-                      "Location",
-                      0.3,
-                      Color(0xff393e46),
-                    ),
-                  ),
-                  widget.latitude == null
-                      ? Container()
-                      : Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        )
-                ],
+                      )),
+                ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 8.0),
+            //   child: Row(
+            //     children: [
+            //       GestureDetector(
+            //         onTap: () {
+            //           Get.dialog(
+            //             Scaffold(
+            //               body:
+            //               Container(
+            //                 child:
+            //                 GoogleMap(
+            //                   markers: _markers,
+            //                   onTap: (latlong) {
+            //                     print(latlong.latitude);
+            //                     print(latlong.longitude);
+            //                     setState(
+            //                       () {
+            //                         lat = latlong.latitude;
+            //                         lon = latlong.longitude;
+            //                       },
+            //                     );
+            //
+            //                     Get.defaultDialog(
+            //                       title: 'Scaape Location',
+            //                       middleText:
+            //                           'Your Scaape Location is: ${lat!.toStringAsFixed(2)} and ${lon!.toStringAsFixed(2)} ',
+            //                       actions: [
+            //                         ElevatedButton(
+            //                           onPressed: () {
+            //                             // Get.back(AddressPage());
+            //                             setState(() {
+            //                               widget.latitude = lat;
+            //                               widget.longitude = lon;
+            //                             });
+            //                             Get.close(2);
+            //                           },
+            //                           style: ButtonStyle(
+            //                             backgroundColor:
+            //                                 MaterialStateProperty.all(
+            //                               Color(0xffff4265),
+            //                             ),
+            //                           ),
+            //                           child: Text("confirm".tr),
+            //                         )
+            //                       ],
+            //                     );
+            //                   },
+            //                   mapType: MapType.normal,
+            //                   onMapCreated: (GoogleMapController controller) {
+            //                     _controller.complete(controller);
+            //                   },
+            //                   initialCameraPosition: CameraPosition(
+            //                       target: LatLng(18.5204, 73.8567), zoom: 10),
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //         child: buildButtons(
+            //           medq,
+            //           "Location",
+            //           0.3,
+            //           Color(0xff393e46),
+            //         ),
+            //       ),
+            //       widget.latitude == null
+            //           ? Container()
+            //           : Icon(
+            //               Icons.check,
+            //               color: Colors.green,
+            //             )
+            //     ],
+            //   ),
+            // ),
             buildHeading(medq, 'Upload Scaape Image'),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
