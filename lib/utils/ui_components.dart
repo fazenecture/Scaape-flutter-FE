@@ -34,7 +34,7 @@ class SearchBoxContainer extends StatelessWidget {
                   fontFamily: 'Roboto',
                   fontSize: medq * 0.018,
                   color: const Color(0x5cffffff),
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w400,
                 ),
                 suffixIcon: IconButton(
                     onPressed: () {},
@@ -117,96 +117,183 @@ class TrendingCards extends StatelessWidget {
       required this.title})
       : super(key: key);
   final String imageUrl;
-  final double medq;
+  final Size medq;
   final String title;
   final String description;
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 14 / 12,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ClipRRect(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: medq.width * 0.94,
+        height: medq.height * 0.3,
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          child: Container(
-            child: Stack(
+          // gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //     colors: [Color(0xff393E46), Colors.transparent]),
+          // image: DecorationImage(
+          //   colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+          //   image: NetworkImage(imageUrl),
+          //   fit: BoxFit.fill,
+          // ),
+        ),
+        child: Stack(children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            width: medq.width * 0.94,
+            height: medq.height * 0.3,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(imageUrl),
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            width: medq.width * 0.94,
+            height: medq.height * 0.3,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xff393E46),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Positioned.fill(
-                    child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.fill,
-                )),
-                Positioned.fill(
-                    child: Container(
-                  color: Colors.black.withOpacity(0.4),
-                )),
-                // Align(
-                //   alignment: Alignment.topRight,
-                //   child: Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: Icon(
-                //         Icons.menu_sharp,
-                //       )),
-                // ),
-                Positioned.directional(
-                  bottom: 20,
-                  start: 15,
-                  textDirection: TextDirection.ltr,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: medq * 0.035,
-                          color: const Color(0xffffffff),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor:
+                                  Color(0xFFFF4B2B).withOpacity(0.5),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('images/profile-photo.jpg'),
+                                backgroundColor: Colors.transparent,
+                                radius: 25,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Dhriti Sharma',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Image.asset(
+                                      'images/tick.png',
+                                      height: 20,
+                                      width: 20,
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      size: 17,
+                                    ),
+                                    Text(
+                                      'Delhi, India',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize:
+                                            MediaQuery.of(context).size.height *
+                                                0.02,
+                                        color: const Color(0xfff5f6f9),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Text(
-                          description,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
+                        ImageIcon(AssetImage('images/tripledot.png'))
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
                           style: TextStyle(
                             fontFamily: 'Roboto',
-                            fontSize: medq * 0.02,
-                            color: const Color(0xfff5f6f9),
-                            fontWeight: FontWeight.w400,
+                            fontSize: medq.height * 0.035,
+                            color: const Color(0xffffffff),
                           ),
                           textAlign: TextAlign.left,
                         ),
-                      ),
-                      // Text(
-                      //   username,
-                      //   style: TextStyle(
-                      //     fontFamily: 'Roboto',
-                      //     fontSize: medq * 0.018,
-                      //     color: const Color(0xffffffff),
-                      //     fontWeight: FontWeight.w400,
-                      //   ),
-                      //   textAlign: TextAlign.left,
-                      // )
-                    ],
-                  ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(
+                            description,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: medq.height * 0.02,
+                              color: const Color(0xfff5f6f9),
+                              fontWeight: FontWeight.w400,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        // Text(
+                        //   username,
+                        //   style: TextStyle(
+                        //     fontFamily: 'Roboto',
+                        //     fontSize: medq * 0.018,
+                        //     color: const Color(0xffffffff),
+                        //     fontWeight: FontWeight.w400,
+                        //   ),
+                        //   textAlign: TextAlign.left,
+                        // )
+                      ],
+                    ),
+                  ],
                 ),
-                Positioned.directional(
-                  textDirection: TextDirection.ltr,
-                  bottom: 30,
-                  end: 20,
-                  child: Image.asset(
-                    'images/join-icon.png',
-                    height: 30,
-                    width: 30,
-                  ),
+                Image.asset(
+                  'images/join-icon.png',
+                  height: 30,
+                  width: 30,
                 )
               ],
             ),
-          ),
-        ),
+          )
+        ]),
       ),
     );
   }
