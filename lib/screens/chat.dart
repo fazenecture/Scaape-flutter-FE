@@ -17,9 +17,9 @@ class _ScaapeChatState extends State<ScaapeChat> {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
@@ -51,20 +51,19 @@ class _ScaapeChatState extends State<ScaapeChat> {
                   ],
                 ),
               ),
-
-                     ListView.builder(
-                       shrinkWrap: true,
-                        itemCount: 5,
-                        itemBuilder:(context,index){
-                          return ListTile(
-                            leading: Icon(Icons.add_a_photo_sharp),
-                            title: Text("hello"),
-                            subtitle: Text("4 Messages"),
-                            onTap: (){
-                              Navigator.pushNamed(context,UserChat.id);
-                            },
-                          );
-                      }),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Icon(Icons.add_a_photo_sharp),
+                      title: Text("hello"),
+                      subtitle: Text("4 Messages"),
+                      onTap: () {
+                        Navigator.pushNamed(context, UserChat.id);
+                      },
+                    );
+                  }),
             ],
           ),
         ),
