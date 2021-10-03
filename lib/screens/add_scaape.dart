@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:async/async.dart';
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class AddScaape extends StatefulWidget {
@@ -22,7 +25,7 @@ class _AddScaapeState extends State<AddScaape> {
   List? imagesList;
   final picker = ImagePicker();
   List<bool> isSelected = [false, false, false];
-
+  String ScaapeName="",ScapeDescription="",ScaapeLocation="";
   Completer<GoogleMapController> _controller = Completer();
   double? lat;
   double? lon;
@@ -89,6 +92,9 @@ class _AddScaapeState extends State<AddScaape> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: TextField(
+                  onChanged: (text){
+                    ScaapeName=text;
+                  },
                     decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "Let's be creative while scaaping....",
@@ -118,7 +124,11 @@ class _AddScaapeState extends State<AddScaape> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: TextField(
+                  onChanged: (value) {
+                    ScapeDescription=value;
+                  },
                   decoration: InputDecoration(
+
                     border: InputBorder.none,
                     hintText: "We want to know more about your Scaape...",
                     hintStyle: TextStyle(
@@ -415,25 +425,45 @@ class _AddScaapeState extends State<AddScaape> {
                 SizedBox(
                   width: medq.width * 0.36,
                 ),
-                Container(
-                  height: medq.height * 0.054,
-                  width: medq.width * 0.3,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18.0),
-                    color: const Color(0xffff4265),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Post',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: medq.height * 0.02,
-                        color: const Color(0xd4ffffff),
-                        height: 1.25,
+                GestureDetector(
+                  onTap: () async{
+                    String url='http://65.0.121.93:4000/testUpload';
+                   // http://65.0.121.93:4000/testUpload
+                    var stream = new http.ByteStream(DelegatingStream.typed(_image!.openRead()));
+                    var length = await _image!.length();
+                    var request=MultipartRequest('POST',Uri.parse(url));
+                   // Map<String,String> headers={"Content-type": "multipart/form-data"};
+                    var multipartFile = new http.MultipartFile('file', stream, length, filename: basename(_image!.path));
+                    request.files.add(multipartFile);
+                    var res=await request.send();
+                    print(res.statusCode);
+                    res.stream.transform(utf8.decoder).listen((value) {
+                      print(value);
+                    });
+                    //print(request.url);
+                    // print(statusCode);
+                    // print(request.body);
+                    },
+                  child: Container(
+                    height: medq.height * 0.054,
+                    width: medq.width * 0.3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18.0),
+                      color: const Color(0xffff4265),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Post',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: medq.height * 0.02,
+                          color: const Color(0xd4ffffff),
+                          height: 1.25,
+                        ),
+                        textHeightBehavior:
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
+                        textAlign: TextAlign.left,
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
                     ),
                   ),
                 ),
