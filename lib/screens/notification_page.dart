@@ -263,7 +263,7 @@ class GroupNotificationCard extends StatelessWidget {
                 radius: 35,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  backgroundImage: AssetImage(imageUrl),
+                  backgroundImage: NetworkImage(imageUrl),
                   radius: 30,
                 ),
               ),
