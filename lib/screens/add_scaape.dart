@@ -449,10 +449,7 @@ class _AddScaapeState extends State<AddScaape> {
                 ),
                 GestureDetector(
                   onTap: () async{
-                    // print(ScaapeName);
-                    // print(ScapeDescription);
-                    // print(getPrefernce());
-                    // print(ScaapeLocation);
+                    //print(dateTime.toString().substring(0,16));
                     var paths;
                     try{
                       String url='http://65.0.121.93:4000/testUpload';
@@ -474,10 +471,11 @@ class _AddScaapeState extends State<AddScaape> {
                     catch(e){
                       print(e);
                     }
+
                     var imageurl='http://65.0.121.93:4000/ftp/$paths';
                     String url='http://65.0.121.93:4000/api/createScaape';
                     Map<String,String> headers={"Content-type":"application/json"};
-                    String json='{"ScaapeId": "${DateTime.now()}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true"}';
+                    String json='{"ScaapeId": "${DateTime.now()}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true","ScaapeDate": "${dateTime.toString().substring(0,16)}"}';
                     http.Response response=await post(Uri.parse(url),headers:headers,body:json);
                     //print(user.displayName);
                     int statusCode = response.statusCode;
