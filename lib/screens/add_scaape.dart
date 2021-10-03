@@ -437,12 +437,15 @@ class _AddScaapeState extends State<AddScaape> {
                     request.files.add(multipartFile);
                     var res=await request.send();
                     print(res.statusCode);
-                    res.stream.transform(utf8.decoder).listen((value) {
-                      print(value);
+                    var paths;
+
+                    await res.stream.transform(utf8.decoder).listen((value) {
+                      var data=jsonDecode(value);
+                      paths=data['path'].toString().substring(7);
+                      print(paths);
                     });
-                    //print(request.url);
-                    // print(statusCode);
-                    // print(request.body);
+                    var imageurl='http://65.0.121.93:4000/ftp/$paths';
+                    print(imageurl);
                     },
                   child: Container(
                     height: medq.height * 0.054,
