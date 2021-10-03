@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
+import 'package:http/http.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
@@ -24,12 +26,24 @@ class _AddScaapeState extends State<AddScaape> {
   String? _base64;
   List? imagesList;
   final picker = ImagePicker();
+  DateTime dateTime=DateTime.now();
   List<bool> isSelected = [false, false, false];
   String ScaapeName="",ScapeDescription="",ScaapeLocation="";
   Completer<GoogleMapController> _controller = Completer();
   double? lat;
   double? lon;
+  bool loading=false;
   final Set<Marker> _markers = {};
+  List<String> genderSelected =['Male','Female','Both'];
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String getPrefernce() {
+    for(int i=0;i<3;i++){
+      if(isSelected[i]){
+        return genderSelected[i];
+      }
+    }
+    return "Not selected";
+  }
   @override
   Widget build(BuildContext context) {
     var medq = MediaQuery.of(context).size;
@@ -180,6 +194,7 @@ class _AddScaapeState extends State<AddScaape> {
               fillColor: Color(0xffff4265),
               onPressed: (int index) {
                 setState(() {
+                  isSelected = [false, false, false];
                   isSelected[index] = !isSelected[index];
                 });
               },
@@ -264,6 +279,8 @@ class _AddScaapeState extends State<AddScaape> {
                       print('change $date');
                     }, onConfirm: (date) {
                       print('confirm $date');
+                      dateTime=date;
+                      print("done");
                     }, currentTime: DateTime.now(), locale: LocaleType.en);
                   },
                   child: buildButtons(
@@ -285,10 +302,15 @@ class _AddScaapeState extends State<AddScaape> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: TextField(
+                    onChanged: (value) {
+                      ScaapeLocation=value;
+                    },
                       decoration: InputDecoration(
+
                         border: InputBorder.none,
                         hintText: "Location",
                         hintStyle: TextStyle(
+
                           fontFamily: 'Roboto',
                           fontSize: medq.height * 0.02,
                           color: const Color(0x5cffffff),
@@ -427,25 +449,41 @@ class _AddScaapeState extends State<AddScaape> {
                 ),
                 GestureDetector(
                   onTap: () async{
-                    String url='http://65.0.121.93:4000/testUpload';
-                   // http://65.0.121.93:4000/testUpload
-                    var stream = new http.ByteStream(DelegatingStream.typed(_image!.openRead()));
-                    var length = await _image!.length();
-                    var request=MultipartRequest('POST',Uri.parse(url));
-                   // Map<String,String> headers={"Content-type": "multipart/form-data"};
-                    var multipartFile = new http.MultipartFile('file', stream, length, filename: basename(_image!.path));
-                    request.files.add(multipartFile);
-                    var res=await request.send();
-                    print(res.statusCode);
+                    // print(ScaapeName);
+                    // print(ScapeDescription);
+                    // print(getPrefernce());
+                    // print(ScaapeLocation);
                     var paths;
+                    try{
+                      String url='http://65.0.121.93:4000/testUpload';
+                      var stream = new http.ByteStream(DelegatingStream.typed(_image!.openRead()));
+                      var length = await _image!.length();
+                      var request=MultipartRequest('POST',Uri.parse(url));
 
-                    await res.stream.transform(utf8.decoder).listen((value) {
-                      var data=jsonDecode(value);
-                      paths=data['path'].toString().substring(7);
-                      print(paths);
-                    });
+                      var multipartFile = new http.MultipartFile('file', stream, length, filename: basename(_image!.path));
+                      request.files.add(multipartFile);
+                      var res=await request.send();
+                      print(res.statusCode);
+
+                      await res.stream.transform(utf8.decoder).listen((value) {
+                        var data=jsonDecode(value);
+                        paths=data['path'].toString().substring(7);
+                        print(paths);
+                      });
+                    }
+                    catch(e){
+                      print(e);
+                    }
                     var imageurl='http://65.0.121.93:4000/ftp/$paths';
-                    print(imageurl);
+                    String url='http://65.0.121.93:4000/api/createScaape';
+                    Map<String,String> headers={"Content-type":"application/json"};
+                    String json='{"ScaapeId": "${DateTime.now()}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true"}';
+                    http.Response response=await post(Uri.parse(url),headers:headers,body:json);
+                    //print(user.displayName);
+                    int statusCode = response.statusCode;
+                    print(statusCode);
+                    print(response.body);
+
                     },
                   child: Container(
                     height: medq.height * 0.054,
