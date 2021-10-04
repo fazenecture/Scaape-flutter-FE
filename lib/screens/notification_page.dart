@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
 
 import 'package:http/http.dart';
-
+import 'package:http/http.dart' as http;
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
 
@@ -242,7 +242,16 @@ class RecentRequestCard extends StatelessWidget {
                   child: MaterialButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    onPressed: () {},
+                    onPressed: () async{
+
+                      String url='http://65.0.121.93:4000/api/UpdateParticipant';
+                      Map<String,String> headers={"Content-type":"application/json"};
+                      String json='{"UserId":"${userId}","Accepted": "1"}';
+                      http.Response response=await post(Uri.parse(url),headers:headers,body:json);
+                      int statusCode = response.statusCode;
+                      print(statusCode);
+                      print(response.body);
+                    },
                     child: Text(
                       'Accept',
                       style: TextStyle(color: Color(0xFFFF4B2B), fontSize: 15),
