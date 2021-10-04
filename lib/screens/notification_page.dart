@@ -196,7 +196,7 @@ class RecentRequestCard extends StatelessWidget {
                   radius: 22,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('images/home-image.jpg'),
+                    backgroundImage: NetworkImage(ImageUrl),
                     radius: 19,
                   ),
                 ),
