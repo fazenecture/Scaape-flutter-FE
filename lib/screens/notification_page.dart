@@ -25,9 +25,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+
     String authId=auth.currentUser!.uid;
-    return SingleChildScrollView(
-      child: SafeArea(
+    return SafeArea(
         child: FutureBuilder(
           future: getActiveScaape(authId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -42,103 +42,111 @@ class _NotificationScreenState extends State<NotificationScreen> {
               return Container(
                 color: Color(0xFF222831),
                 margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                child: SingleChildScrollView(
+                  child: ListView(
+                    shrinkWrap: true,
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(
+                              Icons.notification_important_outlined,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Notification Center',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 26,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          'Active Scaapes',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      ListView.builder(
+                      shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          //var datas=snapshot.data;
+                        return GroupNotificationCard(a[index]["ScaapeImg"],a[index]['ScaapeName'],a[index]['count'].toString(),a[index]['Location'],);
+                      },),
+
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(
-                            Icons.notification_important_outlined,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
                           Text(
-                            'Notification Center',
+                            'Recent Request',
                             style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 26,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            'See all',
+                            style: TextStyle(
+                              color: Color(0xFFFF4265),
+                              fontSize: 18,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        'Active Scaapes',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    ListView.builder(
-                    shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        //var datas=snapshot.data;
-                      return GroupNotificationCard(a[index]["ScaapeImg"],a[index]['ScaapeName'],a[index]['count'].toString(),a[index]['Location'],);
-                    },),
+                      // Column(
+                      //   children: <Widget>[
+                      //     RecentRequestCard(),
+                      //     RecentRequestCard(),
+                      //   ],
+                      // ),
+                      FutureBuilder(
+                        future: getRecentRequest(authId),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
 
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Recent Request',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          'See all',
-                          style: TextStyle(
-                            color: Color(0xFFFF4265),
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // Column(
-                    //   children: <Widget>[
-                    //     RecentRequestCard(),
-                    //     RecentRequestCard(),
-                    //   ],
-                    // ),
-                    FutureBuilder(
-                      future: getRecentRequest(authId),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              if(snapshot.data!=null){
+                                var a=snapshot.data;
+                                print("last");
+                                print(a);
+                                return ListView.builder(
+                                  itemCount:snapshot.data.length,
+                                   shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, index) {
+                                      return RecentRequestCard((){
+                                        setState(() {
 
-                            if(snapshot.data!=null){
-                              var a=snapshot.data;
-                              print("last");
-                              print(a);
-                              return ListView.builder(itemCount:snapshot.data.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) {
-                                    return RecentRequestCard(a[index]['ScaapeId'],a[index]['UserId'],a[index]['Name'],a[index]['Location'],a[index]['DP']);
-                                  },);
-                            }
-                            else{
-                              return Center(child: CircularProgressIndicator(),);
-                            }
-                        },)
-                  ],
+                                        });
+                                      },a[index]['ScaapeId'],a[index]['UserId'],a[index]['Name'],a[index]['Location'],a[index]['DP']);
+                                    },);
+                              }
+                              else{
+                                return Center(child: CircularProgressIndicator(),);
+                              }
+                          },)
+                    ],
+                  ),
                 ),
               );
             }
@@ -148,8 +156,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
           },
 
         ),
-      ),
-    );
+      );
+
   }
 }
 Future<List<dynamic>> getActiveScaape(String id)async{
@@ -165,6 +173,7 @@ Future<List<dynamic>> getActiveScaape(String id)async{
 }
 Future<List<dynamic>> getRecentRequest(String id)async{
 
+  //String url='http://65.0.121.93:4000/api/getRecentRequest/UserId=${id}';
   String url='http://65.0.121.93:4000/api/getRecentRequest/UserId=${id}';
   print(url);
   Response response=await get(Uri.parse(url));
@@ -180,7 +189,8 @@ Future<List<dynamic>> getRecentRequest(String id)async{
 // Recent Request Card
 class RecentRequestCard extends StatelessWidget {
   String Scaapeid,userId,Name,location,ImageUrl;
-  RecentRequestCard(this.Scaapeid,this.userId,this.Name,this.location,this.ImageUrl);
+  Function func;
+  RecentRequestCard(this.func,this.Scaapeid,this.userId,this.Name,this.location,this.ImageUrl);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -251,6 +261,9 @@ class RecentRequestCard extends StatelessWidget {
                       int statusCode = response.statusCode;
                       print(statusCode);
                       print(response.body);
+                      func();
+
+
                     },
                     child: Text(
                       'Accept',
@@ -267,7 +280,23 @@ class RecentRequestCard extends StatelessWidget {
                     color: Color(0xFF393E46),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    onPressed: () {},
+                    onPressed: () async{
+                      try{
+                        print("enter");
+                        String url='http://65.0.121.93:4000/api/DeleteParticipant';
+                        Map<String,String> headers={"Content-type":"application/json"};
+                        String json='{"ScaapeId": "${Scaapeid}","UserId": "${userId}"}';
+                        http.Response response=await post(Uri.parse(url),headers:headers,body:json);
+                        int statusCode = response.statusCode;
+                        print(statusCode);
+                        print("del");
+                        print(response.body);
+                        func();
+                      }catch(e){
+                        print(e);
+                      }
+
+                    },
                     child: Icon(
                       Icons.close,
                       size: 18,
@@ -279,6 +308,8 @@ class RecentRequestCard extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 // Card Below Active Scaapes
