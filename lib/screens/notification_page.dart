@@ -25,10 +25,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    String authId=auth.currentUser!.uid;
     return SingleChildScrollView(
       child: SafeArea(
         child: FutureBuilder(
-          future: getActiveScaape(auth.currentUser!.uid),
+          future: getActiveScaape(authId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             print("future");
             print(snapshot);
@@ -112,12 +113,31 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Column(
-                      children: <Widget>[
-                        RecentRequestCard(),
-                        RecentRequestCard(),
-                      ],
-                    ),
+                    // Column(
+                    //   children: <Widget>[
+                    //     RecentRequestCard(),
+                    //     RecentRequestCard(),
+                    //   ],
+                    // ),
+                    FutureBuilder(
+                      future: getRecentRequest(authId),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+                            if(snapshot.data!=null){
+                              var a=snapshot.data;
+                              print("last");
+                              print(a);
+                              return ListView.builder(itemCount:snapshot.data.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return RecentRequestCard(a[index]['ScaapeId'],a[index]['UserId'],a[index]['Name'],a[index]['Location'],a[index]['DP']);
+                                  },);
+                            }
+                            else{
+                              return Center(child: CircularProgressIndicator(),);
+                            }
+                        },)
                   ],
                 ),
               );
@@ -135,20 +155,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
 Future<List<dynamic>> getActiveScaape(String id)async{
 
   String url='http://65.0.121.93:4000/api/getScaapesById/UserId=${id}/Status=true';
+  http://65.0.121.93:4000/api/getRecentRequest/UserId=2
+  Response response=await get(Uri.parse(url));
+  int statusCode = response.statusCode;
+  print(statusCode);
+  //print(response.body);
+  //print(json.decode(response.body));
+  return json.decode(response.body);
+}
+Future<List<dynamic>> getRecentRequest(String id)async{
+
+  String url='http://65.0.121.93:4000/api/getRecentRequest/UserId=${id}';
+  print(url);
   Response response=await get(Uri.parse(url));
   int statusCode = response.statusCode;
   print(statusCode);
   print(response.body);
+  print("3");
   print(json.decode(response.body));
-  var data=json.decode(response.body);
-  int num=data.length;
-
-  //Map<String,dynamic> files={'1':num,'2':data};
+  print("3");
   return json.decode(response.body);
 }
 
 // Recent Request Card
 class RecentRequestCard extends StatelessWidget {
+  String Scaapeid,userId,Name,location,ImageUrl;
+  RecentRequestCard(this.Scaapeid,this.userId,this.Name,this.location,this.ImageUrl);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -175,7 +207,7 @@ class RecentRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Rahul Goel',
+                      '${Name}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -185,7 +217,7 @@ class RecentRequestCard extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      '@pasionatetracell',
+                      '@${location}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
