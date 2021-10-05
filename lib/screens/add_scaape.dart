@@ -202,60 +202,7 @@ class _AddScaapeState extends State<AddScaape> {
               borderWidth: 0,
               renderBorder: false,
             ),
-            // Row(
-            //   children: [
-            //     GestureDetector(
-            //         onTap: () {
-            //           setState(
-            //             () {
-            //               selindex = 1;
-            //               if (selindex == 1) {
-            //                 color1 = Color(0xff393e46);
-            //               } else
-            //                 Color(0xff555e55);
-            //             },
-            //           );
-            //         },
-            //         child: buildButtons(medq, 'Men', 0.23, color1)),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     GestureDetector(
-            //         onTap: () {
-            //           setState(
-            //             () {
-            //               selindex = 2;
-            //               if (selindex == 2) {
-            //                 color2 = Color(0xff393e46);
-            //               } else
-            //                 Color(0xff555e55);
-            //             },
-            //           );
-            //         },
-            //         child: buildButtons(medq, 'Women', 0.23, color2)),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     GestureDetector(
-            //         onTap: () {
-            //           setState(
-            //             () {
-            //               selindex = 3;
-            //             },
-            //           );
-            //           if (selindex == 3) {
-            //             setState(() {
-            //               color3 = Color(0xff393e46);
-            //             });
-            //           } else
-            //             setState(() {
-            //               color3 = Color(0xff555e55);
-            //             });
-            //         },
-            //         child: buildButtons(
-            //             medq, "I'm good with anyone", 0.38, color3)),
-            //   ],
-            // ),
+
             SizedBox(
               height: 20,
             ),
@@ -320,81 +267,7 @@ class _AddScaapeState extends State<AddScaape> {
                 ),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 8.0),
-            //   child: Row(
-            //     children: [
-            //       GestureDetector(
-            //         onTap: () {
-            //           Get.dialog(
-            //             Scaffold(
-            //               body:
-            //               Container(
-            //                 child:
-            //                 GoogleMap(
-            //                   markers: _markers,
-            //                   onTap: (latlong) {
-            //                     print(latlong.latitude);
-            //                     print(latlong.longitude);
-            //                     setState(
-            //                       () {
-            //                         lat = latlong.latitude;
-            //                         lon = latlong.longitude;
-            //                       },
-            //                     );
-            //
-            //                     Get.defaultDialog(
-            //                       title: 'Scaape Location',
-            //                       middleText:
-            //                           'Your Scaape Location is: ${lat!.toStringAsFixed(2)} and ${lon!.toStringAsFixed(2)} ',
-            //                       actions: [
-            //                         ElevatedButton(
-            //                           onPressed: () {
-            //                             // Get.back(AddressPage());
-            //                             setState(() {
-            //                               widget.latitude = lat;
-            //                               widget.longitude = lon;
-            //                             });
-            //                             Get.close(2);
-            //                           },
-            //                           style: ButtonStyle(
-            //                             backgroundColor:
-            //                                 MaterialStateProperty.all(
-            //                               Color(0xffff4265),
-            //                             ),
-            //                           ),
-            //                           child: Text("confirm".tr),
-            //                         )
-            //                       ],
-            //                     );
-            //                   },
-            //                   mapType: MapType.normal,
-            //                   onMapCreated: (GoogleMapController controller) {
-            //                     _controller.complete(controller);
-            //                   },
-            //                   initialCameraPosition: CameraPosition(
-            //                       target: LatLng(18.5204, 73.8567), zoom: 10),
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //         child: buildButtons(
-            //           medq,
-            //           "Location",
-            //           0.3,
-            //           Color(0xff393e46),
-            //         ),
-            //       ),
-            //       widget.latitude == null
-            //           ? Container()
-            //           : Icon(
-            //               Icons.check,
-            //               color: Colors.green,
-            //             )
-            //     ],
-            //   ),
-            // ),
+
             buildHeading(medq, 'Upload Scaape Image'),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),

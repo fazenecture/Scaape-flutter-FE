@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/screens/OnBoarding2.dart';
 import 'package:scaape/screens/chat.dart';
 import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/homePage.dart';
@@ -47,15 +48,16 @@ class _MyAppState extends State<MyApp> {
           FutureBuilder(
           future: getCurrentUser(),
           builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return HomeScreen();
-          } else {
-            return OnBoarding();
-           }
-          //return OnBoarding();
+          // if (snapshot.hasData) {
+          //   return HomeScreen();
+          // } else {
+          //   return OnBoarding();
+          //  }
+          return Onboarding2();
           },
       ),
       routes: {
+        Onboarding2.id:(context)=>Onboarding2(),
         UserChat.id:(context)=>UserChat(),
         ScaapeChat.id:(context)=>ScaapeChat(),
         AddScaape.id:(context)=>AddScaape(),
