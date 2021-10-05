@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           // } else {
           //   return OnBoarding();
           //  }
-          return Onboarding2();
+          return OnBoarding();
           },
       ),
       routes: {

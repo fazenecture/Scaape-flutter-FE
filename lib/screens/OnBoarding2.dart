@@ -15,7 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 class Onboarding2 extends StatefulWidget {
   const Onboarding2({Key? key}) : super(key: key);
-  static String id = 'onBoarding';
+  static String id = 'onBoarding2';
   @override
   _Onboarding2State createState() => _Onboarding2State();
 }
@@ -28,6 +28,7 @@ class _Onboarding2State extends State<Onboarding2> {
   String Instagram='';
   @override
   Widget build(BuildContext context) {
+    final signInData=ModalRoute.of(context)!.settings.arguments as Map;
     var medq = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -119,7 +120,16 @@ class _Onboarding2State extends State<Onboarding2> {
                   SizedBox(width: 15,),
                   GestureDetector(
                     onTap: () async{
+                      print(signInData['UserId']);
+                      String url='http://65.0.121.93:4000/api/createUser';
+                      Map<String,String> headers={"Content-type":"application/json"};
+                      String json='{"UserId": "${signInData['UserId']}","EmailId": "${signInData['EmailId']}","BirthDate": "${signInData['BirthDate']}","Gender": "${signInData['BirthDate']}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImg']}","InstaId": "${Instagram}","Vaccine": "true"}';
 
+                      http.Response response=await post(Uri.parse(url),headers:headers,body:json);
+                      //print(user.displayName);
+                      int statusCode = response.statusCode;
+                      print(statusCode);
+                      print(response.body);
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.25,
