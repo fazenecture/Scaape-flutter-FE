@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
@@ -306,15 +307,20 @@ class _AddScaapeState extends State<AddScaape> {
             ),
             Row(
               children: [
-                Container(
-                  height: medq.height * 0.06,
-                  width: medq.width * 0.2,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18.0),
-                    color: const Color(0x3bff4265),
-                  ),
-                  child: Center(
-                    child: Icon(Icons.arrow_back_ios),
+                GestureDetector(
+                  onTap: (){
+
+                  },
+                  child: Container(
+                    height: medq.height * 0.06,
+                    width: medq.width * 0.2,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18.0),
+                      color: const Color(0x3bff4265),
+                    ),
+                    child: Center(
+                      child: Icon(Icons.arrow_back_ios),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -322,39 +328,54 @@ class _AddScaapeState extends State<AddScaape> {
                 ),
                 GestureDetector(
                   onTap: () async{
-                    //print(dateTime.toString().substring(0,16));
-                    var paths;
-                    try{
-                      String url='http://65.0.121.93:4000/testUpload';
-                      var stream = new http.ByteStream(DelegatingStream.typed(_image!.openRead()));
-                      var length = await _image!.length();
-                      var request=MultipartRequest('POST',Uri.parse(url));
 
-                      var multipartFile = new http.MultipartFile('file', stream, length, filename: basename(_image!.path));
-                      request.files.add(multipartFile);
-                      var res=await request.send();
-                      print(res.statusCode);
+                    print(dateTime.toString().substring(0,16));
+                    if(ScaapeName.isEmpty||ScapeDescription.isEmpty||getPrefernce()=="Not selected"||ScaapeLocation.isEmpty){
 
-                      await res.stream.transform(utf8.decoder).listen((value) {
-                        var data=jsonDecode(value);
-                        paths=data['path'].toString().substring(7);
-                        print(paths);
-                      });
+                      Fluttertoast.showToast(msg: "enter all details",);
                     }
-                    catch(e){
-                      print(e);
+                    else {
+                      var paths;
+                      try {
+                        String url = 'http://65.0.121.93:4000/testUpload';
+                        var stream = new http.ByteStream(
+                            DelegatingStream.typed(_image!.openRead()));
+                        var length = await _image!.length();
+                        var request = MultipartRequest('POST', Uri.parse(url));
+
+                        var multipartFile = new http.MultipartFile(
+                            'file', stream, length, filename: basename(_image!
+                            .path));
+                        request.files.add(multipartFile);
+                        var res = await request.send();
+                        print(res.statusCode);
+
+                        await res.stream.transform(utf8.decoder).listen((
+                            value) {
+                          var data = jsonDecode(value);
+                          paths = data['path'].toString().substring(7);
+                          print(paths);
+                        });
+                      }
+                      catch (e) {
+                        print(e);
+                      }
+
+                      var imageurl = 'http://65.0.121.93:4000/ftp/$paths';
+                      String url = 'http://65.0.121.93:4000/api/createScaape';
+                      Map<String, String> headers = {
+                        "Content-type": "application/json"
+                      };
+                      String json = '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
+                      http.Response response = await post(
+                          Uri.parse(url), headers: headers, body: json);
+                      //print(user.displayName);
+                      int statusCode = response.statusCode;
+                      print(statusCode);
+                      print(response.body);
+                      Fluttertoast.showToast(msg: "Succesfully created",);
+
                     }
-
-                    var imageurl='http://65.0.121.93:4000/ftp/$paths';
-                    String url='http://65.0.121.93:4000/api/createScaape';
-                    Map<String,String> headers={"Content-type":"application/json"};
-                    String json='{"ScaapeId": "${DateTime.now()}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true","ScaapeDate": "${dateTime.toString().substring(0,16)}"}';
-                    http.Response response=await post(Uri.parse(url),headers:headers,body:json);
-                    //print(user.displayName);
-                    int statusCode = response.statusCode;
-                    print(statusCode);
-                    print(response.body);
-
                     },
                   child: Container(
                     height: medq.height * 0.054,
