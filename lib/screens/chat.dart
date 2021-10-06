@@ -80,7 +80,9 @@ class _ScaapeChatState extends State<ScaapeChat> {
                             title: Text(a[index]['ScaapeName']),
                             subtitle: Text("4 Messages"),
                             onTap: () {
-                              Navigator.pushNamed(context, UserChat.id);
+                              Navigator.pushNamed(context, UserChat.id,arguments:{
+                                "ScaapeId":"${a[index]['ScaapeId']}"
+                              });
                             },
                           );
                         }),
@@ -100,7 +102,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
 }
 Future<List<dynamic>> getActiveScaapes(String id)async{
 
-  String url='http://65.0.121.93:4000/api/getScaapesById/UserId=2/Status=test';
+  String url='http://65.0.121.93:4000/api/getUserScaapes/UserId=${id}';
 
   Response response=await get(Uri.parse(url));
   int statusCode = response.statusCode;

@@ -16,13 +16,13 @@ class _UserChatState extends State<UserChat> {
   List<Message> messages = [];
   String _enteredMessage = '';
   final _controller = new TextEditingController();
-  void addToList(String text, bool isMe) async {
+  void addToList(String text, bool isMe,String ScaapeId) async {
     var user = FirebaseAuth.instance.currentUser;
     var check = isMe ? "yes" : "no";
     String? name = user!.displayName;
     String id = user.uid;
     try {
-      FirebaseFirestore.instance.collection("first").add({
+      FirebaseFirestore.instance.collection(ScaapeId).add({
         'text': _enteredMessage,
         'createdAt': Timestamp.now(),
         'isMe': check,
@@ -40,6 +40,11 @@ class _UserChatState extends State<UserChat> {
 
   @override
   Widget build(BuildContext context) {
+    final chats=ModalRoute.of(context)!.settings.arguments as Map;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String ScaapeId=chats['ScaapeId'];
+
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -59,7 +64,7 @@ class _UserChatState extends State<UserChat> {
                         //   },) ,
                         StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection('first')
+                      .collection(ScaapeId)
                       .orderBy('createdAt', descending: true)
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -125,7 +130,7 @@ class _UserChatState extends State<UserChat> {
                                   setState(() {
                                     _enteredMessage.trim().isEmpty
                                         ? null
-                                        : addToList(_enteredMessage, true);
+                                        : addToList(_enteredMessage, true,ScaapeId);
                                   });
                                   _controller.clear();
                                 })),
