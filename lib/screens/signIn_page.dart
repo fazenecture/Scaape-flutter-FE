@@ -108,7 +108,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // int statusCode = response.statusCode;
                       // print(statusCode);
                       // print(response.body);
-                      Navigator.pushReplacementNamed(context,GenderSelectionPage.id,arguments: {
+                      Navigator.pushNamed(context,GenderSelectionPage.id,arguments: {
                         'UUID':'${user.uid}',
                         'Email' : '${user.email}',
                         'Name': '${user.displayName}',

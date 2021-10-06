@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
@@ -13,6 +14,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:scaape/screens/homePage.dart';
+import 'package:scaape/screens/home_screen.dart';
 class Onboarding2 extends StatefulWidget {
   const Onboarding2({Key? key}) : super(key: key);
   static String id = 'onBoarding2';
@@ -123,17 +126,26 @@ class _Onboarding2State extends State<Onboarding2> {
                   SizedBox(width: 15,),
                   GestureDetector(
                     onTap: () async{
+                      if(Instagram.isEmpty){
+                        Fluttertoast.showToast(msg: "enter all details",);
+                      }
+                      else {
+                        print(signInData['UserId']);
+                        String url = 'http://65.0.121.93:4000/api/createUser';
+                        Map<String, String> headers = {
+                          "Content-type": "application/json"
+                        };
+                        String json = '{"UserId": "${signInData['UserId']}","EmailId": "${signInData['EmailId']}","BirthDate": "${signInData['BirthDate']}","Gender": "${signInData['BirthDate']}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImg']}","InstaId": "${Instagram}","Vaccine": "true"}';
 
-                      print(signInData['UserId']);
-                      String url='http://65.0.121.93:4000/api/createUser';
-                      Map<String,String> headers={"Content-type":"application/json"};
-                      String json='{"UserId": "${signInData['UserId']}","EmailId": "${signInData['EmailId']}","BirthDate": "${signInData['BirthDate']}","Gender": "${signInData['BirthDate']}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImg']}","InstaId": "${Instagram}","Vaccine": "true"}';
+                        http.Response response = await post(Uri.parse(url),
+                            headers: headers, body: json);
+                        //print(user.displayName);
+                        int statusCode = response.statusCode;
+                        print(statusCode);
+                        print(response.body);
 
-                      http.Response response=await post(Uri.parse(url),headers:headers,body:json);
-                      //print(user.displayName);
-                      int statusCode = response.statusCode;
-                      print(statusCode);
-                      print(response.body);
+                        Navigator.pushNamedAndRemoveUntil(context,HomeScreen.id, (route) => false);
+                      }
 
                     },
                     child: Container(
