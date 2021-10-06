@@ -179,10 +179,7 @@ Future<List<dynamic>> getRecentRequest(String id)async{
   Response response=await get(Uri.parse(url));
   int statusCode = response.statusCode;
   print(statusCode);
-  print(response.body);
-  print("3");
-  print(json.decode(response.body));
-  print("3");
+
   return json.decode(response.body);
 }
 
@@ -256,7 +253,7 @@ class RecentRequestCard extends StatelessWidget {
 
                       String url='http://65.0.121.93:4000/api/UpdateParticipant';
                       Map<String,String> headers={"Content-type":"application/json"};
-                      String json='{"UserId":"${userId}","Accepted": "1"}';
+                      String json='{"UserId":"${userId}","Accepted": "1","ScaapeId":"${Scaapeid}"}';
                       http.Response response=await post(Uri.parse(url),headers:headers,body:json);
                       int statusCode = response.statusCode;
                       print(statusCode);
@@ -282,14 +279,14 @@ class RecentRequestCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10)),
                     onPressed: () async{
                       try{
-                        print("enter");
+
                         String url='http://65.0.121.93:4000/api/DeleteParticipant';
                         Map<String,String> headers={"Content-type":"application/json"};
                         String json='{"ScaapeId": "${Scaapeid}","UserId": "${userId}"}';
                         http.Response response=await post(Uri.parse(url),headers:headers,body:json);
                         int statusCode = response.statusCode;
                         print(statusCode);
-                        print("del");
+
                         print(response.body);
                         func();
                       }catch(e){

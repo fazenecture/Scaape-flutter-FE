@@ -328,7 +328,7 @@ class _AddScaapeState extends State<AddScaape> {
                 ),
                 GestureDetector(
                   onTap: () async{
-
+                    print(DateTime.now().millisecondsSinceEpoch);
                     print(dateTime.toString().substring(0,16));
                     if(ScaapeName.isEmpty||ScapeDescription.isEmpty||getPrefernce()=="Not selected"||ScaapeLocation.isEmpty){
 
