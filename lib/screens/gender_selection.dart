@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scaape/screens/OnBoarding2.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 class GenderSelectionPage extends StatefulWidget {
   static String id = 'genderSelectionPage';
   @override
@@ -30,7 +31,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
     if(controller.text.isNotEmpty) {
       return controller.text ;
     }
-    return '' ;
+    return 'NotSelected' ;
   }
 
   _selectDate(BuildContext context) async {
@@ -279,26 +280,33 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                       GestureDetector(
                         onTap: () async{
                           // print(signInData['UUID']);
-                           String date=(selectedDate.toString()).substring(0,9);
-                          // String url='http://65.0.121.93:4000/api/createUser';
-                          // Map<String,String> headers={"Content-type":"application/json"};
-                          // String json='{"UserId": "${signInData['UUID']}","EmailId": "${signInData['Email']}","BirthDate": "${date}","Gender": "${getGender()}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImage']}","InstaId": "sgvsed","Vaccine": "true"}';
-                          // //String json='{"UserId": "3","EmailId": "4","BirthDate": "783783","Gender": "sdf","Name": "dgdg","ProfileImg": "dfgd","InstaId": "sgvsed","Vaccine":"true"}';
-                          // Response response=await post(Uri.parse(url),headers:headers,body:json);
-                          //print(user.displayName);
-                          // int statusCode = response.statusCode;
-                          // print(statusCode);
-                          // print(response.body);
-                          //TODO: Add images and instagram page
+                          if(getGender()=='NotSelected'){
+                            Fluttertoast.showToast(msg: "enter all details",);
+                          }
+                          else {
+                            String date = (selectedDate.toString()).substring(
+                                0, 9);
+                            // String url='http://65.0.121.93:4000/api/createUser';
+                            // Map<String,String> headers={"Content-type":"application/json"};
+                            // String json='{"UserId": "${signInData['UUID']}","EmailId": "${signInData['Email']}","BirthDate": "${date}","Gender": "${getGender()}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImage']}","InstaId": "sgvsed","Vaccine": "true"}';
+                            // //String json='{"UserId": "3","EmailId": "4","BirthDate": "783783","Gender": "sdf","Name": "dgdg","ProfileImg": "dfgd","InstaId": "sgvsed","Vaccine":"true"}';
+                            // Response response=await post(Uri.parse(url),headers:headers,body:json);
+                            //print(user.displayName);
+                            // int statusCode = response.statusCode;
+                            // print(statusCode);
+                            // print(response.body);
+                            //TODO: Add images and instagram page
 
-                          Navigator.pushNamed(context,Onboarding2.id,arguments: {
-                            "UserId": "${signInData['UUID']}",
-                            "EmailId": "${signInData['Email']}",
-                            "BirthDate": "${date}",
-                            "Gender": "${getGender()}",
-                            "Name": "${signInData['Name']}",
-                            "ProfileImg": "${signInData['ProfileImage']}",
-                          }) ;
+                            Navigator.pushNamed(
+                                context, Onboarding2.id, arguments: {
+                              "UserId": "${signInData['UUID']}",
+                              "EmailId": "${signInData['Email']}",
+                              "BirthDate": "${date}",
+                              "Gender": "${getGender()}",
+                              "Name": "${signInData['Name']}",
+                              "ProfileImg": "${signInData['ProfileImage']}",
+                            });
+                          }
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.25,

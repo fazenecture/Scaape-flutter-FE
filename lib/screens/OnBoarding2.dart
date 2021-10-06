@@ -26,13 +26,16 @@ class _Onboarding2State extends State<Onboarding2> {
   List? imagesList;
   final picker = ImagePicker();
   String Instagram='';
+  bool isLoading=false;
   @override
   Widget build(BuildContext context) {
     final signInData=ModalRoute.of(context)!.settings.arguments as Map;
     var medq = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: isLoading?
+        Center(child: CircularProgressIndicator(),):
+        Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
@@ -120,6 +123,7 @@ class _Onboarding2State extends State<Onboarding2> {
                   SizedBox(width: 15,),
                   GestureDetector(
                     onTap: () async{
+
                       print(signInData['UserId']);
                       String url='http://65.0.121.93:4000/api/createUser';
                       Map<String,String> headers={"Content-type":"application/json"};
@@ -130,6 +134,7 @@ class _Onboarding2State extends State<Onboarding2> {
                       int statusCode = response.statusCode;
                       print(statusCode);
                       print(response.body);
+
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.25,
