@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String id = 'profile_screen';
@@ -40,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(bottom: 30),
-          color: Color(0xFF22242C),
+          color: Color(0xFF222831),
           child: FutureBuilder(
               future: getCurrentUser(),
               builder: (context, snapshot) {
@@ -51,21 +52,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       Stack(
                         children: [
-                          Container(
-                            height: 300,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(55),
-                                    bottomLeft: Radius.circular(55))),
-                            child: Image.asset(
-                              'images/home-image.jpg',
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ),
+                          // Container(
+                          //   height: 300,
+                          //   width: double.infinity,
+                          //   decoration: BoxDecoration(
+                          //       color: Colors.red,
+                          //       borderRadius: BorderRadius.only(
+                          //           bottomRight: Radius.circular(55),
+                          //           bottomLeft: Radius.circular(55))),
+                          //   // child: Image.asset(
+                          //   //   'images/home-image.jpg',
+                          //   //   fit: BoxFit.fitWidth,
+                          //   // ),
+                          // ),
                           Center(
                             child: Container(
-                              margin: EdgeInsets.fromLTRB(10, 180, 2, 2),
+                              margin: EdgeInsets.fromLTRB(10, 40, 2, 2),
                               child: Stack(
                                 children: [
                                   Container(
@@ -107,9 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ],
                                     ),
                                     child: CircleAvatar(
-                                      radius: 140,
+                                      // radius: 10,
                                       backgroundColor:
-                                          Color(0xFFFF4B2B).withOpacity(0.5),
+                                      Color(0xFFFF4B2B).withOpacity(0.5),
                                       child: GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -117,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             MaterialPageRoute(
                                               builder: (context) => ImageViewer(
                                                 imageUrl:
-                                                    '${stringmani(currentUser!.photoURL)}',
+                                                '${stringmani(currentUser!.photoURL)}',
                                               ),
                                             ),
                                           );
@@ -128,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             backgroundImage: NetworkImage(
                                                 '${stringmani(currentUser!.photoURL)}'),
                                             backgroundColor: Colors.transparent,
-                                            radius: 92,
+                                            radius: 93,
                                           ),
                                         ),
                                       ),
@@ -141,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -164,6 +166,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
+                      Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                              child: Text('@ghumakkar6969', style: TextStyle(
+                                  color: Colors.white,fontSize: 12
+                              ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 80,vertical: 10),
+                              child: Text('A computer program is a collection of instructions '
+                                  'to perform a specific task. For this, go travel'),
+                            ),
+                          ]
+                      ),
                       // Text(
                       //   '@passionatetraveler',
                       //   style: TextStyle(
@@ -173,8 +191,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //   ),
                       // ),
                       SizedBox(
-                        height: 50,
+                        height: 30,
                       ),
+                      //       ListView(
+                      //         children: [
+                      //           CarouselSlider(items:
+                      // [
+                      //   Container(
+                      //             child: Text('sda'),
+                      //           ),
+                      //   Container(
+                      //     child: Text('dasda'),
+                      //   ),
+                      //   Container(
+                      //     child: Text('qwrqwrwq'),
+                      //   ),
+                      //   Container(
+                      //     child: Text('jtyjyt'),
+                      //   ),
+                      // ],
+                      // options: CarouselOptions(
+                      // height: 20.0,
+                      // // enlargeCenterPage: true,
+                      // autoPlay: true,
+                      // aspectRatio: 16 / 9,
+                      // autoPlayCurve: Curves.fastOutSlowIn,
+                      // enableInfiniteScroll: true,
+                      // autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      // viewportFraction: 0.8,
+                      // )
+                      //           )
+                      // ],
+                      //       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -227,8 +275,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
+                      MaterialButton(onPressed: (){},
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        color: Color(0xff393E46),
+                        minWidth: 200,
+                        child:  Row(mainAxisSize: MainAxisSize.min,
+                          children: [Icon(Icons.edit) ,
+                            Text('Edit Profile',
+                                style: new TextStyle(fontSize: 14.0, color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+
                       // Padding(
                       //   padding: const EdgeInsets.symmetric(horizontal: 60),
                       //   child: MaterialButton(
@@ -336,3 +399,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
