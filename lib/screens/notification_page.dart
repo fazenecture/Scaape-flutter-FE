@@ -40,7 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               //print(a);
 
               return Container(
-                color: Color(0xFF222831),
+                color: Color(0xFF22242C),
                 margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
                 child: SingleChildScrollView(
                   child: ListView(

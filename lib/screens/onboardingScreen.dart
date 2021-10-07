@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:scaape/screens/signIn_page.dart';
 
-const kBackgroundColor = Color(0xFF222831);
+const kBackgroundColor = Color(0xFF22242C);
 const kLightBlueColor = Color(0xFF393E46);
 const kPinkColor = Color(0xFFFF4265);
 const kOnBoardDesc = TextStyle(

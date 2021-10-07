@@ -27,6 +27,7 @@ dependencies:
   firebase_database: ^7.1.1
   fluttertoast: ^8.0.7
   geolocator: ^7.1.0
+  google_fonts: ^2.1.0
   image_picker: ^0.8.0+3
   flutter_datetime_picker: ^1.5.1
   google_maps_flutter: ^2.0.6

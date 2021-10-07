@@ -17,7 +17,7 @@ class ImageViewer extends StatelessWidget {
               height: 80,
               width: 80,
               child: Center(child: CircularProgressIndicator())),
-          backgroundDecoration: BoxDecoration(color: Color(0xFF222831)),
+          backgroundDecoration: BoxDecoration(color: Color(0xFF22242C)),
           imageProvider: NetworkImage(imageUrl),
         ),
       ),

@@ -38,8 +38,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF222831),
-        scaffoldBackgroundColor: Color(0xFF222831),
+        backgroundColor: Color(0xFF22242C),
+        scaffoldBackgroundColor: Color(0xFF22242C),
         textTheme: TextTheme(
           subtitle1: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
         ),

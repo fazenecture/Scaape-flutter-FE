@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scaape/utils/location.dart';
 import 'package:scaape/utils/ui_components.dart';
@@ -14,6 +15,7 @@ import 'package:shimmer/shimmer.dart';
 
 class HomePageView extends StatefulWidget {
   static String id = 'homePage';
+
   @override
   _HomePageViewState createState() => _HomePageViewState();
 }
@@ -83,186 +85,762 @@ class _HomePageViewState extends State<HomePageView> {
     return SafeArea(
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10),
-                  child: Text(
-                    'Scaape',
-                    style: TextStyle(
-                      fontFamily: 'TheSecret',
-                      fontSize: medq.height * 0.055,
-                      color: const Color(0xffffffff),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10),
+                    child: Row(
+                      children: [
+                        Image(
+                          image: AssetImage('images/logo.png'),
+                          height: 38,
+                          width: 38,
+                        ),
+                        SizedBox(
+                          width: medq.width * 0.009,
+                        ),
+                        Text(
+                          'Scaape',
+                          style: TextStyle(
+                            fontFamily: 'TheSecret',
+                            fontSize: medq.height * 0.045,
+                            color: const Color(0xffffffff),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
                     ),
-                    textAlign: TextAlign.left,
                   ),
-                ),
-                FutureBuilder(
-                    future: getCityNameFromLatLong(latitude, longitude),
-                    builder: (context, snap) {
-                      if (snap.connectionState == ConnectionState.waiting) {
-                        return Image(
-                          image: AssetImage('animations/location-loader.gif'),
-                          height: 60,
-                          width: 60,
-                        );
-                      } else {
-                        if (snap.hasData) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, bottom: 5, right: 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${snap.data}',
-                                  style: TextStyle(
-                                    fontSize: medq.height * 0.025,
-                                    color: const Color(0xffffffff),
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Icon(
-                                  Icons.location_pin,
-                                  size: 30,
-                                  color: Color(0xFFFF4265),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
+                  FutureBuilder(
+                      future: getCityNameFromLatLong(latitude, longitude),
+                      builder: (context, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
                           return Image(
                             image: AssetImage('animations/location-loader.gif'),
                             height: 60,
                             width: 60,
                           );
+                        } else {
+                          if (snap.hasData) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 5, bottom: 5, right: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF262930),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(22))),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_pin,
+                                        size: 23,
+                                        color: Color(0xFFFF4265),
+                                      ),
+                                      Text(
+                                        '${snap.data}',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: medq.height * 0.0145,
+                                          color: const Color(0xffffffff),
+                                        ),
+                                        // style: TextStyle(
+                                        //   fontSize: medq.height * 0.025,
+                                        //   color: const Color(0xffffffff),
+                                        //
+                                        // ),
+                                        textAlign: TextAlign.left,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Image(
+                              image:
+                                  AssetImage('animations/location-loader.gif'),
+                              height: 60,
+                              width: 60,
+                            );
+                          }
                         }
-                      }
-                    })
-              ],
-            ),
-            SearchBoxContainer(medq: medq.height),
-            SizedBox(
-              height: 10,
-            ),
-            // SingleChildScrollView(
-            //   scrollDirection: Axis.horizontal,
-            //   physics: BouncingScrollPhysics(),
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //       children: [
-            //         HomeButtons(
-            //           medq: medq,
-            //           icon: FontAwesomeIcons.chartLine,
-            //           buttontext: 'Trending',
-            //         ),
-            //         SizedBox(
-            //           width: 10,
-            //         ),
-            //         HomeButtons(
-            //           medq: medq,
-            //           icon: FontAwesomeIcons.history,
-            //           buttontext: 'Recent',
-            //         ),
-            //         SizedBox(
-            //           width: 10,
-            //         ),
-            //         HomeButtons(
-            //           medq: medq,
-            //           icon: FontAwesomeIcons.thumbsUp,
-            //           buttontext: 'Recommended',
-            //         ),
-            //         SizedBox(
-            //           width: 10,
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            FutureBuilder(
-              future: dbRef.once(),
-              builder: (_, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: medq.height,
-                        width: medq.width,
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: Shimmer.fromColors(
-                                baseColor: Colors.white38,
-                                highlightColor: Colors.white70,
-                                enabled: _enabled,
-                                child: ListView.builder(
-                                  itemBuilder: (_, __) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Color(0x5cffffff),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      width: medq.width * 0.94,
-                                      height: medq.height * 0.3,
+                      })
+                ],
+              ),
+              // SearchBoxContainer(medq: medq.height),
+              SizedBox(
+                height: 10,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF416C),
+                                    Color(0xFFFF4B2B)
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              shape: BoxShape.circle),
+                          height: 69,
+                          width: 69,
+                          child: CircleAvatar(
+                            radius: 33,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 31,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          'Cycling',
+                          style: GoogleFonts.lato(
+                            color: Color(0xFFF5F6F9),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: medq.width * 0.02,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF416C),
+                                    Color(0xFFFF4B2B)
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              shape: BoxShape.circle),
+                          height: 69,
+                          width: 69,
+                          child: CircleAvatar(
+                            radius: 33,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 31,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          'Cycling',
+                          style: GoogleFonts.lato(
+                            color: Color(0xFFF5F6F9),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: medq.width * 0.02,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF416C),
+                                    Color(0xFFFF4B2B)
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              shape: BoxShape.circle),
+                          height: 69,
+                          width: 69,
+                          child: CircleAvatar(
+                            radius: 33,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 31,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          'Cycling',
+                          style: GoogleFonts.lato(
+                            color: Color(0xFFF5F6F9),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: medq.width * 0.02,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF416C),
+                                    Color(0xFFFF4B2B)
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              shape: BoxShape.circle),
+                          height: 69,
+                          width: 69,
+                          child: CircleAvatar(
+                            radius: 33,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 31,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          'Cycling',
+                          style: GoogleFonts.lato(
+                            color: Color(0xFFF5F6F9),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: medq.width * 0.02,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF416C),
+                                    Color(0xFFFF4B2B)
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              shape: BoxShape.circle),
+                          height: 69,
+                          width: 69,
+                          child: CircleAvatar(
+                            radius: 33,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 31,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          'Cycling',
+                          style: GoogleFonts.lato(
+                            color: Color(0xFFF5F6F9),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 9,
+              ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   physics: BouncingScrollPhysics(),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         HomeButtons(
+              //           medq: medq,
+              //           icon: FontAwesomeIcons.chartLine,
+              //           buttontext: 'Trending',
+              //         ),
+              //         SizedBox(
+              //           width: 10,
+              //         ),
+              //         HomeButtons(
+              //           medq: medq,
+              //           icon: FontAwesomeIcons.history,
+              //           buttontext: 'Recent',
+              //         ),
+              //         SizedBox(
+              //           width: 10,
+              //         ),
+              //         HomeButtons(
+              //           medq: medq,
+              //           icon: FontAwesomeIcons.thumbsUp,
+              //           buttontext: 'Recommended',
+              //         ),
+              //         SizedBox(
+              //           width: 10,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Divider(
+                  thickness: 0.2,
+                  color: Colors.white.withOpacity(0.1),
+                ),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14.0),
+                            color: Color(0xFFFF4265).withOpacity(0.14)
+                            // gradient: LinearGradient(
+                            //   begin: Alignment(0.0, -1.0),
+                            //   end: Alignment(0.0, 1.0),
+                            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                            //   stops: [0.0, 1.0],
+                            // ),
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 19, vertical: 9),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 3.0),
+                                // child: Icon(
+                                //   icon,
+                                //   size: 20,
+                                //   color: Color(0xffff4265),
+                                // ),
+                                child: Image.asset(
+                                  'images/trending.png',
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Text(
+                                'Trending',
+                                style: GoogleFonts.lato(
+                                  fontSize: 15,
+                                  color: const Color(0xffff4265),
+                                ),
+                                // style: TextStyle(
+                                //   fontFamily: 'Roboto',
+                                //   fontSize: 12,
+                                //   color: const Color(0xffff4265),
+                                // ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: medq.width * 0.03,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14.0),
+                          color: Color(0xFF393E46),
+                          // gradient: LinearGradient(
+                          //   begin: Alignment(0.0, -1.0),
+                          //   end: Alignment(0.0, 1.0),
+                          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                          //   stops: [0.0, 1.0],
+                          // ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 19, vertical: 9),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 3.0),
+                                // child: Icon(
+                                //   icon,
+                                //   size: 20,
+                                //   color: Color(0xffff4265),
+                                // ),
+                                child: Image.asset(
+                                  'images/trending.png',
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Text(
+                                'Trending',
+                                style: GoogleFonts.lato(
+                                  fontSize: 15,
+                                  color: const Color(0xffff4265),
+                                ),
+                                // style: TextStyle(
+                                //   fontFamily: 'Roboto',
+                                //   fontSize: 12,
+                                //   color: const Color(0xffff4265),
+                                // ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14.0),
+                            color: Color(0xFFFF4265).withOpacity(0.14)
+                            // gradient: LinearGradient(
+                            //   begin: Alignment(0.0, -1.0),
+                            //   end: Alignment(0.0, 1.0),
+                            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                            //   stops: [0.0, 1.0],
+                            // ),
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 19, vertical: 9),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 3.0),
+                                // child: Icon(
+                                //   icon,
+                                //   size: 20,
+                                //   color: Color(0xffff4265),
+                                // ),
+                                child: Image.asset(
+                                  'images/trending.png',
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Text(
+                                'Trending',
+                                style: GoogleFonts.lato(
+                                  fontSize: 15,
+                                  color: const Color(0xffff4265),
+                                ),
+                                // style: TextStyle(
+                                //   fontFamily: 'Roboto',
+                                //   fontSize: 12,
+                                //   color: const Color(0xffff4265),
+                                // ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
+              // FutureBuilder(
+              //   future: dbRef.once(),
+              //   builder: (_, AsyncSnapshot snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return Center(
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(10.0),
+              //           child: Container(
+              //             height: medq.height,
+              //             width: medq.width,
+              //             child: Column(
+              //               children: <Widget>[
+              //                 Expanded(
+              //                   child: Shimmer.fromColors(
+              //                     baseColor: Colors.white38,
+              //                     highlightColor: Colors.white70,
+              //                     enabled: _enabled,
+              //                     child: ListView.builder(
+              //                       itemBuilder: (_, __) => Padding(
+              //                         padding: const EdgeInsets.only(bottom: 8.0),
+              //                         child: Container(
+              //                           decoration: BoxDecoration(
+              //                               color: Color(0x5cffffff),
+              //                               borderRadius:
+              //                                   BorderRadius.circular(20)),
+              //                           width: medq.width * 0.94,
+              //                           height: medq.height * 0.3,
+              //                         ),
+              //                       ),
+              //                       itemCount: 6,
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       );
+              //     } else {
+              //       if (snapshot.data.value != null) {
+              //         List timeStampList = [];
+              //         List valueList = [];
+              //         var data = snapshot.data.value;
+              //         data.forEach((key, value) {
+              //           timeStampList.add(key);
+              //           valueList.add(value);
+              //         });
+              //         return Column(
+              //           children: valueList.map<Widget>((element) {
+              //             return GestureDetector(
+              //               onTap: _showBottomSheet,
+              //               child: TrendingCards(
+              //                   imageUrl: element["Image"],
+              //                   medq: medq,
+              //                   description: element["Desc"],
+              //                   title: element["Name"]),
+              //             );
+              //           }).toList(),
+              //         );
+              //
+              //         // return GestureDetector(
+              //         //   onTap: _showBottomSheet,
+              //         //   child: TrendingCards(
+              //         //     medq: medq,
+              //         //     title: 'Road Trip',
+              //         //     description:
+              //         //         'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut …..',
+              //         //     username: '@pasissontraveller',
+              //         //   ),
+              //         // );
+              //       } else {
+              //         return Text('Sorry We Encountered an Error');
+              //       }
+              //     }
+              //   },
+              // ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                child: Container(
+                  height: medq.height * 0.3,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    image: DecorationImage(
+                      image: AssetImage('images/home-image.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          gradient: LinearGradient(
+                              colors: [
+                                Color(0xFF1C1C1C).withOpacity(0.0),
+                                Color(0xFF141414).withOpacity(0.62)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter),
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment:CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical:18),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Road Trip',
+                                  style: GoogleFonts.lato(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+
+                                  ),
+                                  width: medq.width*0.58,
+                                  child: Text(
+                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut ….',
+                                    style: GoogleFonts.nunitoSans(
+                                      fontSize: 12,
                                     ),
                                   ),
-                                  itemCount: 6,
+                                )
+                              ],
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8)),
+                            child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                              child: Container(
+                                height: medq.height * 0.07,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8),
+                                      bottomRight: Radius.circular(8)),
+                                  color: Color(0xFF1C1C1C).withOpacity(0.89),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFFF416C),
+                                                      Color(0xFFFF4B2B)
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end:
+                                                        Alignment.bottomCenter),
+                                                shape: BoxShape.circle),
+                                            height: 42,
+                                            width: 42,
+                                            child: CircleAvatar(
+                                              // radius: 33,
+                                              backgroundColor: Color(0xFFFF4B2B)
+                                                  .withOpacity(0),
+                                              child: CircleAvatar(
+                                                backgroundImage: AssetImage(
+                                                    'images/profile-photo.jpg'),
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                // radius: 34,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Dhriti Sharma',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.location_on_outlined,
+                                                    size: 12,
+                                                  ),
+                                                  Text(
+                                                    'Delhi,India',
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      OutlinedButton(
+                                        child: Text('    Join    '),
+                                        style: OutlinedButton.styleFrom(
+                                          primary: Color(0xFFFF4265),
+                                          side: BorderSide(
+                                              color: Color(0xFFFF4265),
+                                              width: 1),
+                                        ),
+                                        onPressed: () {
+                                          print('Pressed');
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                    ),
-                  );
-                } else {
-                  if (snapshot.data.value != null) {
-                    List timeStampList = [];
-                    List valueList = [];
-                    var data = snapshot.data.value;
-                    data.forEach((key, value) {
-                      timeStampList.add(key);
-                      valueList.add(value);
-                    });
-                    return Column(
-                      children: valueList.map<Widget>((element) {
-                        return GestureDetector(
-                          onTap: _showBottomSheet,
-                          child: TrendingCards(
-                              imageUrl: element["Image"],
-                              medq: medq,
-                              description: element["Desc"],
-                              title: element["Name"]),
-                        );
-                      }).toList(),
-                    );
+                    ],
+                  ),
+                ),
+              ),
 
-                    // return GestureDetector(
-                    //   onTap: _showBottomSheet,
-                    //   child: TrendingCards(
-                    //     medq: medq,
-                    //     title: 'Road Trip',
-                    //     description:
-                    //         'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut …..',
-                    //     username: '@pasissontraveller',
-                    //   ),
-                    // );
-                  } else {
-                    return Text('Sorry We Encountered an Error');
-                  }
-                }
-              },
-            ),
-            SizedBox(
-              height: 50,
-            )
-          ],
+              SizedBox(
+                height: 50,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -506,11 +1084,7 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
-// Color(0xff222831)
-
-
-
-
+// Color(0xff22242C)
 
 // import 'dart:convert';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -659,42 +1233,7 @@ class _HomePageViewState extends State<HomePageView> {
 //             SizedBox(
 //               height: 10,
 //             ),
-//             // SingleChildScrollView(
-//             //   scrollDirection: Axis.horizontal,
-//             //   physics: BouncingScrollPhysics(),
-//             //   child: Padding(
-//             //     padding: const EdgeInsets.all(8.0),
-//             //     child: Row(
-//             //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//             //       children: [
-//             //         HomeButtons(
-//             //           medq: medq,
-//             //           icon: FontAwesomeIcons.chartLine,
-//             //           buttontext: 'Trending',
-//             //         ),
-//             //         SizedBox(
-//             //           width: 10,
-//             //         ),
-//             //         HomeButtons(
-//             //           medq: medq,
-//             //           icon: FontAwesomeIcons.history,
-//             //           buttontext: 'Recent',
-//             //         ),
-//             //         SizedBox(
-//             //           width: 10,
-//             //         ),
-//             //         HomeButtons(
-//             //           medq: medq,
-//             //           icon: FontAwesomeIcons.thumbsUp,
-//             //           buttontext: 'Recommended',
-//             //         ),
-//             //         SizedBox(
-//             //           width: 10,
-//             //         ),
-//             //       ],
-//             //     ),
-//             //   ),
-//             // ),
+
 //             FutureBuilder(
 //               future: dbRef.once(),
 //               builder: (_, AsyncSnapshot snapshot) {
@@ -928,4 +1467,4 @@ class _HomePageViewState extends State<HomePageView> {
 //   }
 // }
 
-// // Color(0xff222831)
+// // Color(0xff22242C)

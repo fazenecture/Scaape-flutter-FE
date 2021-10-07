@@ -49,7 +49,7 @@ class _UserChatState extends State<UserChat> {
         appBar: AppBar(
           centerTitle: true,
           title: Text('Group Chat'),
-          backgroundColor: Color(0xFF222831),
+          backgroundColor: Color(0xFF22242C),
         ),
         body: Container(
           child: SafeArea(

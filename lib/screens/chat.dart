@@ -35,7 +35,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
 
             return SingleChildScrollView(
               child: Container(
-                color: Color(0xFF222831),
+                color: Color(0xFF22242C),
                 margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

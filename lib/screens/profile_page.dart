@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(bottom: 30),
-          color: Color(0xFF222831),
+          color: Color(0xFF22242C),
           child: FutureBuilder(
               future: getCurrentUser(),
               builder: (context, snapshot) {

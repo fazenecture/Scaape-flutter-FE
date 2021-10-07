@@ -218,7 +218,7 @@ class _AddScaapeState extends State<AddScaape> {
                     DatePicker.showDateTimePicker(context,
                         showTitleActions: true,
                         theme: DatePickerTheme(
-                            backgroundColor: Color(0xFF222831),
+                            backgroundColor: Color(0xFF22242C),
                             doneStyle: TextStyle(color: Colors.white),
                             cancelStyle: TextStyle(color: Colors.white),
                             itemStyle: TextStyle(color: Colors.white)),

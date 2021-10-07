@@ -55,11 +55,13 @@ class HomeButtons extends StatelessWidget {
     required this.medq,
     required this.buttontext,
     required this.icon,
+    required this.img,
   }) : super(key: key);
 
   final double medq;
   final IconData icon;
   final String buttontext;
+  final Image img;
   @override
   Widget build(BuildContext context) {
     return Container(
