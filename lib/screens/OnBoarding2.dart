@@ -119,20 +119,93 @@ class _Onboarding2State extends State<Onboarding2> {
                     SizedBox(
                       height: 18,
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: GestureDetector(
+                    // Row(
+                    //   children: [
+                    //     Padding(
+                    //       padding: const EdgeInsets.all(3.0),
+                    //       child: GestureDetector(
+                    //         onTap: () async {
+                    //           final pickedFile = await picker.getImage(
+                    //               source: ImageSource.gallery);
+                    //           setState(
+                    //                 () {
+                    //               if (pickedFile != null) {
+                    //                 _image = File(pickedFile.path);
+                    //                 _base64 = base64Encode(
+                    //                     _image!.readAsBytesSync());
+                    //                 print(pickedFile.path);
+                    //               } else {
+                    //                 print('No image selected');
+                    //               }
+                    //             },
+                    //           );
+                    //         },
+                    //         // child: buildButtons(
+                    //         //     medq, "Upload Image", 0.36, Color(0xff393e46)),
+                    //         child: Card(
+                    //           color: Color(0xFF393E46),
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius:
+                    //               BorderRadius.circular(10)),
+                    //           child: Container(
+                    //             height:
+                    //             MediaQuery.of(context).size.height *
+                    //                 0.115,
+                    //             width:
+                    //             MediaQuery.of(context).size.height *
+                    //                 0.115,
+                    //             child: Icon(
+                    //               Icons.add,
+                    //               size: 75,
+                    //               color: Colors.grey,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Padding(
+                    //       padding: const EdgeInsets.all(3.0),
+                    //       child: Card(
+                    //         color: Color(0xFF393E46),
+                    //         shape: RoundedRectangleBorder(
+                    //             borderRadius: BorderRadius.circular(10)),
+                    //         child: Container(
+                    //           height: MediaQuery.of(context).size.height *
+                    //               0.115,
+                    //           width: MediaQuery.of(context).size.height *
+                    //               0.115,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Padding(
+                    //       padding: const EdgeInsets.all(3.0),
+                    //       child: Card(
+                    //         color: Color(0xFF393E46),
+                    //         shape: RoundedRectangleBorder(
+                    //             borderRadius: BorderRadius.circular(10)),
+                    //         child: Container(
+                    //           height: MediaQuery.of(context).size.height *
+                    //               0.115,
+                    //           width: MediaQuery.of(context).size.height *
+                    //               0.115,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        children: [
+                          GestureDetector(
                             onTap: () async {
-                              final pickedFile = await picker.getImage(
-                                  source: ImageSource.gallery);
+                              final pickedFile =
+                              await picker.getImage(source: ImageSource.gallery);
                               setState(
                                     () {
                                   if (pickedFile != null) {
                                     _image = File(pickedFile.path);
-                                    _base64 = base64Encode(
-                                        _image!.readAsBytesSync());
+                                    _base64 = base64Encode(_image!.readAsBytesSync());
                                     print(pickedFile.path);
                                   } else {
                                     print('No image selected');
@@ -140,92 +213,18 @@ class _Onboarding2State extends State<Onboarding2> {
                                 },
                               );
                             },
-                            // child: buildButtons(
-                            //     medq, "Upload Image", 0.36, Color(0xff393e46)),
-                            child: Card(
-                              color: Color(0xFF393E46),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(10)),
-                              child: Container(
-                                height:
-                                MediaQuery.of(context).size.height *
-                                    0.115,
-                                width:
-                                MediaQuery.of(context).size.height *
-                                    0.115,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 75,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
+                            child: buildButtons(
+                                medq, "Upload Image", 0.36, Color(0xff393e46)),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Card(
-                            color: Color(0xFF393E46),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height *
-                                  0.115,
-                              width: MediaQuery.of(context).size.height *
-                                  0.115,
-                            ),
+                          _base64 == null
+                              ? Container()
+                              : Icon(
+                            Icons.done,
+                            color: Colors.green,
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Card(
-                            color: Color(0xFF393E46),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height *
-                                  0.115,
-                              width: MediaQuery.of(context).size.height *
-                                  0.115,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 8.0),
-                    //   child:
-                    // Row(
-                    // children: [
-                    // GestureDetector(
-                    //   onTap: () async {
-                    //     final pickedFile =
-                    //     await picker.getImage(source: ImageSource.gallery);
-                    //     setState(
-                    //           () {
-                    //         if (pickedFile != null) {
-                    //           _image = File(pickedFile.path);
-                    //           _base64 = base64Encode(_image!.readAsBytesSync());
-                    //           print(pickedFile.path);
-                    //         } else {
-                    //           print('No image selected');
-                    //         }
-                    //       },
-                    //     );
-                    //   },
-                    //   child: buildButtons(
-                    //       medq, "Upload Image", 0.36, Color(0xff393e46)),
-                    // ),
-                    // _base64 == null
-                    //     ? Container()
-                    //     : Icon(
-                    //   Icons.done,
-                    //   color: Colors.green,
-                    // ),
-                    // ],
-                    // ),
-                    // ),
                     SizedBox(height: 40),
                     Container(
                         child: Text(
@@ -263,7 +262,7 @@ class _Onboarding2State extends State<Onboarding2> {
                               borderSide: const BorderSide(
                                   color: Colors.transparent, width: 0.0),
                             ),
-                            hintText: "Enter your Location",
+                            hintText: "Enter your instagram",
                             filled: true,
                             hintStyle: TextStyle(
                               fontFamily: 'Roboto',
@@ -332,7 +331,7 @@ class _Onboarding2State extends State<Onboarding2> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        if (Instagram.isEmpty) {
+                        if (Instagram.isEmpty||_image.isNull) {
                           Fluttertoast.showToast(
                             msg: "enter all details",
                           );
@@ -354,6 +353,42 @@ class _Onboarding2State extends State<Onboarding2> {
                           int statusCode = response.statusCode;
                           print(statusCode);
                           print(response.body);
+                          var paths;
+                          try {
+                            String url = 'http://65.0.121.93:4000/testUpload';
+                            var stream = new http.ByteStream(
+                                DelegatingStream.typed(_image!.openRead()));
+                            var length = await _image!.length();
+                            var request = MultipartRequest('POST', Uri.parse(url));
+
+                            var multipartFile = new http.MultipartFile(
+                                'file', stream, length, filename: basename(_image!
+                                .path));
+                            request.files.add(multipartFile);
+                            var res = await request.send();
+                            print(res.statusCode);
+
+                            await res.stream.transform(utf8.decoder).listen((
+                                value) {
+                              var data = jsonDecode(value);
+                              paths = data['path'].toString().substring(7);
+                              print(paths);
+                            });
+                            var imageurls = 'http://65.0.121.93:4000/ftp/$paths';
+                            String urls='http://65.0.121.93:4000/api/createUserPhotos';
+                            Map<String, String> headers = {
+                              "Content-type": "application/json"
+                            };
+                            String json = '{"Id": "${DateTime.now().millisecondsSinceEpoch}","UserId":"${signInData['UserId']}","EmailId": "${signInData['EmailId']}","PhotoUrl":"${imageurls}"}';
+                            http.Response response = await post(Uri.parse(urls), headers: headers, body: json);
+                            //print(user.displayName);
+                            int statusCode = response.statusCode;
+                            print(statusCode);
+                            print(response.body);
+                          }
+                          catch (e) {
+                            print(e);
+                          }
 
                           Navigator.pushNamedAndRemoveUntil(
                               context, HomeScreen.id, (route) => false);

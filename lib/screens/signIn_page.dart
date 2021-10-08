@@ -92,6 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 onPressed: () async {
                   User? user =
                       await Authentication.signInWithGoogle(context: context);
+
                   if (user != null) {
                     try{
 
