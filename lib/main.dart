@@ -49,11 +49,11 @@ class _MyAppState extends State<MyApp> {
           FutureBuilder(
           future: getCurrentUser(),
           builder: (context, snapshot) {
-          // if (snapshot.hasData) {
-          //   return HomeScreen();
-          // } else {
-          //   return OnBoarding();
-          //  }
+          if (snapshot.hasData) {
+            return HomeScreen();
+          } else {
+            return OnBoarding();
+           }
           return OnBoarding();
           },
       ),

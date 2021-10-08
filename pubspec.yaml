@@ -25,6 +25,7 @@ dependencies:
   flutter_card_swipper: ^0.4.0
   http: ^0.13.3
   firebase_database: ^7.1.1
+  recase: ^4.0.0
   fluttertoast: ^8.0.7
   geolocator: ^7.1.0
   google_fonts: ^2.1.0

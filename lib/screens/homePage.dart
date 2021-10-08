@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -15,6 +16,7 @@ import 'package:scaape/utils/ui_components.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
+import 'package:recase/recase.dart';
 
 class HomePageView extends StatefulWidget {
   static String id = 'homePage';
@@ -137,7 +139,7 @@ class _HomePageViewState extends State<HomePageView> {
                                 decoration: BoxDecoration(
                                     color: Color(0xFF262930),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(22))),
+                                    BorderRadius.all(Radius.circular(22))),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 6),
@@ -169,7 +171,7 @@ class _HomePageViewState extends State<HomePageView> {
                           } else {
                             return Image(
                               image:
-                                  AssetImage('animations/location-loader.gif'),
+                              AssetImage('animations/location-loader.gif'),
                               height: 60,
                               width: 60,
                             );
@@ -207,7 +209,7 @@ class _HomePageViewState extends State<HomePageView> {
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                               backgroundColor: Colors.transparent,
                               radius: 31,
                             ),
@@ -246,7 +248,7 @@ class _HomePageViewState extends State<HomePageView> {
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                               backgroundColor: Colors.transparent,
                               radius: 31,
                             ),
@@ -285,7 +287,7 @@ class _HomePageViewState extends State<HomePageView> {
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                               backgroundColor: Colors.transparent,
                               radius: 31,
                             ),
@@ -324,7 +326,7 @@ class _HomePageViewState extends State<HomePageView> {
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                               backgroundColor: Colors.transparent,
                               radius: 31,
                             ),
@@ -363,7 +365,7 @@ class _HomePageViewState extends State<HomePageView> {
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                               backgroundColor: Colors.transparent,
                               radius: 31,
                             ),
@@ -442,13 +444,13 @@ class _HomePageViewState extends State<HomePageView> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
                             color: ScaapeTheme.kPinkColor.withOpacity(0.14)
-                            // gradient: LinearGradient(
-                            //   begin: Alignment(0.0, -1.0),
-                            //   end: Alignment(0.0, 1.0),
-                            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-                            //   stops: [0.0, 1.0],
-                            // ),
-                            ),
+                          // gradient: LinearGradient(
+                          //   begin: Alignment(0.0, -1.0),
+                          //   end: Alignment(0.0, 1.0),
+                          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                          //   stops: [0.0, 1.0],
+                          // ),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 19, vertical: 9),
@@ -541,13 +543,13 @@ class _HomePageViewState extends State<HomePageView> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
                             color: ScaapeTheme.kPinkColor.withOpacity(0.14)
-                            // gradient: LinearGradient(
-                            //   begin: Alignment(0.0, -1.0),
-                            //   end: Alignment(0.0, 1.0),
-                            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-                            //   stops: [0.0, 1.0],
-                            // ),
-                            ),
+                          // gradient: LinearGradient(
+                          //   begin: Alignment(0.0, -1.0),
+                          //   end: Alignment(0.0, 1.0),
+                          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                          //   stops: [0.0, 1.0],
+                          // ),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 19, vertical: 9),
@@ -669,28 +671,28 @@ class _HomePageViewState extends State<HomePageView> {
 
               FutureBuilder(
                 future: getScapesByAuth(auther.currentUser!.uid),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
                   print(auther.currentUser!.uid);
-                    if(snapshot.hasData){
-                      var a=snapshot.data;
-                      print(a);
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        //itemCount: 1,
-                        itemCount: snapshot.data.length,
-                        shrinkWrap: true,
-                        itemBuilder:(context, index) {
-                          return HomeCard((){setState(() {});},
-                              medq,a[index]["ScaapeImg"],a[index]["ScaapeName"],a[index]["Description"],a[index]["Location"],a[index]['UserId'],
-                              a[index]["ScaapeId"],a[index]["ScaapePref"],a[index]["Admin"],a[index]["isPresent"],
-                          a[index]["ScaapeDate"],a[index]["AdminName"],a[index]["AdminEmail"],a[index]["AdminDP"],a[index]["AdminGender"]);
-                        },
-                      );
-                    }
-                    else{
-                      return Center(child: CircularProgressIndicator(),);
-                    }
-                  },
+                  if(snapshot.hasData){
+                    var a=snapshot.data;
+                    print(a);
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      //itemCount: 1,
+                      itemCount: snapshot.data.length,
+                      shrinkWrap: true,
+                      itemBuilder:(context, index) {
+                        return HomeCard((){setState(() {});},
+                            medq,a[index]["ScaapeImg"],a[index]["ScaapeName"],a[index]["Description"],a[index]["Location"],a[index]['UserId'],
+                            a[index]["ScaapeId"],a[index]["ScaapePref"],a[index]["Admin"],a[index]["isPresent"],
+                            a[index]["ScaapeDate"],a[index]["AdminName"],a[index]["AdminEmail"],a[index]["AdminDP"],a[index]["AdminGender"]);
+                      },
+                    );
+                  }
+                  else{
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                },
               ),
 
 
@@ -795,7 +797,7 @@ class _HomePageViewState extends State<HomePageView> {
                         backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                         child: CircleAvatar(
                           backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
+                          AssetImage('images/profile-photo.jpg'),
                           backgroundColor: Colors.transparent,
                           radius: 25,
                         ),
@@ -811,7 +813,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize:
-                                  MediaQuery.of(context).size.height * 0.03,
+                              MediaQuery.of(context).size.height * 0.03,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -820,7 +822,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize:
-                                  MediaQuery.of(context).size.height * 0.02,
+                              MediaQuery.of(context).size.height * 0.02,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w500,
                             ),
@@ -889,7 +891,7 @@ class _HomePageViewState extends State<HomePageView> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
+                  const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -897,7 +899,7 @@ class _HomePageViewState extends State<HomePageView> {
                         backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                         child: CircleAvatar(
                           backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
+                          AssetImage('images/profile-photo.jpg'),
                           backgroundColor: Colors.transparent,
                           radius: 20,
                         ),
@@ -910,7 +912,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize:
-                                  MediaQuery.of(context).size.height * 0.023,
+                              MediaQuery.of(context).size.height * 0.023,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -919,7 +921,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize:
-                                  MediaQuery.of(context).size.height * 0.02,
+                              MediaQuery.of(context).size.height * 0.02,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w400,
                             ),
@@ -979,8 +981,8 @@ class HomeCard extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 gradient: LinearGradient(
                     colors: [
-                      Color(0xFF1C1C1C).withOpacity(0.0),
-                      Color(0xFF141414).withOpacity(0.62)
+                      Color(0xFF1C1C1C).withOpacity(0.3),
+                      Color(0xFF141414).withOpacity(0.87)
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter),
@@ -997,20 +999,26 @@ class HomeCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${ScapeName}',
+                        '${ScapeName.sentenceCase}',
                         style: GoogleFonts.lato(
-                          fontSize: 21,
-                          fontWeight: FontWeight.w500
+                            fontSize: 21,
+                            fontWeight: FontWeight.w500
                         ),
+
+
                       ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
 
                         ),
-                        width: medq.width*0.58,
+                        width: medq.width*0.56,
                         child: Text(
-                          '${ScapeDescription.length>25?ScapeDescription.substring(0,25):ScapeDescription} ….',
+                          '${ScapeDescription.length>80?ScapeDescription.substring(0,80):ScapeDescription.sentenceCase}',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+
                           style: GoogleFonts.nunitoSans(
                             fontSize: 12,
                           ),
@@ -1025,7 +1033,7 @@ class HomeCard extends StatelessWidget {
                       bottomRight: Radius.circular(8)),
                   child: BackdropFilter(
                     filter:
-                        ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                    ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
                     child: Container(
                       height: medq.height * 0.07,
                       decoration: BoxDecoration(
@@ -1039,9 +1047,9 @@ class HomeCard extends StatelessWidget {
                             horizontal: 20),
                         child: Row(
                           mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                          MainAxisAlignment.spaceBetween,
                           crossAxisAlignment:
-                              CrossAxisAlignment.center,
+                          CrossAxisAlignment.center,
                           children: [
                             Row(
                               children: [
@@ -1054,7 +1062,7 @@ class HomeCard extends StatelessWidget {
                                           ],
                                           begin: Alignment.topCenter,
                                           end:
-                                              Alignment.bottomCenter),
+                                          Alignment.bottomCenter),
                                       shape: BoxShape.circle),
                                   height: 42,
                                   width: 42,
@@ -1065,7 +1073,7 @@ class HomeCard extends StatelessWidget {
                                     child: CircleAvatar(
                                       backgroundImage: NetworkImage('${adminDp}'),
                                       backgroundColor:
-                                          Colors.transparent,
+                                      Colors.transparent,
                                       // radius: 34,
                                     ),
                                   ),
@@ -1075,31 +1083,39 @@ class HomeCard extends StatelessWidget {
                                 ),
                                 Column(
                                   crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  CrossAxisAlignment.start,
                                   mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                  MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      '${adminName}',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
+                                    Container(
+                                      width: medq.width* 0.24,
+                                      child: Text(
+                                        '${adminName.titleCase}',
+                                        maxLines: 1,
+                                        softWrap: true,
+                                        overflow: TextOverflow.clip,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       children: [
                                         Icon(
                                           Icons.location_on_outlined,
                                           size: 12,
                                         ),
                                         Text(
-                                          '${Location}',
+                                          '${Location.sentenceCase}',
+                                          maxLines: 1,
                                           style: GoogleFonts.poppins(
                                               fontSize: 10,
                                               fontWeight:
-                                                  FontWeight.w400),
+                                              FontWeight.w400),
                                         )
                                       ],
                                     ),
@@ -1133,18 +1149,16 @@ class HomeCard extends StatelessWidget {
                               },
                             )
                                 :
-                                OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-
-                                      primary: ScaapeTheme.kPinkColor,
-                                      side: BorderSide(
-                                          color: ScaapeTheme.kPinkColor,
-                                          width: 1),
-                                    ),
-                                    onPressed: () {
-
-                                    },
-                                    child: Text('Joined'))
+                            OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  primary: ScaapeTheme.kPinkColor,
+                                  side: BorderSide(
+                                      color: ScaapeTheme.kPinkColor,
+                                      width: 1),
+                                ),
+                                onPressed: () {
+                                },
+                                child: Text('  Joined  '))
                           ],
                         ),
                       ),
