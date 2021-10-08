@@ -474,7 +474,7 @@ class _HomePageViewState extends State<HomePageView> {
                 future: getScapesByAuth(auther.currentUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   print(auther.currentUser!.uid);
-                  if (snapshot == null) {
+                  if (snapshot.hasData) {
                     var a = snapshot.data;
                     print(a);
                     return ListView.builder(
@@ -504,155 +504,12 @@ class _HomePageViewState extends State<HomePageView> {
                       },
                     );
                   } else {
-                    return ListView.builder(
-                      itemBuilder: (context,index){
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                          child: Container(
-                            height: medq.height * 0.25,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                color: ScaapeTheme.kShimmerColor
-                            ),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                                      child: Shimmer.fromColors(
-                                        baseColor: ScaapeTheme.kShimmerColor.withOpacity(0.1),
-                                        highlightColor: ScaapeTheme.kShimmerTextColor,
-                                        period: Duration(milliseconds: 1900),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              color: ScaapeTheme.kShimmerTextColor,
-                                              height: 23,
-                                              width: medq.width * 0.35,
-                                            ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            Container(
-                                              color: ScaapeTheme.kShimmerTextColor,
-                                              height: 16,
-                                              width: medq.width * 0.25,
-                                            ),
-                                            SizedBox(
-                                              height: 2,
-                                            ),
-                                            Container(
-                                              color: ScaapeTheme.kShimmerTextColor,
-                                              height: 16,
-                                              width: medq.width * 0.28,
-                                            ),
-                                            SizedBox(
-                                              height: 2,
-                                            ),
-                                            Container(
-                                              color: ScaapeTheme.kShimmerTextColor,
-                                              height: 16,
-                                              width: medq.width * 0.2,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Shimmer.fromColors(
-                                      baseColor: ScaapeTheme.kShimmerColor.withOpacity(0.1),
-                                      highlightColor: ScaapeTheme.kShimmerTextColor,
-                                      period: Duration(milliseconds: 1900),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(8)),
-                                        child: BackdropFilter(
-                                          filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                                          child: Container(
-                                            height: medq.height * 0.07,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  bottomLeft: Radius.circular(8),
-                                                  bottomRight: Radius.circular(8)),
-                                              color: ScaapeTheme.kShimmerTextColor.withOpacity(0.4),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        decoration: BoxDecoration(
-                                                            shape: BoxShape.circle),
-                                                        height: 42,
-                                                        width: 42,
-                                                        child: CircleAvatar(
-                                                          // radius: 33,
-                                                          backgroundColor:
-                                                          Color(0xFFFF4B2B).withOpacity(0),
-                                                          child: CircleAvatar(
-                                                            backgroundColor: ScaapeTheme.kShimmerTextColor,
-                                                            // radius: 34,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 8,
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Container(
-                                                            width: medq.width * 0.24,
-                                                            height: 12,
-                                                            color: ScaapeTheme.kShimmerTextColor,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 2,
-                                                          ),
-                                                          Container(
-                                                            width: medq.width * 0.14,
-                                                            height: 12,
-                                                            color: ScaapeTheme.kShimmerTextColor,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Container(
-                                                    width: medq.width*0.2,
-                                                    height: 29,
-                                                    color: ScaapeTheme.kShimmerTextColor,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-
+                    return Column(
+                      children: [
+                        ShimmerCard(medq: medq),
+                        ShimmerCard(medq: medq),
+                        ShimmerCard(medq: medq),
+                      ],
                     );
                   }
                 },
@@ -915,6 +772,164 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
+class ShimmerCard extends StatelessWidget {
+  const ShimmerCard({
+    Key? key,
+    required this.medq,
+  }) : super(key: key);
+
+  final Size medq;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      child: Container(
+        height: medq.height * 0.25,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            color: ScaapeTheme.kShimmerColor
+        ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  child: Shimmer.fromColors(
+                    baseColor: ScaapeTheme.kShimmerColor.withOpacity(0.1),
+                    highlightColor: ScaapeTheme.kShimmerTextColor,
+                    period: Duration(milliseconds: 1900),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          color: ScaapeTheme.kShimmerTextColor,
+                          height: 23,
+                          width: medq.width * 0.35,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Container(
+                          color: ScaapeTheme.kShimmerTextColor,
+                          height: 16,
+                          width: medq.width * 0.25,
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Container(
+                          color: ScaapeTheme.kShimmerTextColor,
+                          height: 16,
+                          width: medq.width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Container(
+                          color: ScaapeTheme.kShimmerTextColor,
+                          height: 16,
+                          width: medq.width * 0.2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Shimmer.fromColors(
+                  baseColor: ScaapeTheme.kShimmerColor.withOpacity(0.1),
+                  highlightColor: ScaapeTheme.kShimmerTextColor,
+                  period: Duration(milliseconds: 1900),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8)),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                      child: Container(
+                        height: medq.height * 0.07,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(8),
+                              bottomRight: Radius.circular(8)),
+                          color: ScaapeTheme.kShimmerTextColor.withOpacity(0.4),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle),
+                                    height: 42,
+                                    width: 42,
+                                    child: CircleAvatar(
+                                      // radius: 33,
+                                      backgroundColor:
+                                      Color(0xFFFF4B2B).withOpacity(0),
+                                      child: CircleAvatar(
+                                        backgroundColor: ScaapeTheme.kShimmerTextColor,
+                                        // radius: 34,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: medq.width * 0.24,
+                                        height: 12,
+                                        color: ScaapeTheme.kShimmerTextColor,
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Container(
+                                        width: medq.width * 0.14,
+                                        height: 12,
+                                        color: ScaapeTheme.kShimmerTextColor,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: medq.width*0.2,
+                                height: 29,
+                                color: ScaapeTheme.kShimmerTextColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class CircleCards extends StatelessWidget {
   const CircleCards({
     required this.text,
@@ -1075,6 +1090,7 @@ class HomeCard extends StatelessWidget {
       child: Container(
         height: medq.height * 0.3,
         decoration: BoxDecoration(
+          color: ScaapeTheme.kBackColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),
           image: DecorationImage(
             image: NetworkImage(ScapeImage),
