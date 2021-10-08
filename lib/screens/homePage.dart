@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
@@ -677,7 +678,8 @@ class _HomePageViewState extends State<HomePageView> {
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
                         itemBuilder:(context, index) {
-                          return HomeCard(medq,a[index]["ScaapeImg"],a[index]["ScaapeName"],a[index]["Description"],a[index]["Location"],a[index]['UserId'],
+                          return HomeCard((){setState(() {});},
+                              medq,a[index]["ScaapeImg"],a[index]["ScaapeName"],a[index]["Description"],a[index]["Location"],a[index]['UserId'],
                               a[index]["ScaapeId"],a[index]["ScaapePref"],a[index]["Admin"],a[index]["isPresent"],
                           a[index]["ScaapeDate"],a[index]["AdminName"],a[index]["AdminEmail"],a[index]["AdminDP"],a[index]["AdminGender"]);
                         },
@@ -949,9 +951,9 @@ class _HomePageViewState extends State<HomePageView> {
 }
 
 class HomeCard extends StatelessWidget {
-  HomeCard(this.medq,this.ScapeImage,this.ScapeName,this.ScapeDescription,
+  HomeCard(this.fun,this.medq,this.ScapeImage,this.ScapeName,this.ScapeDescription,
       this.Location,this.uid,this.scapeId,this.pref,this.admin,this.present,this.date,this.adminName,this.adminEmail,this.adminDp,this.adminGender);
-
+  Function fun;
   final Size medq;
   String ScapeImage,ScapeName,ScapeDescription,Location,uid,scapeId,pref,admin,date,present,adminName,adminEmail,adminDp,adminGender;
 
@@ -1103,18 +1105,37 @@ class HomeCard extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            (present=="True"||present=="true"||admin=="True"||admin=="true")?
                             OutlinedButton(
                               child: Text('    Join    '),
                               style: OutlinedButton.styleFrom(
+
                                 primary: Color(0xFFFF4265),
                                 side: BorderSide(
                                     color: Color(0xFFFF4265),
                                     width: 1),
                               ),
-                              onPressed: () {
-                                print('Pressed');
+                              onPressed: () async{
+                                String url='http://65.0.121.93:4000//api/createParticipant';
+                                Map<String, String> headers = {
+                                  "Content-type": "application/json"
+                                };
+                                String json = '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
+                                http.Response response = await post(Uri.parse(url), headers: headers, body: json);
+                                //print(user.displayName);
+                                int statusCode = response.statusCode;
+                                print(statusCode);
+                                print(response.body);
+                                Fluttertoast.showToast(msg: "Succesfully joined",);
+                                fun();
                               },
                             )
+                                :
+                                OutlinedButton(
+                                    onPressed: () {
+
+                                    },
+                                    child: Text('Joined'))
                           ],
                         ),
                       ),
