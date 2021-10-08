@@ -23,6 +23,7 @@ class Authentication {
             await auth.signInWithCredential(credential);
         user = userCredential.user;
       } on FirebaseAuthException catch (e) {
+        print(e.code);
         if (e.code == 'account-exists-with-different-credential') {
           Fluttertoast.showToast(
               msg: 'The account already exists with a different credential.');

@@ -94,23 +94,29 @@ class _SignInScreenState extends State<SignInScreen> {
                       await Authentication.signInWithGoogle(context: context);
 
                   if (user != null) {
-                    try{
+                    var data=await getUserDetails(user.uid);
+                    if(data.length==0){
+                      try{
 
-                      Navigator.pushNamed(context,GenderSelectionPage.id,arguments: {
-                        'UUID':'${user.uid}',
-                        'Email' : '${user.email}',
-                        'Name': '${user.displayName}',
-                        'ProfileImage': '${user.photoURL}',
-                        'Vaccine': false,
-                        'Verified': false
-                      } );
+                        Navigator.pushNamed(context,GenderSelectionPage.id,arguments: {
+                          'UUID':'${user.uid}',
+                          'Email' : '${user.email}',
+                          'Name': '${user.displayName}',
+                          'ProfileImage': '${user.photoURL}',
+                          'Vaccine': false,
+                          'Verified': false
+                        } );
+                      }
+                      catch(e){
+                        print(e);
+
+
+                      }
                     }
-                    catch(e){
-                      print(e);
-
-
+                    else{
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, HomeScreen.id, (route) => false);
                     }
-
 
                   } else {
                     Fluttertoast.showToast(msg: "error in Signing Up",);
@@ -165,4 +171,16 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+}
+
+Future<List<dynamic>> getUserDetails(String id)async{
+
+
+  String url='http://65.0.121.93:4000/api/getUserDetails/${id}';
+  print(url);
+  Response response=await get(Uri.parse(url));
+  int statusCode = response.statusCode;
+  print(statusCode);
+  print(json.decode(response.body));
+  return json.decode(response.body);
 }

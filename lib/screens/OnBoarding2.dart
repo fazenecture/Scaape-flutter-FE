@@ -354,6 +354,7 @@ class _Onboarding2State extends State<Onboarding2> {
                           print(statusCode);
                           print(response.body);
                           var paths;
+
                           try {
                             String url = 'http://65.0.121.93:4000/testUpload';
                             var stream = new http.ByteStream(
@@ -367,7 +368,7 @@ class _Onboarding2State extends State<Onboarding2> {
                             request.files.add(multipartFile);
                             var res = await request.send();
                             print(res.statusCode);
-
+                            Fluttertoast.showToast(msg: "Please wait",);
                             await res.stream.transform(utf8.decoder).listen((
                                 value) {
                               var data = jsonDecode(value);
