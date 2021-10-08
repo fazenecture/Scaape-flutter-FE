@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 height: MediaQuery.of(context).size.height * 0.6,
                 width: double.infinity,
                 child: RiveAnimation.asset(
-                  'animations/space-man.riv',
+                  'animations/space.riv',
                   // fit: BoxFit.cover,
                 ),
               ),

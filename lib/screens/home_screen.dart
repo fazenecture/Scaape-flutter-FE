@@ -49,16 +49,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Chat',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add_box_outlined),
-                label: 'School',
+                icon: ImageIcon(AssetImage('images/logo.png'),),
+                label: 'Add Scape',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.notifications_none_outlined),
-                label: 'School',
+                label: 'Notification',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline_outlined),
-                label: 'School',
+                icon: Icon(Icons.person_pin_circle_rounded),
+                label: 'Profile',
               )
             ],
             currentIndex: _selectedIndex,

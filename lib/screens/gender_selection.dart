@@ -75,11 +75,11 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 30),
-        height: MediaQuery.of(context).size.height * 0.065,
+        height: MediaQuery.of(context).size.height * 0.055,
         width: MediaQuery.of(context).size.width * 0.70,
         decoration: BoxDecoration(
             color: Color(0xFF393E46),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             border: (isSelected ?? false)
                 ? Border.all(color: ScaapeTheme.kPinkColor)
                 : null),
@@ -185,7 +185,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                           isSelected:
                               genderSelected[genderSelected.keys.elementAt(i)],
                         ),
-                        SizedBox(height: 20)
+                        SizedBox(height: 14)
                       ],
                     ),
                 ],
@@ -196,23 +196,23 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                       decoration: InputDecoration(
                         // border: InputBorder.none,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(color: Color(0x00000000))
                         ),
                         fillColor: Color(0xFF393E46),
                         filled: true,
                         hintText: 'If not specified, please type down',
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0
+                            vertical: 5.0, horizontal: 20.0
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(color: ScaapeTheme.kPinkColor, width: 2.0),
                         ),
                       )
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 20),
                 RichText(
                   text: TextSpan(
                     text: 'When\'s your ',
@@ -241,7 +241,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                 SizedBox(height: 10,),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.45,
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   decoration: BoxDecoration(
                     color: Color(0xFF393E46),
                     borderRadius: BorderRadius.circular(12),

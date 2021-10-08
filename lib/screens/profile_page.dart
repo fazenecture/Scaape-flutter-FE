@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 80,vertical: 10),
                               child: Text('A computer program is a collection of instructions '
-                                  'to perform a specific task. For this, go travel'),
+                                  'to perform a specific task. For this, go travel',textAlign: TextAlign.center,),
                             ),
                           ]
                       ),
