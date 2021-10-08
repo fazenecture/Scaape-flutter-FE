@@ -33,6 +33,7 @@ class _HomePageViewState extends State<HomePageView> {
   bool _enabled = true;
   var dbRef = FirebaseDatabase.instance.reference().child('Scaapes');
   final FirebaseAuth auther = FirebaseAuth.instance;
+
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
     setState(() {
@@ -90,6 +91,7 @@ class _HomePageViewState extends State<HomePageView> {
     return SafeArea(
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
@@ -139,7 +141,7 @@ class _HomePageViewState extends State<HomePageView> {
                                 decoration: BoxDecoration(
                                     color: Color(0xFF262930),
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(22))),
+                                        BorderRadius.all(Radius.circular(22))),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 6),
@@ -171,7 +173,7 @@ class _HomePageViewState extends State<HomePageView> {
                           } else {
                             return Image(
                               image:
-                              AssetImage('animations/location-loader.gif'),
+                                  AssetImage('animations/location-loader.gif'),
                               height: 60,
                               width: 60,
                             );
@@ -184,206 +186,54 @@ class _HomePageViewState extends State<HomePageView> {
               SizedBox(
                 height: 10,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF416C),
-                                    Color(0xFFFF4B2B)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
-                              shape: BoxShape.circle),
-                          height: 69,
-                          width: 69,
-                          child: CircleAvatar(
-                            radius: 33,
-                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                            child: CircleAvatar(
-                              backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                              backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          'Cycling',
-                          style: GoogleFonts.lato(
-                            color: Color(0xFFF5F6F9),
-                          ),
-                        )
-                      ],
+              Row(
+                children: [
+                  CircleCards(
+                    circleImg: CircleAvatar(
+                      backgroundImage:
+                      NetworkImage('https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      // backgroundColor: Colors.transparent,
+                      radius: 31,
                     ),
-                    SizedBox(
-                      width: medq.width * 0.02,
+                    text: 'Cycling',
+                  ),
+                  CircleCards(
+                    circleImg: CircleAvatar(
+                      backgroundImage:
+                      NetworkImage('https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      // backgroundColor: Colors.transparent,
+                      radius: 31,
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF416C),
-                                    Color(0xFFFF4B2B)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
-                              shape: BoxShape.circle),
-                          height: 69,
-                          width: 69,
-                          child: CircleAvatar(
-                            radius: 33,
-                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                            child: CircleAvatar(
-                              backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                              backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          'Cycling',
-                          style: GoogleFonts.lato(
-                            color: Color(0xFFF5F6F9),
-                          ),
-                        )
-                      ],
+                    text: 'Cafe',
+                  ),
+                  CircleCards(
+                    circleImg: CircleAvatar(
+                      backgroundImage:
+                      NetworkImage('https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      // backgroundColor: Colors.transparent,
+                      radius: 31,
                     ),
-                    SizedBox(
-                      width: medq.width * 0.02,
+                    text: 'Treking',
+                  ),
+                  CircleCards(
+                    circleImg: CircleAvatar(
+                      backgroundImage:
+                      NetworkImage('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      // backgroundColor: Colors.transparent,
+                      radius: 31,
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF416C),
-                                    Color(0xFFFF4B2B)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
-                              shape: BoxShape.circle),
-                          height: 69,
-                          width: 69,
-                          child: CircleAvatar(
-                            radius: 33,
-                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                            child: CircleAvatar(
-                              backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                              backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          'Cycling',
-                          style: GoogleFonts.lato(
-                            color: Color(0xFFF5F6F9),
-                          ),
-                        )
-                      ],
+                    text: 'Beach',
+                  ),
+                  CircleCards(
+                    circleImg: CircleAvatar(
+                      backgroundImage:
+                      NetworkImage('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      // backgroundColor: Colors.transparent,
+                      radius: 31,
                     ),
-                    SizedBox(
-                      width: medq.width * 0.02,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF416C),
-                                    Color(0xFFFF4B2B)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
-                              shape: BoxShape.circle),
-                          height: 69,
-                          width: 69,
-                          child: CircleAvatar(
-                            radius: 33,
-                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                            child: CircleAvatar(
-                              backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                              backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          'Cycling',
-                          style: GoogleFonts.lato(
-                            color: Color(0xFFF5F6F9),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: medq.width * 0.02,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF416C),
-                                    Color(0xFFFF4B2B)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
-                              shape: BoxShape.circle),
-                          height: 69,
-                          width: 69,
-                          child: CircleAvatar(
-                            radius: 33,
-                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                            child: CircleAvatar(
-                              backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                              backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          'Cycling',
-                          style: GoogleFonts.lato(
-                            color: Color(0xFFF5F6F9),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                    text: 'Concert',
+                  ),
+                ],
               ),
               SizedBox(
                 height: 9,
@@ -426,171 +276,120 @@ class _HomePageViewState extends State<HomePageView> {
               // ),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 6),
                 child: Divider(
-                  thickness: 0.2,
-                  color: Colors.white.withOpacity(0.1),
+                  thickness: 0.4,
+                  color: ScaapeTheme.kSecondTextCollor.withOpacity(0.1),
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.0),
-                            color: ScaapeTheme.kPinkColor.withOpacity(0.14)
-                          // gradient: LinearGradient(
-                          //   begin: Alignment(0.0, -1.0),
-                          //   end: Alignment(0.0, 1.0),
-                          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-                          //   stops: [0.0, 1.0],
-                          // ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 19, vertical: 9),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 3.0),
-                                // child: Icon(
-                                //   icon,
-                                //   size: 20,
-                                //   color: ScaapeTheme.kPinkColor,
-                                // ),
-                                child: Image.asset(
-                                  'images/trending.png',
-                                  height: 25,
-                                  width: 25,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              Text(
-                                'Trending',
-                                style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  color: ScaapeTheme.kPinkColor,
-                                ),
-                                // style: TextStyle(
-                                //   fontFamily: 'Roboto',
-                                //   fontSize: 12,
-                                //   color: const ScaapeTheme.kPinkColor,
-                                // ),
-                                textAlign: TextAlign.left,
-                              )
-                            ],
-                          ),
-                        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TopCards(
+                      medq: medq,
+                      img: Image.asset(
+                        'images/trending.png',
+                        height: medq.height * 0.02,
+                        // width: medq.width * 0.03,
+                        fit: BoxFit.fill,
                       ),
-                      SizedBox(
-                        width: medq.width * 0.03,
+                      text: 'Trending',
+                      color: ScaapeTheme.kPinkColor.withOpacity(0.14),
+                      textcolor: ScaapeTheme.kPinkColor,
+                    ),
+                    TopCards(
+                      medq: medq,
+                      img: Image.asset(
+                        'images/recent.png',
+                        height: medq.height * 0.017,
+                        // width: medq.width * 0.03,
+                        fit: BoxFit.fill,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14.0),
-                          color: Color(0xFF393E46),
-                          // gradient: LinearGradient(
-                          //   begin: Alignment(0.0, -1.0),
-                          //   end: Alignment(0.0, 1.0),
-                          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-                          //   stops: [0.0, 1.0],
-                          // ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 19, vertical: 9),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 3.0),
-                                // child: Icon(
-                                //   icon,
-                                //   size: 20,
-                                //   color: ScaapeTheme.kPinkColor,
-                                // ),
-                                child: Image.asset(
-                                  'images/trending.png',
-                                  height: 25,
-                                  width: 25,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              Text(
-                                'Trending',
-                                style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  color: ScaapeTheme.kPinkColor,
-                                ),
-                                // style: TextStyle(
-                                //   fontFamily: 'Roboto',
-                                //   fontSize: 12,
-                                //   color: const ScaapeTheme.kPinkColor,
-                                // ),
-                                textAlign: TextAlign.left,
-                              )
-                            ],
-                          ),
-                        ),
+                      text: 'Recent',
+                      color: ScaapeTheme.kSecondBlue,
+                      textcolor: ScaapeTheme.kSecondTextCollor,
+                    ),
+                    TopCards(
+                      medq: medq,
+                      img: Image.asset(
+                        'images/recommendation.png',
+                        height: medq.height * 0.02,
+                        // width: medq.width * 0.03,
+                        fit: BoxFit.fill,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.0),
-                            color: ScaapeTheme.kPinkColor.withOpacity(0.14)
-                          // gradient: LinearGradient(
-                          //   begin: Alignment(0.0, -1.0),
-                          //   end: Alignment(0.0, 1.0),
-                          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-                          //   stops: [0.0, 1.0],
-                          // ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 19, vertical: 9),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 3.0),
-                                // child: Icon(
-                                //   icon,
-                                //   size: 20,
-                                //   color: ScaapeTheme.kPinkColor,
-                                // ),
-                                child: Image.asset(
-                                  'images/trending.png',
-                                  height: 25,
-                                  width: 25,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              Text(
-                                'Trending',
-                                style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  color: ScaapeTheme.kPinkColor,
-                                ),
-                                // style: TextStyle(
-                                //   fontFamily: 'Roboto',
-                                //   fontSize: 12,
-                                //   color: const ScaapeTheme.kPinkColor,
-                                // ),
-                                textAlign: TextAlign.left,
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                      text: 'For you',
+                      color: ScaapeTheme.kSecondBlue,
+                      textcolor: ScaapeTheme.kSecondTextCollor,
+                    ),
+                  ],
                 ),
               ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   physics: BouncingScrollPhysics(),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.max,
+              //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: <Widget>[
+              //         Container(
+              //           decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(14.0),
+              //               color: ScaapeTheme.kPinkColor.withOpacity(0.14)
+              //             // gradient: LinearGradient(
+              //             //   begin: Alignment(0.0, -1.0),
+              //             //   end: Alignment(0.0, 1.0),
+              //             //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+              //             //   stops: [0.0, 1.0],
+              //             // ),
+              //           ),
+              //           child: Padding(
+              //             padding: const EdgeInsets.symmetric(
+              //                 horizontal: 19, vertical: 9),
+              //             child: Row(
+              //               mainAxisSize: MainAxisSize.min,
+              //               children: [
+              //                 Padding(
+              //                   padding: const EdgeInsets.only(right: 3.0),
+              //                   // child: Icon(
+              //                   //   icon,
+              //                   //   size: 20,
+              //                   //   color: ScaapeTheme.kPinkColor,
+              //                   // ),
+              //                   child: Image.asset(
+              //                     'images/trending.png',
+              //                     height: 25,
+              //                     width: 25,
+              //                     fit: BoxFit.fill,
+              //                   ),
+              //                 ),
+              //                 Text(
+              //                   'Trending',
+              //                   style: GoogleFonts.lato(
+              //                     fontSize: 15,
+              //                     color: ScaapeTheme.kPinkColor,
+              //                   ),
+              //                   // style: TextStyle(
+              //                   //   fontFamily: 'Roboto',
+              //                   //   fontSize: 12,
+              //                   //   color: const ScaapeTheme.kPinkColor,
+              //                   // ),
+              //                   textAlign: TextAlign.left,
+              //                 )
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //         SizedBox(
+              //           width: medq.width * 0.03,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
 
               // FutureBuilder(
               //   future: dbRef.once(),
@@ -668,54 +467,216 @@ class _HomePageViewState extends State<HomePageView> {
               //     }
               //   },
               // ),
-
+              SizedBox(
+                height: 7,
+              ),
               FutureBuilder(
                 future: getScapesByAuth(auther.currentUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   print(auther.currentUser!.uid);
-                  if(snapshot.hasData){
-                    var a=snapshot.data;
+                  if (snapshot == null) {
+                    var a = snapshot.data;
                     print(a);
                     return ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       //itemCount: 1,
                       itemCount: snapshot.data.length,
                       shrinkWrap: true,
-                      itemBuilder:(context, index) {
-                        return HomeCard((){setState(() {});},
-                            medq,a[index]["ScaapeImg"],a[index]["ScaapeName"],a[index]["Description"],a[index]["Location"],a[index]['UserId'],
-                            a[index]["ScaapeId"],a[index]["ScaapePref"],a[index]["Admin"],a[index]["isPresent"],
-                            a[index]["ScaapeDate"],a[index]["AdminName"],a[index]["AdminEmail"],a[index]["AdminDP"],a[index]["AdminGender"]);
+                      itemBuilder: (context, index) {
+                        return HomeCard(() {
+                          setState(() {});
+                        },
+                            medq,
+                            a[index]["ScaapeImg"],
+                            a[index]["ScaapeName"],
+                            a[index]["Description"],
+                            a[index]["Location"],
+                            a[index]['UserId'],
+                            a[index]["ScaapeId"],
+                            a[index]["ScaapePref"],
+                            a[index]["Admin"],
+                            a[index]["isPresent"],
+                            a[index]["ScaapeDate"],
+                            a[index]["AdminName"],
+                            a[index]["AdminEmail"],
+                            a[index]["AdminDP"],
+                            a[index]["AdminGender"]);
                       },
                     );
-                  }
-                  else{
-                    return Center(child: CircularProgressIndicator(),);
+                  } else {
+                    return ListView.builder(
+                      itemBuilder: (context,index){
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                          child: Container(
+                            height: medq.height * 0.25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                color: ScaapeTheme.kShimmerColor
+                            ),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                                      child: Shimmer.fromColors(
+                                        baseColor: ScaapeTheme.kShimmerColor.withOpacity(0.1),
+                                        highlightColor: ScaapeTheme.kShimmerTextColor,
+                                        period: Duration(milliseconds: 1900),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              color: ScaapeTheme.kShimmerTextColor,
+                                              height: 23,
+                                              width: medq.width * 0.35,
+                                            ),
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            Container(
+                                              color: ScaapeTheme.kShimmerTextColor,
+                                              height: 16,
+                                              width: medq.width * 0.25,
+                                            ),
+                                            SizedBox(
+                                              height: 2,
+                                            ),
+                                            Container(
+                                              color: ScaapeTheme.kShimmerTextColor,
+                                              height: 16,
+                                              width: medq.width * 0.28,
+                                            ),
+                                            SizedBox(
+                                              height: 2,
+                                            ),
+                                            Container(
+                                              color: ScaapeTheme.kShimmerTextColor,
+                                              height: 16,
+                                              width: medq.width * 0.2,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Shimmer.fromColors(
+                                      baseColor: ScaapeTheme.kShimmerColor.withOpacity(0.1),
+                                      highlightColor: ScaapeTheme.kShimmerTextColor,
+                                      period: Duration(milliseconds: 1900),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(8),
+                                            bottomRight: Radius.circular(8)),
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                                          child: Container(
+                                            height: medq.height * 0.07,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  bottomLeft: Radius.circular(8),
+                                                  bottomRight: Radius.circular(8)),
+                                              color: ScaapeTheme.kShimmerTextColor.withOpacity(0.4),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            shape: BoxShape.circle),
+                                                        height: 42,
+                                                        width: 42,
+                                                        child: CircleAvatar(
+                                                          // radius: 33,
+                                                          backgroundColor:
+                                                          Color(0xFFFF4B2B).withOpacity(0),
+                                                          child: CircleAvatar(
+                                                            backgroundColor: ScaapeTheme.kShimmerTextColor,
+                                                            // radius: 34,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Container(
+                                                            width: medq.width * 0.24,
+                                                            height: 12,
+                                                            color: ScaapeTheme.kShimmerTextColor,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 2,
+                                                          ),
+                                                          Container(
+                                                            width: medq.width * 0.14,
+                                                            height: 12,
+                                                            color: ScaapeTheme.kShimmerTextColor,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    width: medq.width*0.2,
+                                                    height: 29,
+                                                    color: ScaapeTheme.kShimmerTextColor,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+
+                    );
                   }
                 },
               ),
 
-
               SizedBox(
                 height: 50,
               )
-
             ],
           ),
         ),
       ),
     );
   }
-  Future<List<dynamic>> getScapesByAuth(String id)async{
 
-
-    String url='http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
-    Response response=await get(Uri.parse(url));
+  Future<List<dynamic>> getScapesByAuth(String id) async {
+    String url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+    Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     print(statusCode);
     //print(json.decode(response.body));
     return json.decode(response.body);
   }
+
   _showBottomSheet() {
     double _sigmaX = 0.0; // from 0-10
     double _sigmaY = 0.0; // from 0-10
@@ -797,7 +758,7 @@ class _HomePageViewState extends State<HomePageView> {
                         backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                         child: CircleAvatar(
                           backgroundImage:
-                          AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                           backgroundColor: Colors.transparent,
                           radius: 25,
                         ),
@@ -813,7 +774,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.03,
+                                  MediaQuery.of(context).size.height * 0.03,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -822,7 +783,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.02,
+                                  MediaQuery.of(context).size.height * 0.02,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w500,
                             ),
@@ -891,7 +852,7 @@ class _HomePageViewState extends State<HomePageView> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
+                      const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -899,7 +860,7 @@ class _HomePageViewState extends State<HomePageView> {
                         backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                         child: CircleAvatar(
                           backgroundImage:
-                          AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                           backgroundColor: Colors.transparent,
                           radius: 20,
                         ),
@@ -912,7 +873,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.023,
+                                  MediaQuery.of(context).size.height * 0.023,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -921,7 +882,7 @@ class _HomePageViewState extends State<HomePageView> {
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.02,
+                                  MediaQuery.of(context).size.height * 0.02,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w400,
                             ),
@@ -954,12 +915,158 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
+class CircleCards extends StatelessWidget {
+  const CircleCards({
+    required this.text,
+    required this.circleImg
+  });
+
+  final String text;
+  final CircleAvatar circleImg;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [
+                        Color(0xFFFF416C),
+                        Color(0xFFFF4B2B)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                  shape: BoxShape.circle),
+              height: 69,
+              width: 69,
+              child: CircleAvatar(
+                radius: 33,
+                backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                child: circleImg,
+              ),
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Text(
+              '$text',
+              style: GoogleFonts.lato(
+                color: Color(0xFFF5F6F9),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TopCards extends StatelessWidget {
+  const TopCards(
+      {Key? key,
+      required this.medq,
+      required this.color,
+      required this.img,
+      required this.text,
+      required this.textcolor})
+      : super(key: key);
+
+  final Size medq;
+  final String text;
+  final Color color;
+  final Image img;
+  final Color textcolor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+        child: Container(
+          // height: 34,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14.0), color: color
+              // gradient: LinearGradient(
+              //   begin: Alignment(0.0, -1.0),
+              //   end: Alignment(0.0, 1.0),
+              //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+              //   stops: [0.0, 1.0],
+              // ),
+              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 4),
+                  child: img,
+                ),
+                Text(
+                  '$text',
+                  style: GoogleFonts.lato(
+                    fontSize: medq.height * 0.015,
+                    color: textcolor,
+                  ),
+                  // style: TextStyle(
+                  //   fontFamily: 'Roboto',
+                  //   fontSize: 12,
+                  //   color: const ScaapeTheme.kPinkColor,
+                  // ),
+                  textAlign: TextAlign.left,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class HomeCard extends StatelessWidget {
-  HomeCard(this.fun,this.medq,this.ScapeImage,this.ScapeName,this.ScapeDescription,
-      this.Location,this.uid,this.scapeId,this.pref,this.admin,this.present,this.date,this.adminName,this.adminEmail,this.adminDp,this.adminGender);
+  HomeCard(
+      this.fun,
+      this.medq,
+      this.ScapeImage,
+      this.ScapeName,
+      this.ScapeDescription,
+      this.Location,
+      this.uid,
+      this.scapeId,
+      this.pref,
+      this.admin,
+      this.present,
+      this.date,
+      this.adminName,
+      this.adminEmail,
+      this.adminDp,
+      this.adminGender);
+
   Function fun;
   final Size medq;
-  String ScapeImage,ScapeName,ScapeDescription,Location,uid,scapeId,pref,admin,date,present,adminName,adminEmail,adminDp,adminGender;
+  String ScapeImage,
+      ScapeName,
+      ScapeDescription,
+      Location,
+      uid,
+      scapeId,
+      pref,
+      admin,
+      date,
+      present,
+      adminName,
+      adminEmail,
+      adminDp,
+      adminGender;
 
   @override
   Widget build(BuildContext context) {
@@ -979,21 +1086,18 @@ class HomeCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
-                gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF1C1C1C).withOpacity(0.3),
-                      Color(0xFF141414).withOpacity(0.87)
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter),
+                gradient: LinearGradient(colors: [
+                  Color(0xFF1C1C1C).withOpacity(0.3),
+                  Color(0xFF141414).withOpacity(0.87)
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
               ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment:CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical:18),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1001,24 +1105,18 @@ class HomeCard extends StatelessWidget {
                       Text(
                         '${ScapeName.sentenceCase}',
                         style: GoogleFonts.lato(
-                            fontSize: 21,
-                            fontWeight: FontWeight.w500
-                        ),
-
-
+                            fontSize: 21, fontWeight: FontWeight.w500),
                       ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
-
                         ),
-                        width: medq.width*0.56,
+                        width: medq.width * 0.56,
                         child: Text(
-                          '${ScapeDescription.length>80?ScapeDescription.substring(0,80):ScapeDescription.sentenceCase}',
+                          '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
-
                           style: GoogleFonts.nunitoSans(
                             fontSize: 12,
                           ),
@@ -1032,8 +1130,7 @@ class HomeCard extends StatelessWidget {
                       bottomLeft: Radius.circular(8),
                       bottomRight: Radius.circular(8)),
                   child: BackdropFilter(
-                    filter:
-                    ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                    filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
                     child: Container(
                       height: medq.height * 0.07,
                       decoration: BoxDecoration(
@@ -1043,13 +1140,10 @@ class HomeCard extends StatelessWidget {
                         color: Color(0xFF1C1C1C).withOpacity(0.89),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
                               children: [
@@ -1061,19 +1155,18 @@ class HomeCard extends StatelessWidget {
                                             Color(0xFFFF4B2B)
                                           ],
                                           begin: Alignment.topCenter,
-                                          end:
-                                          Alignment.bottomCenter),
+                                          end: Alignment.bottomCenter),
                                       shape: BoxShape.circle),
                                   height: 42,
                                   width: 42,
                                   child: CircleAvatar(
                                     // radius: 33,
-                                    backgroundColor: Color(0xFFFF4B2B)
-                                        .withOpacity(0),
+                                    backgroundColor:
+                                        Color(0xFFFF4B2B).withOpacity(0),
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage('${adminDp}'),
-                                      backgroundColor:
-                                      Colors.transparent,
+                                      backgroundImage:
+                                          NetworkImage('${adminDp}'),
+                                      backgroundColor: Colors.transparent,
                                       // radius: 34,
                                     ),
                                   ),
@@ -1082,13 +1175,11 @@ class HomeCard extends StatelessWidget {
                                   width: 8,
                                 ),
                                 Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: medq.width* 0.24,
+                                      width: medq.width * 0.24,
                                       child: Text(
                                         '${adminName.titleCase}',
                                         maxLines: 1,
@@ -1103,7 +1194,7 @@ class HomeCard extends StatelessWidget {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       children: [
                                         Icon(
                                           Icons.location_on_outlined,
@@ -1114,8 +1205,7 @@ class HomeCard extends StatelessWidget {
                                           maxLines: 1,
                                           style: GoogleFonts.poppins(
                                               fontSize: 10,
-                                              fontWeight:
-                                              FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         )
                                       ],
                                     ),
@@ -1123,42 +1213,49 @@ class HomeCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            (present=="True"||present=="true"||admin=="True"||admin=="true")?
-                            OutlinedButton(
-                              child: Text('    Join    '),
-                              style: OutlinedButton.styleFrom(
-
-                                primary: ScaapeTheme.kPinkColor,
-                                side: BorderSide(
-                                    color: ScaapeTheme.kPinkColor,
-                                    width: 1),
-                              ),
-                              onPressed: () async{
-                                String url='http://65.0.121.93:4000//api/createParticipant';
-                                Map<String, String> headers = {
-                                  "Content-type": "application/json"
-                                };
-                                String json = '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
-                                http.Response response = await post(Uri.parse(url), headers: headers, body: json);
-                                //print(user.displayName);
-                                int statusCode = response.statusCode;
-                                print(statusCode);
-                                print(response.body);
-                                Fluttertoast.showToast(msg: "Succesfully joined",);
-                                fun();
-                              },
-                            )
-                                :
-                            OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  primary: ScaapeTheme.kPinkColor,
-                                  side: BorderSide(
-                                      color: ScaapeTheme.kPinkColor,
-                                      width: 1),
-                                ),
-                                onPressed: () {
-                                },
-                                child: Text('  Joined  '))
+                            (present == "True" ||
+                                    present == "true" ||
+                                    admin == "True" ||
+                                    admin == "true")
+                                ? OutlinedButton(
+                                    child: Text('    Join    '),
+                                    style: OutlinedButton.styleFrom(
+                                      primary: ScaapeTheme.kPinkColor,
+                                      side: BorderSide(
+                                          color: ScaapeTheme.kPinkColor,
+                                          width: 1),
+                                    ),
+                                    onPressed: () async {
+                                      String url =
+                                          'http://65.0.121.93:4000//api/createParticipant';
+                                      Map<String, String> headers = {
+                                        "Content-type": "application/json"
+                                      };
+                                      String json =
+                                          '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
+                                      http.Response response = await post(
+                                          Uri.parse(url),
+                                          headers: headers,
+                                          body: json);
+                                      //print(user.displayName);
+                                      int statusCode = response.statusCode;
+                                      print(statusCode);
+                                      print(response.body);
+                                      Fluttertoast.showToast(
+                                        msg: "Succesfully joined",
+                                      );
+                                      fun();
+                                    },
+                                  )
+                                : OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      primary: ScaapeTheme.kPinkColor,
+                                      side: BorderSide(
+                                          color: ScaapeTheme.kPinkColor,
+                                          width: 1),
+                                    ),
+                                    onPressed: () {},
+                                    child: Text('  Joined  '))
                           ],
                         ),
                       ),
