@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 class SearchBoxContainer extends StatelessWidget {
   const SearchBoxContainer({
     Key? key,
@@ -85,7 +87,7 @@ class HomeButtons extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 20,
-                color: Color(0xffff4265),
+                color: ScaapeTheme.kPinkColor,
               ),
               // child: Image.asset(
               //   imgsrc,
@@ -99,7 +101,7 @@ class HomeButtons extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: medq * 0.02,
-                color: const Color(0xffff4265),
+                color: ScaapeTheme.kPinkColor,
               ),
               textAlign: TextAlign.left,
             )

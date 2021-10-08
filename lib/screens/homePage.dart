@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/location.dart';
 import 'package:scaape/utils/ui_components.dart';
 import 'package:geolocator/geolocator.dart';
@@ -145,7 +146,7 @@ class _HomePageViewState extends State<HomePageView> {
                                       Icon(
                                         Icons.location_pin,
                                         size: 23,
-                                        color: Color(0xFFFF4265),
+                                        color: ScaapeTheme.kPinkColor,
                                       ),
                                       Text(
                                         '${snap.data}',
@@ -440,7 +441,7 @@ class _HomePageViewState extends State<HomePageView> {
                       Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
-                            color: Color(0xFFFF4265).withOpacity(0.14)
+                            color: ScaapeTheme.kPinkColor.withOpacity(0.14)
                             // gradient: LinearGradient(
                             //   begin: Alignment(0.0, -1.0),
                             //   end: Alignment(0.0, 1.0),
@@ -459,7 +460,7 @@ class _HomePageViewState extends State<HomePageView> {
                                 // child: Icon(
                                 //   icon,
                                 //   size: 20,
-                                //   color: Color(0xffff4265),
+                                //   color: ScaapeTheme.kPinkColor,
                                 // ),
                                 child: Image.asset(
                                   'images/trending.png',
@@ -472,12 +473,12 @@ class _HomePageViewState extends State<HomePageView> {
                                 'Trending',
                                 style: GoogleFonts.lato(
                                   fontSize: 15,
-                                  color: const Color(0xffff4265),
+                                  color: ScaapeTheme.kPinkColor,
                                 ),
                                 // style: TextStyle(
                                 //   fontFamily: 'Roboto',
                                 //   fontSize: 12,
-                                //   color: const Color(0xffff4265),
+                                //   color: const ScaapeTheme.kPinkColor,
                                 // ),
                                 textAlign: TextAlign.left,
                               )
@@ -510,7 +511,7 @@ class _HomePageViewState extends State<HomePageView> {
                                 // child: Icon(
                                 //   icon,
                                 //   size: 20,
-                                //   color: Color(0xffff4265),
+                                //   color: ScaapeTheme.kPinkColor,
                                 // ),
                                 child: Image.asset(
                                   'images/trending.png',
@@ -523,12 +524,12 @@ class _HomePageViewState extends State<HomePageView> {
                                 'Trending',
                                 style: GoogleFonts.lato(
                                   fontSize: 15,
-                                  color: const Color(0xffff4265),
+                                  color: ScaapeTheme.kPinkColor,
                                 ),
                                 // style: TextStyle(
                                 //   fontFamily: 'Roboto',
                                 //   fontSize: 12,
-                                //   color: const Color(0xffff4265),
+                                //   color: const ScaapeTheme.kPinkColor,
                                 // ),
                                 textAlign: TextAlign.left,
                               )
@@ -539,7 +540,7 @@ class _HomePageViewState extends State<HomePageView> {
                       Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
-                            color: Color(0xFFFF4265).withOpacity(0.14)
+                            color: ScaapeTheme.kPinkColor.withOpacity(0.14)
                             // gradient: LinearGradient(
                             //   begin: Alignment(0.0, -1.0),
                             //   end: Alignment(0.0, 1.0),
@@ -558,7 +559,7 @@ class _HomePageViewState extends State<HomePageView> {
                                 // child: Icon(
                                 //   icon,
                                 //   size: 20,
-                                //   color: Color(0xffff4265),
+                                //   color: ScaapeTheme.kPinkColor,
                                 // ),
                                 child: Image.asset(
                                   'images/trending.png',
@@ -571,12 +572,12 @@ class _HomePageViewState extends State<HomePageView> {
                                 'Trending',
                                 style: GoogleFonts.lato(
                                   fontSize: 15,
-                                  color: const Color(0xffff4265),
+                                  color: ScaapeTheme.kPinkColor,
                                 ),
                                 // style: TextStyle(
                                 //   fontFamily: 'Roboto',
                                 //   fontSize: 12,
-                                //   color: const Color(0xffff4265),
+                                //   color: const ScaapeTheme.kPinkColor,
                                 // ),
                                 textAlign: TextAlign.left,
                               )
@@ -674,6 +675,7 @@ class _HomePageViewState extends State<HomePageView> {
                       var a=snapshot.data;
                       print(a);
                       return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
                         //itemCount: 1,
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
@@ -1110,9 +1112,9 @@ class HomeCard extends StatelessWidget {
                               child: Text('    Join    '),
                               style: OutlinedButton.styleFrom(
 
-                                primary: Color(0xFFFF4265),
+                                primary: ScaapeTheme.kPinkColor,
                                 side: BorderSide(
-                                    color: Color(0xFFFF4265),
+                                    color: ScaapeTheme.kPinkColor,
                                     width: 1),
                               ),
                               onPressed: () async{
@@ -1132,6 +1134,13 @@ class HomeCard extends StatelessWidget {
                             )
                                 :
                                 OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+
+                                      primary: ScaapeTheme.kPinkColor,
+                                      side: BorderSide(
+                                          color: ScaapeTheme.kPinkColor,
+                                          width: 1),
+                                    ),
                                     onPressed: () {
 
                                     },
@@ -1151,7 +1160,7 @@ class HomeCard extends StatelessWidget {
   }
 }
 
-// Color(0xff22242C)
+// ScaapeTheme.kBackColor
 
 // import 'dart:convert';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -1280,7 +1289,7 @@ class HomeCard extends StatelessWidget {
 //                                 Icon(
 //                                   Icons.location_pin,
 //                                   size: 30,
-//                                   color: Color(0xFFFF4265),
+//                                   color: ScaapeTheme.kPinkColor,
 //                                 ),
 //                               ],
 //                             ),
@@ -1534,4 +1543,4 @@ class HomeCard extends StatelessWidget {
 //   }
 // }
 
-// // Color(0xff22242C)
+// // ScaapeTheme.kBackColor

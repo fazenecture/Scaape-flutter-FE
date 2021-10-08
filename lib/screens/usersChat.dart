@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:scaape/utils/MessageStruc.dart';
+import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/messageBubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,7 +50,7 @@ class _UserChatState extends State<UserChat> {
         appBar: AppBar(
           centerTitle: true,
           title: Text('Group Chat'),
-          backgroundColor: Color(0xFF22242C),
+          backgroundColor: ScaapeTheme.kBackColor,
         ),
         body: Container(
           child: SafeArea(

@@ -8,6 +8,7 @@ import 'package:scaape/screens/profile_page.dart';
 import 'package:scaape/screens/signIn_page.dart';
 import 'package:scaape/screens/onboardingScreen.dart';
 import 'package:get/get.dart';
+import 'package:scaape/utils/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +36,8 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF22242C),
-        scaffoldBackgroundColor: Color(0xFF22242C),
+        backgroundColor: ScaapeTheme.kBackColor,
+        scaffoldBackgroundColor: ScaapeTheme.kBackColor,
         textTheme: TextTheme(
           subtitle1: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
         ),

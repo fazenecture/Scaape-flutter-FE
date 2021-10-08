@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:scaape/screens/usersChat.dart';
+import 'package:scaape/utils/constants.dart';
 
 class ScaapeChat extends StatefulWidget {
   const ScaapeChat({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
 
             return SingleChildScrollView(
               child: Container(
-                color: Color(0xFF22242C),
+                color: ScaapeTheme.kBackColor,
                 margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

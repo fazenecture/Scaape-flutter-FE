@@ -13,6 +13,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:scaape/utils/constants.dart';
 
 class AddScaape extends StatefulWidget {
   double? latitude;
@@ -78,7 +79,7 @@ class _AddScaapeState extends State<AddScaape> {
                       TextSpan(
                         text: 'Scaape',
                         style: TextStyle(
-                          color: const Color(0xffff4265),
+                          color: ScaapeTheme.kPinkColor,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -192,7 +193,7 @@ class _AddScaapeState extends State<AddScaape> {
               ],
               isSelected: isSelected,
               selectedColor: Colors.red,
-              fillColor: Color(0xffff4265),
+              fillColor: ScaapeTheme.kPinkColor,
               onPressed: (int index) {
                 setState(() {
                   isSelected = [false, false, false];
@@ -218,7 +219,7 @@ class _AddScaapeState extends State<AddScaape> {
                     DatePicker.showDateTimePicker(context,
                         showTitleActions: true,
                         theme: DatePickerTheme(
-                            backgroundColor: Color(0xFF22242C),
+                            backgroundColor: ScaapeTheme.kBackColor,
                             doneStyle: TextStyle(color: Colors.white),
                             cancelStyle: TextStyle(color: Colors.white),
                             itemStyle: TextStyle(color: Colors.white)),
@@ -382,7 +383,7 @@ class _AddScaapeState extends State<AddScaape> {
                     width: medq.width * 0.3,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(18.0),
-                      color: const Color(0xffff4265),
+                      color: ScaapeTheme.kPinkColor,
                     ),
                     child: Center(
                       child: Text(

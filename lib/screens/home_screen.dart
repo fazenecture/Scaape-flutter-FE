@@ -1,5 +1,6 @@
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/utils/constants.dart';
 
 import 'add_scaape.dart';
 import 'chat.dart';
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           pageList[_selectedIndex],
           BlurBottomView(
-            selectedItemColor: Color(0xFFFF4265),
+            selectedItemColor: ScaapeTheme.kPinkColor,
             backgroundColor: Color(0xFF464646).withOpacity(0.1),
             // opacity: 0.3,
             unselectedItemColor: Colors.white,

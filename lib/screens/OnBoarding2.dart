@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/home_screen.dart';
+import 'package:scaape/utils/constants.dart';
 
 class Onboarding2 extends StatefulWidget {
   const Onboarding2({Key? key}) : super(key: key);
@@ -73,7 +74,7 @@ class _Onboarding2State extends State<Onboarding2> {
                           TextSpan(
                             text: 'Scapping!\n',
                             style: TextStyle(
-                              color: Color(0xFFFF4265),
+                              color: ScaapeTheme.kPinkColor,
                               fontSize:
                               MediaQuery.of(context).size.height / 25,
                               fontWeight: FontWeight.bold,
@@ -109,7 +110,7 @@ class _Onboarding2State extends State<Onboarding2> {
                           TextSpan(
                             text: "Photo",
                             style: TextStyle(
-                              color: Color(0xFFFF4265),
+                              color: ScaapeTheme.kPinkColor,
                               fontSize:
                               MediaQuery.of(context).size.height / 46,
                               fontWeight: FontWeight.w500,
@@ -239,7 +240,7 @@ class _Onboarding2State extends State<Onboarding2> {
                     ),
                     Container(
                       child: TextField(
-                          cursorColor: Color(0xFFFF4265),
+                          cursorColor: ScaapeTheme.kPinkColor,
                           onChanged: (value) {
                             Instagram = value;
                           },
@@ -255,7 +256,7 @@ class _Onboarding2State extends State<Onboarding2> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(9.0)),
                               borderSide: const BorderSide(
-                                  color: Color(0xFFFF4265), width: 1.5),),
+                                  color: ScaapeTheme.kPinkColor, width: 1.5),),
                             enabledBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                   Radius.circular(9.0)),
@@ -401,7 +402,7 @@ class _Onboarding2State extends State<Onboarding2> {
                             vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Color(0xFFFF4265)),
+                            color: ScaapeTheme.kPinkColor),
                         child: Center(
                           child: Text(
                             'Next',

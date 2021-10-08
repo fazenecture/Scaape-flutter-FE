@@ -4,10 +4,11 @@ import 'package:rive/rive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:scaape/screens/signIn_page.dart';
+import 'package:scaape/utils/constants.dart';
 
-const kBackgroundColor = Color(0xFF22242C);
+const kBackgroundColor = ScaapeTheme.kBackColor;
 const kLightBlueColor = Color(0xFF393E46);
-const kPinkColor = Color(0xFFFF4265);
+const kPinkColor = ScaapeTheme.kPinkColor;
 const kOnBoardDesc = TextStyle(
     color: CupertinoColors.white, fontWeight: FontWeight.w400, fontSize: 14);
 

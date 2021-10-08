@@ -12,6 +12,7 @@ import 'package:scaape/screens/signIn_page.dart';
 import 'package:scaape/screens/onboardingScreen.dart';
 import 'package:scaape/screens/add_scaape.dart';
 import 'package:scaape/screens/usersChat.dart';
+import 'package:scaape/utils/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -38,8 +39,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF22242C),
-        scaffoldBackgroundColor: Color(0xFF22242C),
+        backgroundColor: ScaapeTheme.kBackColor,
+        scaffoldBackgroundColor: ScaapeTheme.kBackColor,
         textTheme: TextTheme(
           subtitle1: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
         ),

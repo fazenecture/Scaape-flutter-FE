@@ -7,6 +7,7 @@ import 'package:blur_bottom_bar/blur_bottom_bar.dart';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:scaape/utils/constants.dart';
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
 
@@ -40,7 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               //print(a);
 
               return Container(
-                color: Color(0xFF22242C),
+                color: ScaapeTheme.kBackColor,
                 margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
                 child: SingleChildScrollView(
                   child: ListView(
@@ -106,7 +107,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           Text(
                             'See all',
                             style: TextStyle(
-                              color: Color(0xFFFF4265),
+                              color: ScaapeTheme.kPinkColor,
                               fontSize: 18,
                             ),
                           ),

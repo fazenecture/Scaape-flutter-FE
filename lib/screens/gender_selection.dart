@@ -4,6 +4,7 @@ import 'package:scaape/screens/OnBoarding2.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:scaape/utils/constants.dart';
 class GenderSelectionPage extends StatefulWidget {
   static String id = 'genderSelectionPage';
   @override
@@ -80,7 +81,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
             color: Color(0xFF393E46),
             borderRadius: BorderRadius.circular(12),
             border: (isSelected ?? false)
-                ? Border.all(color: Color(0xFFFF4265))
+                ? Border.all(color: ScaapeTheme.kPinkColor)
                 : null),
         child: Row(
           children: [
@@ -125,7 +126,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                           text: 'Scaape!',
                           style: TextStyle(
                             fontSize: 32,
-                            color: Color(0xFFFF4265),
+                            color: ScaapeTheme.kPinkColor,
                           ),
                         )
                       ]),
@@ -153,7 +154,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                         text: 'Gender ',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Color(0xFFFF4265),
+                          color: ScaapeTheme.kPinkColor,
                         ),
                       ),
                       TextSpan(
@@ -206,7 +207,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Color(0xFFFF4265), width: 2.0),
+                          borderSide: BorderSide(color: ScaapeTheme.kPinkColor, width: 2.0),
                         ),
                       )
                   ),
@@ -224,7 +225,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                         text: 'Birthday ',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Color(0xFFFF4265),
+                          color: ScaapeTheme.kPinkColor,
                         ),
                       ),
                       TextSpan(
@@ -313,7 +314,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: Color(0xFFFF4265)
+                              color: ScaapeTheme.kPinkColor
                           ),
                           child: Center(
                             child: Text('Next', style: TextStyle(fontSize: 20),),

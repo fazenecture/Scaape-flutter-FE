@@ -11,6 +11,7 @@ import 'package:scaape/networking/google_signin.dart';
 import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/home_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:scaape/utils/constants.dart';
 
 class SignInScreen extends StatefulWidget {
   static String id = 'signin_screen';
@@ -29,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF22242C),
+      backgroundColor: ScaapeTheme.kBackColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 27),
@@ -84,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     style: TextStyle(
                         fontFamily: 'TheSecret',
                         fontSize: 58,
-                        color: Color(0xFFFF4265)),
+                        color: ScaapeTheme.kPinkColor),
                   ),
                 ],
               ),
