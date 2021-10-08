@@ -229,7 +229,7 @@ class _Onboarding2State extends State<Onboarding2> {
                     SizedBox(height: 40),
                     Container(
                         child: Text(
-                          'What is your Location?',
+                          'Instagram',
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.height / 46,
                             fontWeight: FontWeight.w500,

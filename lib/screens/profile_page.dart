@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:http/http.dart';
 import 'package:scaape/screens/imageScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,10 +45,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: EdgeInsets.only(bottom: 30),
           color: Color(0xFF222831),
           child: FutureBuilder(
-              future: getCurrentUser(),
-              builder: (context, snapshot) {
+              future: getUserDetails(currentUser!.uid),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
-                  var data = snapshot.data;
+                  var data = snapshot.data[0];
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -119,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             MaterialPageRoute(
                                               builder: (context) => ImageViewer(
                                                 imageUrl:
-                                                '${stringmani(currentUser!.photoURL)}',
+                                                '${data['ProfileImg']}',
                                               ),
                                             ),
                                           );
@@ -128,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           tag: 'ProfilePhoto',
                                           child: CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                '${stringmani(currentUser!.photoURL)}'),
+                                                '${data['ProfileImg']}'),
                                             backgroundColor: Colors.transparent,
                                             radius: 93,
                                           ),
@@ -149,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${currentUser!.displayName}',
+                            '${data['Name']}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
@@ -170,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              child: Text('@ghumakkar6969', style: TextStyle(
+                              child: Text('@${data['InstaId']}', style: TextStyle(
                                   color: Colors.white,fontSize: 12
                               ),
                               ),
@@ -398,5 +401,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+Future<List<dynamic>> getUserDetails(String id)async{
+
+
+  String url='http://65.0.121.93:4000/api/getUserDetails/${id}';
+  print(url);
+  Response response=await get(Uri.parse(url));
+  int statusCode = response.statusCode;
+  print(statusCode);
+
+  return json.decode(response.body);
 }
 
