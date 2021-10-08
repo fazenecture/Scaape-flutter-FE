@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scaape/utils/location.dart';
 import 'package:scaape/utils/ui_components.dart';
@@ -27,7 +28,7 @@ class _HomePageViewState extends State<HomePageView> {
   String cityName = '';
   bool _enabled = true;
   var dbRef = FirebaseDatabase.instance.reference().child('Scaapes');
-
+  final FirebaseAuth auther = FirebaseAuth.instance;
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
     setState(() {
@@ -664,188 +665,51 @@ class _HomePageViewState extends State<HomePageView> {
               //   },
               // ),
 
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                child: Container(
-                  height: medq.height * 0.3,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    image: DecorationImage(
-                      image: AssetImage('images/home-image.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          gradient: LinearGradient(
-                              colors: [
-                                Color(0xFF1C1C1C).withOpacity(0.0),
-                                Color(0xFF141414).withOpacity(0.62)
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment:CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20,vertical:18),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Road Trip',
-                                  style: GoogleFonts.lato(
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(8)),
-
-                                  ),
-                                  width: medq.width*0.58,
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut ….',
-                                    style: GoogleFonts.nunitoSans(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8),
-                                bottomRight: Radius.circular(8)),
-                            child: BackdropFilter(
-                              filter:
-                                  ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                              child: Container(
-                                height: medq.height * 0.07,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(8),
-                                      bottomRight: Radius.circular(8)),
-                                  color: Color(0xFF1C1C1C).withOpacity(0.89),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                    colors: [
-                                                      Color(0xFFFF416C),
-                                                      Color(0xFFFF4B2B)
-                                                    ],
-                                                    begin: Alignment.topCenter,
-                                                    end:
-                                                        Alignment.bottomCenter),
-                                                shape: BoxShape.circle),
-                                            height: 42,
-                                            width: 42,
-                                            child: CircleAvatar(
-                                              // radius: 33,
-                                              backgroundColor: Color(0xFFFF4B2B)
-                                                  .withOpacity(0),
-                                              child: CircleAvatar(
-                                                backgroundImage: AssetImage(
-                                                    'images/profile-photo.jpg'),
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                // radius: 34,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Dhriti Sharma',
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on_outlined,
-                                                    size: 12,
-                                                  ),
-                                                  Text(
-                                                    'Delhi,India',
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      OutlinedButton(
-                                        child: Text('    Join    '),
-                                        style: OutlinedButton.styleFrom(
-                                          primary: Color(0xFFFF4265),
-                                          side: BorderSide(
-                                              color: Color(0xFFFF4265),
-                                              width: 1),
-                                        ),
-                                        onPressed: () {
-                                          print('Pressed');
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              FutureBuilder(
+                future: getScapesByAuth(auther.currentUser!.uid),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  print(auther.currentUser!.uid);
+                    if(snapshot.hasData){
+                      var a=snapshot.data;
+                      print(a);
+                      return ListView.builder(
+                        //itemCount: 1,
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        itemBuilder:(context, index) {
+                          return HomeCard(medq,a[index]["ScaapeImg"],a[index]["ScaapeName"],a[index]["Description"],a[index]["Location"],a[index]['UserId'],
+                              a[index]["ScaapeId"],a[index]["ScaapePref"],a[index]["Admin"],a[index]["isPresent"],
+                          a[index]["ScaapeDate"],a[index]["AdminName"],a[index]["AdminEmail"],a[index]["AdminDP"],a[index]["AdminGender"]);
+                        },
+                      );
+                    }
+                    else{
+                      return Center(child: CircularProgressIndicator(),);
+                    }
+                  },
               ),
+
 
               SizedBox(
                 height: 50,
               )
+
             ],
           ),
         ),
       ),
     );
   }
+  Future<List<dynamic>> getScapesByAuth(String id)async{
 
+
+    String url='http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+    Response response=await get(Uri.parse(url));
+    int statusCode = response.statusCode;
+    print(statusCode);
+    //print(json.decode(response.body));
+    return json.decode(response.body);
+  }
   _showBottomSheet() {
     double _sigmaX = 0.0; // from 0-10
     double _sigmaY = 0.0; // from 0-10
@@ -1078,6 +942,188 @@ class _HomePageViewState extends State<HomePageView> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class HomeCard extends StatelessWidget {
+  HomeCard(this.medq,this.ScapeImage,this.ScapeName,this.ScapeDescription,
+      this.Location,this.uid,this.scapeId,this.pref,this.admin,this.present,this.date,this.adminName,this.adminEmail,this.adminDp,this.adminGender);
+
+  final Size medq;
+  String ScapeImage,ScapeName,ScapeDescription,Location,uid,scapeId,pref,admin,date,present,adminName,adminEmail,adminDp,adminGender;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      child: Container(
+        height: medq.height * 0.3,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          image: DecorationImage(
+            image: NetworkImage(ScapeImage),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF1C1C1C).withOpacity(0.0),
+                      Color(0xFF141414).withOpacity(0.62)
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20,vertical:18),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${ScapeName}',
+                        style: GoogleFonts.lato(
+                          fontSize: 21,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+
+                        ),
+                        width: medq.width*0.58,
+                        child: Text(
+                          '${ScapeDescription.length>25?ScapeDescription.substring(0,25):ScapeDescription} ….',
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: 12,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8)),
+                  child: BackdropFilter(
+                    filter:
+                        ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                    child: Container(
+                      height: medq.height * 0.07,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8)),
+                        color: Color(0xFF1C1C1C).withOpacity(0.89),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xFFFF416C),
+                                            Color(0xFFFF4B2B)
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end:
+                                              Alignment.bottomCenter),
+                                      shape: BoxShape.circle),
+                                  height: 42,
+                                  width: 42,
+                                  child: CircleAvatar(
+                                    // radius: 33,
+                                    backgroundColor: Color(0xFFFF4B2B)
+                                        .withOpacity(0),
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage('${adminDp}'),
+                                      backgroundColor:
+                                          Colors.transparent,
+                                      // radius: 34,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${adminName}',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.location_on_outlined,
+                                          size: 12,
+                                        ),
+                                        Text(
+                                          '${Location}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 10,
+                                              fontWeight:
+                                                  FontWeight.w400),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            OutlinedButton(
+                              child: Text('    Join    '),
+                              style: OutlinedButton.styleFrom(
+                                primary: Color(0xFFFF4265),
+                                side: BorderSide(
+                                    color: Color(0xFFFF4265),
+                                    width: 1),
+                              ),
+                              onPressed: () {
+                                print('Pressed');
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   static String id = 'profile_screen';
