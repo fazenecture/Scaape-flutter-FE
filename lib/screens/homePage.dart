@@ -31,6 +31,7 @@ class _HomePageViewState extends State<HomePageView> {
   String latitude = '';
   String cityName = '';
   bool _enabled = true;
+  String val="";
   var dbRef = FirebaseDatabase.instance.reference().child('Scaapes');
   final FirebaseAuth auther = FirebaseAuth.instance;
   bool trending=false;
@@ -190,50 +191,105 @@ class _HomePageViewState extends State<HomePageView> {
               ),
               Row(
                 children: [
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
+                  GestureDetector(
+                    onTap: () {
+                      val="Cycling";
+                      trending=false;
+                      recent=false;
+                      forYou=false;
+                      setState(() {
+
+                      });
+                    },
+                    child: CircleCards(
+                      circleImg: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                        // backgroundColor: Colors.transparent,
+                        radius: 31,
+                      ),
+                      text: 'Cycling',
                     ),
-                    text: 'Cycling',
                   ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
+                  GestureDetector(
+                    onTap: () {
+                      val="Cafe";
+                      trending=false;
+                      recent=false;
+                      forYou=false;
+                      setState(() {
+
+                      });
+                    },
+                    child: CircleCards(
+                      circleImg: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                        // backgroundColor: Colors.transparent,
+                        radius: 31,
+                      ),
+                      text: 'Cafe',
                     ),
-                    text: 'Cafe',
                   ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
+                  GestureDetector(
+                    onTap: () {
+                      val="Trekking";
+                      trending=false;
+                      recent=false;
+                      forYou=false;
+                      setState(() {
+
+                      });
+                    },
+                    child: CircleCards(
+                      circleImg: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                        // backgroundColor: Colors.transparent,
+                        radius: 31,
+                      ),
+                      text: 'Trekking',
                     ),
-                    text: 'Treking',
                   ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
+                  GestureDetector(
+                    onTap: () {
+                      trending=false;
+                      recent=false;
+                      forYou=false;
+                      val="Gym";
+                      setState(() {
+
+                      });
+                    },
+                    child: CircleCards(
+                      circleImg: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                        // backgroundColor: Colors.transparent,
+                        radius: 31,
+                      ),
+                      text: 'Gym',
                     ),
-                    text: 'Beach',
                   ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
+                  GestureDetector(
+                    onTap: () {
+                      trending=false;
+                      recent=false;
+                      forYou=false;
+                      val="Concert";
+                      setState(() {
+
+                      });
+                    },
+                    child: CircleCards(
+                      circleImg: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                        // backgroundColor: Colors.transparent,
+                        radius: 31,
+                      ),
+                      text: 'Concert',
                     ),
-                    text: 'Concert',
                   ),
                 ],
               ),
@@ -295,6 +351,7 @@ class _HomePageViewState extends State<HomePageView> {
                         recent=false;
                         forYou=!false;
                         trending=!trending;
+                        val='';
                         setState(() {
 
                         });
@@ -317,6 +374,7 @@ class _HomePageViewState extends State<HomePageView> {
                         trending=false;
                         recent=!recent;
                         forYou=false;
+                        val='';
                         setState(() {
 
                         });
@@ -339,6 +397,7 @@ class _HomePageViewState extends State<HomePageView> {
                         trending=false;
                         recent=false;
                         forYou=!forYou;
+                        val='';
                         setState(() {
 
                         });
@@ -504,7 +563,7 @@ class _HomePageViewState extends State<HomePageView> {
                 height: 7,
               ),
               FutureBuilder(
-                future: getScapesByAuth(auther.currentUser!.uid,trending,recent,forYou),
+                future: getScapesByAuth(auther.currentUser!.uid,trending,recent,forYou,val),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   print(auther.currentUser!.uid);
                   if (snapshot.hasData) {
@@ -561,20 +620,25 @@ class _HomePageViewState extends State<HomePageView> {
     );
   }
 
-  Future<List<dynamic>> getScapesByAuth(String id,bool trend,bool rec,bool forU) async {
+  Future<List<dynamic>> getScapesByAuth(String id,bool trend,bool rec,bool forU,String val) async {
     String url;
     print("enter");
+    print(val.isEmpty);
     url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
-    if(trend){
-      String url = 'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+    if(val.isNotEmpty){
+      url='http://65.0.121.93:4000/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
     }
-    else if(rec){
-      String url='http://65.0.121.93:4000/api/getLatestScaapesWithAuth/UserId=${id}';
-      print("recent clicked");
+    else{
+      if(trend){
+        String url = 'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+      }
+      else if(rec){
+        String url='http://65.0.121.93:4000/api/getLatestScaapesWithAuth/UserId=${id}';
+        print("recent clicked");
+      }
+
     }
-    else if(forU){
-      print("for you clicked");
-    }
+
 
     Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;

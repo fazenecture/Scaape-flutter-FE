@@ -338,22 +338,7 @@ class _Onboarding2State extends State<Onboarding2> {
                           );
                         } else {
                           print(signInData['UserId']);
-                          String url =
-                              'http://65.0.121.93:4000/api/createUser';
-                          Map<String, String> headers = {
-                            "Content-type": "application/json"
-                          };
-                          String json =
-                              '{"UserId": "${signInData['UserId']}","EmailId": "${signInData['EmailId']}","BirthDate": "${signInData['BirthDate']}","Gender": "${signInData['BirthDate']}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImg']}","InstaId": "${Instagram}","Vaccine": "true"}';
 
-                          http.Response response = await post(
-                              Uri.parse(url),
-                              headers: headers,
-                              body: json);
-                          //print(user.displayName);
-                          int statusCode = response.statusCode;
-                          print(statusCode);
-                          print(response.body);
                           var paths;
 
                           try {
@@ -377,16 +362,23 @@ class _Onboarding2State extends State<Onboarding2> {
                               print(paths);
                             });
                             var imageurls = 'http://65.0.121.93:4000/ftp/$paths';
-                            String urls='http://65.0.121.93:4000/api/createUserPhotos';
+                            String urls =
+                                'http://65.0.121.93:4000/api/createUser';
                             Map<String, String> headers = {
                               "Content-type": "application/json"
                             };
-                            String json = '{"Id": "${DateTime.now().millisecondsSinceEpoch}","UserId":"${signInData['UserId']}","EmailId": "${signInData['EmailId']}","PhotoUrl":"${imageurls}"}';
-                            http.Response response = await post(Uri.parse(urls), headers: headers, body: json);
+                            String json =
+                                '{"UserId": "${signInData['UserId']}","EmailId": "${signInData['EmailId']}","BirthDate": "${signInData['BirthDate']}","Gender": "${signInData['BirthDate']}","Name": "${signInData['Name']}","ProfileImg": "${imageurls}","InstaId": "${Instagram}","Vaccine": "true"}';
+
+                            http.Response response = await post(
+                                Uri.parse(urls),
+                                headers: headers,
+                                body: json);
                             //print(user.displayName);
                             int statusCode = response.statusCode;
                             print(statusCode);
                             print(response.body);
+
                           }
                           catch (e) {
                             print(e);
