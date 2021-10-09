@@ -190,8 +190,8 @@ class _HomePageViewState extends State<HomePageView> {
                 children: [
                   CircleCards(
                     circleImg: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage('https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
                       // backgroundColor: Colors.transparent,
                       radius: 31,
                     ),
@@ -199,8 +199,8 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                   CircleCards(
                     circleImg: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage('https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
                       // backgroundColor: Colors.transparent,
                       radius: 31,
                     ),
@@ -208,8 +208,8 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                   CircleCards(
                     circleImg: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage('https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
                       // backgroundColor: Colors.transparent,
                       radius: 31,
                     ),
@@ -217,8 +217,8 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                   CircleCards(
                     circleImg: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
                       // backgroundColor: Colors.transparent,
                       radius: 31,
                     ),
@@ -226,8 +226,8 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                   CircleCards(
                     circleImg: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
                       // backgroundColor: Colors.transparent,
                       radius: 31,
                     ),
@@ -788,8 +788,7 @@ class ShimmerCard extends StatelessWidget {
         height: medq.height * 0.25,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: ScaapeTheme.kShimmerColor
-        ),
+            color: ScaapeTheme.kShimmerColor),
         child: Stack(
           children: [
             Container(
@@ -871,16 +870,17 @@ class ShimmerCard extends StatelessWidget {
                               Row(
                                 children: [
                                   Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle),
+                                    decoration:
+                                        BoxDecoration(shape: BoxShape.circle),
                                     height: 42,
                                     width: 42,
                                     child: CircleAvatar(
                                       // radius: 33,
                                       backgroundColor:
-                                      Color(0xFFFF4B2B).withOpacity(0),
+                                          Color(0xFFFF4B2B).withOpacity(0),
                                       child: CircleAvatar(
-                                        backgroundColor: ScaapeTheme.kShimmerTextColor,
+                                        backgroundColor:
+                                            ScaapeTheme.kShimmerTextColor,
                                         // radius: 34,
                                       ),
                                     ),
@@ -889,7 +889,8 @@ class ShimmerCard extends StatelessWidget {
                                     width: 8,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
@@ -910,7 +911,7 @@ class ShimmerCard extends StatelessWidget {
                                 ],
                               ),
                               Container(
-                                width: medq.width*0.2,
+                                width: medq.width * 0.2,
                                 height: 29,
                                 color: ScaapeTheme.kShimmerTextColor,
                               ),
@@ -931,14 +932,10 @@ class ShimmerCard extends StatelessWidget {
 }
 
 class CircleCards extends StatelessWidget {
-  const CircleCards({
-    required this.text,
-    required this.circleImg
-  });
+  const CircleCards({required this.text, required this.circleImg});
 
   final String text;
   final CircleAvatar circleImg;
-
 
   @override
   Widget build(BuildContext context) {
@@ -950,10 +947,7 @@ class CircleCards extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFFF416C),
-                        Color(0xFFFF4B2B)
-                      ],
+                      colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter),
                   shape: BoxShape.circle),
@@ -1087,200 +1081,525 @@ class HomeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-      child: Container(
-        height: medq.height * 0.3,
-        decoration: BoxDecoration(
-          color: ScaapeTheme.kBackColor,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          image: DecorationImage(
-            image: NetworkImage(ScapeImage),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                gradient: LinearGradient(colors: [
-                  Color(0xFF1C1C1C).withOpacity(0.3),
-                  Color(0xFF141414).withOpacity(0.87)
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${ScapeName.sentenceCase}',
-                        style: GoogleFonts.lato(
-                            fontSize: 21, fontWeight: FontWeight.w500),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                        ),
-                        width: medq.width * 0.56,
-                        child: Text(
-                          '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                          style: GoogleFonts.nunitoSans(
-                            fontSize: 12,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                ClipRRect(
+      child: GestureDetector(
+        onTap: () {
+          showMaterialModalBottomSheet(
+              backgroundColor: ScaapeTheme.kBackColor,
+              context: context,
+              elevation: 13,
+              shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8)),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                    child: Container(
-                      height: medq.height * 0.07,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(8),
-                            bottomRight: Radius.circular(8)),
-                        color: Color(0xFF1C1C1C).withOpacity(0.89),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                      topRight: Radius.circular(16),
+                      topLeft: Radius.circular(16))),
+              builder: (context) => Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
                           children: [
-                            Row(
-                              children: [
-                                Container(
+                            Container(
+                              height: medq.height * 0.4,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(16),
+                                    topLeft: Radius.circular(16)),
+                                color: Colors.white,
+                                image: DecorationImage(
+                                  image: NetworkImage(ScapeImage),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: medq.height * 0.4,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(16),
+                                      topLeft: Radius.circular(16)),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        ScaapeTheme.kBackColor.withOpacity(0.2),
+                                        ScaapeTheme.kBackColor
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  height: 5.5,
+                                  width: medq.width * 0.13,
                                   decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                          colors: [
-                                            Color(0xFFFF416C),
-                                            Color(0xFFFF4B2B)
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(34))),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: medq.height * 0.56,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 23, vertical: 18),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: medq.width * 0.6,
+                                              child: Text(
+                                                '${ScapeName.sentenceCase}',
+                                                style: GoogleFonts.lato(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                maxLines: 2,
+                                                softWrap: true,
+                                                overflow: TextOverflow.clip,
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.group_outlined),
+                                                  Text(
+                                                    '123',
+                                                    style: GoogleFonts.lato(
+                                                        fontSize: 21,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                ],
+                                              ),
+                                            )
                                           ],
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter),
-                                      shape: BoxShape.circle),
-                                  height: 42,
-                                  width: 42,
-                                  child: CircleAvatar(
-                                    // radius: 33,
-                                    backgroundColor:
-                                        Color(0xFFFF4B2B).withOpacity(0),
-                                    child: CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage('${adminDp}'),
-                                      backgroundColor: Colors.transparent,
-                                      // radius: 34,
+                                        ),
+                                        SizedBox(
+                                          height: medq.height * 0.014,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                          ),
+                                          width: medq.width * 0.56,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                        colors: [
+                                                          Color(0xFFFF416C),
+                                                          Color(0xFFFF4B2B)
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter),
+                                                    shape: BoxShape.circle),
+                                                height: 42,
+                                                width: 42,
+                                                child: CircleAvatar(
+                                                  // radius: 33,
+                                                  backgroundColor:
+                                                      Color(0xFFFF4B2B)
+                                                          .withOpacity(0),
+                                                  child: CircleAvatar(
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                            '${adminDp}'),
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    // radius: 34,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: medq.width * 0.24,
+                                                    child: Text(
+                                                      '${adminName.titleCase}',
+                                                      maxLines: 1,
+                                                      softWrap: true,
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '@username',
+                                                    maxLines: 1,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: medq.height * 0.02,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                          ),
+                                          width: medq.width * 0.75,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Text(
+                                              '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
+                                              style: GoogleFonts.nunitoSans(
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: medq.height * 0.006,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.location_on_outlined,
+                                              size: 12,
+                                            ),
+                                            Text(
+                                              '${Location.sentenceCase}',
+                                              maxLines: 1,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.67,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 19),
+                                  child: (present == "True" ||
+                                          present == "true" ||
+                                          admin == "True" ||
+                                          admin == "true")
+                                      ? MaterialButton(
+                                          onPressed: () async {
+                                            String url =
+                                                'http://65.0.121.93:4000//api/createParticipant';
+                                            Map<String, String> headers = {
+                                              "Content-type": "application/json"
+                                            };
+                                            String json =
+                                                '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
+                                            http.Response response = await post(
+                                                Uri.parse(url),
+                                                headers: headers,
+                                                body: json);
+                                            //print(user.displayName);
+                                            int statusCode =
+                                                response.statusCode;
+                                            print(statusCode);
+                                            print(response.body);
+                                            Fluttertoast.showToast(
+                                              msg: "Succesfully joined",
+                                            );
+                                            fun();
+                                          },
+                                          elevation: 0,
+                                          textColor: Colors.white,
+                                          splashColor: ScaapeTheme.kPinkColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(7)),
+                                          ),
+                                          color: ScaapeTheme.kPinkColor,
+                                          height: medq.height * 0.065,
+                                          minWidth: double.infinity,
+                                          child: Text(
+                                            'JOIN THIS SCAAPE',
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        )
+                                      : MaterialButton(onPressed: null,
+                                    elevation: 0,
+                                    textColor: Colors.white,
+                                    splashColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7)),
+                                    ),
+                                    disabledColor: ScaapeTheme.kPinkColor.withOpacity(0.15),
+                                    disabledTextColor: ScaapeTheme.kPinkColor,
+                                    color: ScaapeTheme.kPinkColor.withOpacity(0.2),
+                                    height: medq.height * 0.065,
+                                    minWidth: double.infinity,
+                                    child: Text(
+                                      'YOU HAVE ALREADY JOINED',
+                                      style: GoogleFonts.roboto(
+                                          color: ScaapeTheme.kPinkColor,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ));
+        },
+        child: Container(
+          height: medq.height * 0.3,
+          decoration: BoxDecoration(
+            color: ScaapeTheme.kBackColor,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            image: DecorationImage(
+              image: NetworkImage(ScapeImage),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  gradient: LinearGradient(colors: [
+                    Color(0xFF1C1C1C).withOpacity(0.3),
+                    Color(0xFF141414).withOpacity(0.87)
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${ScapeName.sentenceCase}',
+                          style: GoogleFonts.lato(
+                              fontSize: 21, fontWeight: FontWeight.w500),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                          width: medq.width * 0.56,
+                          child: Text(
+                            '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            style: GoogleFonts.nunitoSans(
+                              fontSize: 12,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print('nnaa');
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          bottomRight: Radius.circular(8)),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                        child: Container(
+                          height: medq.height * 0.07,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8)),
+                            color: Color(0xFF1C1C1C).withOpacity(0.89),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
                                   children: [
                                     Container(
-                                      width: medq.width * 0.24,
-                                      child: Text(
-                                        '${adminName.titleCase}',
-                                        maxLines: 1,
-                                        softWrap: true,
-                                        overflow: TextOverflow.clip,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFFF416C),
+                                                Color(0xFFFF4B2B)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter),
+                                          shape: BoxShape.circle),
+                                      height: 42,
+                                      width: 42,
+                                      child: CircleAvatar(
+                                        // radius: 33,
+                                        backgroundColor:
+                                            Color(0xFFFF4B2B).withOpacity(0),
+                                        child: CircleAvatar(
+                                          backgroundImage:
+                                              NetworkImage('${adminDp}'),
+                                          backgroundColor: Colors.transparent,
+                                          // radius: 34,
                                         ),
-                                        textAlign: TextAlign.left,
                                       ),
                                     ),
-                                    Row(
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          size: 12,
+                                        Container(
+                                          width: medq.width * 0.24,
+                                          child: Text(
+                                            '${adminName.titleCase}',
+                                            maxLines: 1,
+                                            softWrap: true,
+                                            overflow: TextOverflow.clip,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
                                         ),
-                                        Text(
-                                          '${Location.sentenceCase}',
-                                          maxLines: 1,
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400),
-                                        )
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.location_on_outlined,
+                                              size: 12,
+                                            ),
+                                            Text(
+                                              '${Location.sentenceCase}',
+                                              maxLines: 1,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ],
                                 ),
+                                (present == "True" ||
+                                        present == "true" ||
+                                        admin == "True" ||
+                                        admin == "true")
+                                    ? OutlinedButton(
+                                        child: Text('    Join    '),
+                                        style: OutlinedButton.styleFrom(
+                                          primary: ScaapeTheme.kPinkColor,
+                                          side: BorderSide(
+                                              color: ScaapeTheme.kPinkColor,
+                                              width: 1),
+                                        ),
+                                        onPressed: () async {
+                                          String url =
+                                              'http://65.0.121.93:4000//api/createParticipant';
+                                          Map<String, String> headers = {
+                                            "Content-type": "application/json"
+                                          };
+                                          String json =
+                                              '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
+                                          http.Response response = await post(
+                                              Uri.parse(url),
+                                              headers: headers,
+                                              body: json);
+                                          //print(user.displayName);
+                                          int statusCode = response.statusCode;
+                                          print(statusCode);
+                                          print(response.body);
+                                          Fluttertoast.showToast(
+                                            msg: "Succesfully joined",
+                                          );
+                                          fun();
+                                        },
+                                      )
+                                    : OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          primary: ScaapeTheme.kPinkColor,
+                                          side: BorderSide(
+                                              color: ScaapeTheme.kPinkColor,
+                                              width: 1),
+                                        ),
+                                        onPressed: () {},
+                                        child: Text('  Joined  '))
                               ],
                             ),
-                            (present == "True" ||
-                                    present == "true" ||
-                                    admin == "True" ||
-                                    admin == "true")
-                                ? OutlinedButton(
-                                    child: Text('    Join    '),
-                                    style: OutlinedButton.styleFrom(
-                                      primary: ScaapeTheme.kPinkColor,
-                                      side: BorderSide(
-                                          color: ScaapeTheme.kPinkColor,
-                                          width: 1),
-                                    ),
-                                    onPressed: () async {
-                                      String url =
-                                          'http://65.0.121.93:4000//api/createParticipant';
-                                      Map<String, String> headers = {
-                                        "Content-type": "application/json"
-                                      };
-                                      String json =
-                                          '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
-                                      http.Response response = await post(
-                                          Uri.parse(url),
-                                          headers: headers,
-                                          body: json);
-                                      //print(user.displayName);
-                                      int statusCode = response.statusCode;
-                                      print(statusCode);
-                                      print(response.body);
-                                      Fluttertoast.showToast(
-                                        msg: "Succesfully joined",
-                                      );
-                                      fun();
-                                    },
-                                  )
-                                : OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      primary: ScaapeTheme.kPinkColor,
-                                      side: BorderSide(
-                                          color: ScaapeTheme.kPinkColor,
-                                          width: 1),
-                                    ),
-                                    onPressed: () {},
-                                    child: Text('  Joined  '))
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
