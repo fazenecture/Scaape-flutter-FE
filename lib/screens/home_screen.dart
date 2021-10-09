@@ -34,9 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           pageList[_selectedIndex],
-          BlurBottomView(
+          _selectedIndex != 2 ? BlurBottomView(
+            filterX: 5,
+            filterY: 5,
+            opacity: 1,
             selectedItemColor: ScaapeTheme.kPinkColor,
-            backgroundColor: Color(0xFF464646).withOpacity(0.1),
+            backgroundColor: Color(0xFF222831).withOpacity(0.1),
             // opacity: 0.3,
             unselectedItemColor: Colors.white,
             bottomNavigationBarItems: const <BottomNavigationBarItem>[
@@ -67,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _selectedIndex = index;
               });
             },
-          )
+          ) : Container()
         ],
       ),
     );

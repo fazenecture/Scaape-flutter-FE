@@ -59,9 +59,9 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
 
   Widget getGenderSelector(
       {required BuildContext context,
-      required String title,
-      required IconData icon,
-      required bool? isSelected}) {
+        required String title,
+        required IconData icon,
+        required bool? isSelected}) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -110,7 +110,8 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+            // padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+            padding: const EdgeInsets.fromLTRB(40, 40, 24, 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -183,7 +184,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                           title: genderSelected.keys.elementAt(i),
                           icon: genderIcons[i],
                           isSelected:
-                              genderSelected[genderSelected.keys.elementAt(i)],
+                          genderSelected[genderSelected.keys.elementAt(i)],
                         ),
                         SizedBox(height: 14)
                       ],
@@ -192,12 +193,12 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.70,
                   child: TextField(
-                    controller: controller,
+                      controller: controller,
                       decoration: InputDecoration(
                         // border: InputBorder.none,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Color(0x00000000))
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Color(0x00000000))
                         ),
                         fillColor: Color(0xFF393E46),
                         filled: true,
@@ -240,26 +241,29 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.45,
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  padding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 15),
                   decoration: BoxDecoration(
+
                     color: Color(0xFF393E46),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
                       Text(
-                          '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+                        '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
                         style: TextStyle(fontSize: 16),
                       ),
-                      SizedBox(width: 20,),
-                      IconButton(onPressed: () => _selectDate(context), icon: Icon(FontAwesomeIcons.calendarAlt))
+                      SizedBox(width: 30,),
+                      IconButton(onPressed: () => _selectDate(context),
+                          icon: Icon(FontAwesomeIcons.calendarAlt))
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.135,),
                 Container(
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
+                  width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -269,8 +273,8 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                           width: MediaQuery.of(context).size.width * 0.15,
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Color(0x3BFF4265)
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color(0x3BFF4265)
                           ),
                           child: Center(
                             child: Icon(Icons.arrow_back_ios),
