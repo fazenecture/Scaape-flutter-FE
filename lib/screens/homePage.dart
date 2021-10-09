@@ -34,6 +34,8 @@ class _HomePageViewState extends State<HomePageView> {
   var dbRef = FirebaseDatabase.instance.reference().child('Scaapes');
   final FirebaseAuth auther = FirebaseAuth.instance;
   bool trending=false;
+  bool recent=false;
+  bool forYou=true;
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
     setState(() {
@@ -290,8 +292,9 @@ class _HomePageViewState extends State<HomePageView> {
                     GestureDetector(
 
                       onTap: () {
-
-                        trending=true;
+                        recent=false;
+                        forYou=!false;
+                        trending=!trending;
                         setState(() {
 
                         });
@@ -309,29 +312,49 @@ class _HomePageViewState extends State<HomePageView> {
                         textcolor: ScaapeTheme.kPinkColor,
                       ),
                     ),
-                    TopCards(
-                      medq: medq,
-                      img: Image.asset(
-                        'images/recent.png',
-                        height: medq.height * 0.017,
-                        // width: medq.width * 0.03,
-                        fit: BoxFit.fill,
+                    GestureDetector(
+                      onTap: (){
+                        trending=false;
+                        recent=!recent;
+                        forYou=false;
+                        setState(() {
+
+                        });
+                      },
+                      child: TopCards(
+                        medq: medq,
+                        img: Image.asset(
+                          'images/recent.png',
+                          height: medq.height * 0.017,
+                          // width: medq.width * 0.03,
+                          fit: BoxFit.fill,
+                        ),
+                        text: 'Recent',
+                        color: ScaapeTheme.kSecondBlue,
+                        textcolor: ScaapeTheme.kSecondTextCollor,
                       ),
-                      text: 'Recent',
-                      color: ScaapeTheme.kSecondBlue,
-                      textcolor: ScaapeTheme.kSecondTextCollor,
                     ),
-                    TopCards(
-                      medq: medq,
-                      img: Image.asset(
-                        'images/recommendation.png',
-                        height: medq.height * 0.02,
-                        // width: medq.width * 0.03,
-                        fit: BoxFit.fill,
+                    GestureDetector(
+                      onTap: () {
+                        trending=false;
+                        recent=false;
+                        forYou=!forYou;
+                        setState(() {
+
+                        });
+                      },
+                      child: TopCards(
+                        medq: medq,
+                        img: Image.asset(
+                          'images/recommendation.png',
+                          height: medq.height * 0.02,
+                          // width: medq.width * 0.03,
+                          fit: BoxFit.fill,
+                        ),
+                        text: 'For you',
+                        color: ScaapeTheme.kSecondBlue,
+                        textcolor: ScaapeTheme.kSecondTextCollor,
                       ),
-                      text: 'For you',
-                      color: ScaapeTheme.kSecondBlue,
-                      textcolor: ScaapeTheme.kSecondTextCollor,
                     ),
                   ],
                 ),
@@ -481,7 +504,7 @@ class _HomePageViewState extends State<HomePageView> {
                 height: 7,
               ),
               FutureBuilder(
-                future: getScapesByAuth(auther.currentUser!.uid,trending),
+                future: getScapesByAuth(auther.currentUser!.uid,trending,recent,forYou),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   print(auther.currentUser!.uid);
                   if (snapshot.hasData) {
@@ -538,13 +561,19 @@ class _HomePageViewState extends State<HomePageView> {
     );
   }
 
-  Future<List<dynamic>> getScapesByAuth(String id,bool trend) async {
+  Future<List<dynamic>> getScapesByAuth(String id,bool trend,bool rec,bool forU) async {
     String url;
     print("enter");
-    print(trend);
     url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
     if(trend){
       String url = 'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+    }
+    else if(rec){
+      String url='http://65.0.121.93:4000/api/getLatestScaapesWithAuth/UserId=${id}';
+      print("recent clicked");
+    }
+    else if(forU){
+      print("for you clicked");
     }
 
     Response response = await get(Uri.parse(url));
