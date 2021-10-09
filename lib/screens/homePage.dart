@@ -33,7 +33,7 @@ class _HomePageViewState extends State<HomePageView> {
   bool _enabled = true;
   var dbRef = FirebaseDatabase.instance.reference().child('Scaapes');
   final FirebaseAuth auther = FirebaseAuth.instance;
-
+  bool trending=false;
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
     setState(() {
@@ -287,17 +287,27 @@ class _HomePageViewState extends State<HomePageView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TopCards(
-                      medq: medq,
-                      img: Image.asset(
-                        'images/trending.png',
-                        height: medq.height * 0.02,
-                        // width: medq.width * 0.03,
-                        fit: BoxFit.fill,
+                    GestureDetector(
+
+                      onTap: () {
+
+                        trending=true;
+                        setState(() {
+
+                        });
+                      },
+                      child: TopCards(
+                        medq: medq,
+                        img: Image.asset(
+                          'images/trending.png',
+                          height: medq.height * 0.02,
+                          // width: medq.width * 0.03,
+                          fit: BoxFit.fill,
+                        ),
+                        text: 'Trending',
+                        color: ScaapeTheme.kPinkColor.withOpacity(0.14),
+                        textcolor: ScaapeTheme.kPinkColor,
                       ),
-                      text: 'Trending',
-                      color: ScaapeTheme.kPinkColor.withOpacity(0.14),
-                      textcolor: ScaapeTheme.kPinkColor,
                     ),
                     TopCards(
                       medq: medq,
@@ -471,7 +481,7 @@ class _HomePageViewState extends State<HomePageView> {
                 height: 7,
               ),
               FutureBuilder(
-                future: getScapesByAuth(auther.currentUser!.uid),
+                future: getScapesByAuth(auther.currentUser!.uid,trending),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   print(auther.currentUser!.uid);
                   if (snapshot.hasData) {
@@ -500,7 +510,10 @@ class _HomePageViewState extends State<HomePageView> {
                             a[index]["AdminName"],
                             a[index]["AdminEmail"],
                             a[index]["AdminDP"],
-                            a[index]["AdminGender"]);
+                            a[index]["AdminGender"],
+                            a[index]["AdminInsta"],
+                            a[index]["count"]
+                        );
                       },
                     );
                   } else {
@@ -525,14 +538,22 @@ class _HomePageViewState extends State<HomePageView> {
     );
   }
 
-  Future<List<dynamic>> getScapesByAuth(String id) async {
-    String url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+  Future<List<dynamic>> getScapesByAuth(String id,bool trend) async {
+    String url;
+    print("enter");
+    print(trend);
+    url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+    if(trend){
+      String url = 'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+    }
+
     Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     print(statusCode);
     //print(json.decode(response.body));
     return json.decode(response.body);
   }
+
 
   _showBottomSheet() {
     double _sigmaX = 0.0; // from 0-10
@@ -1058,7 +1079,9 @@ class HomeCard extends StatelessWidget {
       this.adminName,
       this.adminEmail,
       this.adminDp,
-      this.adminGender);
+      this.adminGender,
+      this.adminInsta,
+      this.count);
 
   Function fun;
   final Size medq;
@@ -1075,14 +1098,21 @@ class HomeCard extends StatelessWidget {
       adminName,
       adminEmail,
       adminDp,
-      adminGender;
+      adminGender,
+      adminInsta;
+      int count;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       child: GestureDetector(
-        onTap: () {
+        onTap: () async{
+          //TODO:call on click
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          if((auth.currentUser!.uid)!=uid){
+             onClick(scapeId);
+          }
           showMaterialModalBottomSheet(
               backgroundColor: ScaapeTheme.kBackColor,
               context: context,
@@ -1178,7 +1208,7 @@ class HomeCard extends StatelessWidget {
                                                 children: [
                                                   Icon(Icons.group_outlined),
                                                   Text(
-                                                    '123',
+                                                    count.toString(),
                                                     style: GoogleFonts.lato(
                                                         fontSize: 21,
                                                         fontWeight:
@@ -1256,7 +1286,7 @@ class HomeCard extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '@username',
+                                                    '@${adminInsta}',
                                                     maxLines: 1,
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 10,
@@ -1607,7 +1637,26 @@ class HomeCard extends StatelessWidget {
     );
   }
 }
+void onClick(String ScapeId)async{
+  try{
+    String url = 'http://65.0.121.93:4000/api/OnClick';
+    Map<String, String> headers = {
+      "Content-type": "application/json"
+    };
+    String json = '{"ScaapeId": "${ScapeId}"}';
+    http.Response response = await post(
+        Uri.parse(url), headers: headers, body: json);
 
+    int statusCode = response.statusCode;
+    print(statusCode);
+    print(response.body);
+    print("Sucesfully uploaded on click");
+  }
+  catch(e){
+    print(e);
+  }
+
+}
 // ScaapeTheme.kBackColor
 
 // import 'dart:convert';
