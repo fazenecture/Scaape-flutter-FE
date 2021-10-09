@@ -217,7 +217,7 @@ class RecentRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '${Name.substring(0,6)}',
+                      '${Name}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
