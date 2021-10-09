@@ -135,11 +135,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                    shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                     itemBuilder: (context, index) {
-                                      return RecentRequestCard((){
+                                      return a[index]['UserId']==authId?Text("")
+                                        :RecentRequestCard((){
                                         setState(() {
 
                                         });
-                                      },a[index]['ScaapeId'],a[index]['UserId'],a[index]['Name'],a[index]['Location'],a[index]['DP']);
+                                      },a[index]['ScaapeId'],a[index]['UserId'],a[index]['Name'],a[index]['Location'],a[index]['DP'],a[index]['Accepted']);
                                     },);
                               }
                               else{
@@ -187,8 +188,9 @@ Future<List<dynamic>> getRecentRequest(String id)async{
 // Recent Request Card
 class RecentRequestCard extends StatelessWidget {
   String Scaapeid,userId,Name,location,ImageUrl;
+  int accepted;
   Function func;
-  RecentRequestCard(this.func,this.Scaapeid,this.userId,this.Name,this.location,this.ImageUrl);
+  RecentRequestCard(this.func,this.Scaapeid,this.userId,this.Name,this.location,this.ImageUrl,this.accepted);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -215,7 +217,7 @@ class RecentRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '${Name}',
+                      '${Name.substring(0,6)}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -251,19 +253,27 @@ class RecentRequestCard extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     onPressed: () async{
-
-                      String url='http://65.0.121.93:4000/api/UpdateParticipant';
-                      Map<String,String> headers={"Content-type":"application/json"};
-                      String json='{"UserId":"${userId}","Accepted": "1","ScaapeId":"${Scaapeid}"}';
-                      http.Response response=await post(Uri.parse(url),headers:headers,body:json);
-                      int statusCode = response.statusCode;
-                      print(statusCode);
-                      print(response.body);
-                      func();
+                      if(accepted!=1) {
+                        String url = 'http://65.0.121.93:4000/api/UpdateParticipant';
+                        Map<String, String> headers = {
+                          "Content-type": "application/json"
+                        };
+                        String json = '{"UserId":"${userId}","Accepted":true,"ScaapeId":"${Scaapeid}"}';
+                        http.Response response = await post(Uri.parse(url),
+                            headers: headers, body: json);
+                        int statusCode = response.statusCode;
+                        print(statusCode);
+                        print(response.body);
+                        func();
+                      }
+                      else{
+                        print("pressed");
+                      }
 
 
                     },
                     child: Text(
+                      accepted==1?"Accepted":
                       'Accept',
                       style: TextStyle(color: Color(0xFFFF4B2B), fontSize: 15),
                     ),

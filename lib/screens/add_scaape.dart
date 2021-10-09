@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
@@ -143,7 +144,7 @@ class _AddScaapeState extends State<AddScaape> {
               //   ],
               // ),
               SizedBox(
-                height: medq.height * 0.03,
+                height: medq.height * 0.05,
               ),
               buildHeading(medq, 'What\'s your Scaape Name?'),
               SizedBox(
@@ -157,33 +158,33 @@ class _AddScaapeState extends State<AddScaape> {
                   color: const Color(0xff393e46),
                 ),
                 child: TextField(
-                  onChanged: (text){
-                    ScaapeName=text;
-                  },
+                    onChanged: (text){
+                      ScaapeName=text;
+                    },
                     cursorColor: ScaapeTheme.kPinkColor,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0
                       ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide.none
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      width: 1,color: ScaapeTheme.kPinkColor
-                    )
-                  ),
-                  border: InputBorder.none,
-                  hintText: "Let's be creative while scaaping....",
-                  hintStyle: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: medq.height * 0.02,
-                    color: const Color(0x5cffffff),
-                    fontWeight: FontWeight.w300,
-                  ),
-                )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0),
+                          borderSide: BorderSide.none
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0),
+                          borderSide: BorderSide(
+                              width: 1,color: ScaapeTheme.kPinkColor
+                          )
+                      ),
+                      border: InputBorder.none,
+                      hintText: "Let's be creative while scaaping....",
+                      hintStyle: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: medq.height * 0.02,
+                        color: const Color(0x5cffffff),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )),
               ),
               SizedBox(
                 height: 20,
@@ -206,9 +207,9 @@ class _AddScaapeState extends State<AddScaape> {
                   cursorColor: ScaapeTheme.kPinkColor,
                   maxLines: 5,
                   decoration: InputDecoration(
-                   contentPadding: EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0
-                  ),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 20.0
+                    ),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(7.0),
                         borderSide: BorderSide.none
@@ -225,7 +226,7 @@ class _AddScaapeState extends State<AddScaape> {
                       fontFamily: 'Roboto',
                       fontSize: medq.height * 0.02,
                       color: const Color(0x5cffffff),
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -239,14 +240,16 @@ class _AddScaapeState extends State<AddScaape> {
               ),
               ToggleButtons(
                 children: [
-                  buildButtons(
-                      medq,
-                      'Men',
-                      0.23,
-                      ToggleButtons(
-                        children: [],
-                        isSelected: [],
-                      ).fillColor),
+                  Expanded(
+                    child: buildButtons(
+                        medq,
+                        'Men',
+                        0.23,
+                        ToggleButtons(
+                          children: [],
+                          isSelected: [],
+                        ).fillColor),
+                  ),
                   buildButtons(
                       medq,
                       'Women',
@@ -260,31 +263,38 @@ class _AddScaapeState extends State<AddScaape> {
                       "I'm good with anyone",
                       0.38,
                       ToggleButtons(
+                        textStyle: GoogleFonts.roboto(
+                          fontSize: medq.height * 0.015,
+                          color: ScaapeTheme.kPinkColor,
+                          fontWeight: FontWeight.w400,
+                        ),
                         children: [],
                         isSelected: [],
                       ).fillColor),
                 ],
                 isSelected: isSelected,
-                selectedColor: Colors.red,
-                fillColor: ScaapeTheme.kPinkColor,
+                selectedColor: ScaapeTheme.kPinkColor,
+                textStyle: GoogleFonts.roboto(
+                  fontSize: medq.height * 0.015,
+                  color: ScaapeTheme.kPinkColor,
+                  fontWeight: FontWeight.w400,
+                ),
+                fillColor: ScaapeTheme.kPinkColor.withOpacity(0.2),
                 onPressed: (int index) {
                   setState(() {
                     isSelected = [false, false, false];
                     isSelected[index] = !isSelected[index];
                   });
                 },
-                borderRadius: BorderRadius.zero,
+                borderRadius: BorderRadius.all(Radius.circular(7)),
                 borderWidth: 0,
                 renderBorder: false,
               ),
 
               SizedBox(
-                height: 20,
+                height: medq.height*0.02,
               ),
               buildHeading(medq, 'When are you planning this Scaape?'),
-              SizedBox(
-                width: 20,
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: GestureDetector(
@@ -298,15 +308,45 @@ class _AddScaapeState extends State<AddScaape> {
                               itemStyle: TextStyle(color: Colors.white)),
                           minTime: DateTime(2021, 6, 18),
                           maxTime: DateTime(2021, 12, 31), onChanged: (date) {
-                        print('change $date');
-                      }, onConfirm: (date) {
-                        print('confirm $date');
-                        dateTime=date;
-                        print("done");
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                            print('change $date');
+                          }, onConfirm: (date) {
+                            print('confirm $date');
+                            dateTime=date;
+                            print("done");
+                          }, currentTime: DateTime.now(), locale: LocaleType.en);
                     },
-                    child: buildButtons(
-                        medq, "DD/MM/YYYY", 0.38, Color(0xff393e46))),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: medq.width * 0.5,
+                          height: medq.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.0),
+                            color: ScaapeTheme.kSecondBlue,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                '${dateTime.day}/${dateTime.month}/${dateTime.year}',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: medq.height * 0.019,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Icon(
+                                  CupertinoIcons.calendar
+                              )
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    )),
               ),
               buildHeading(medq, 'Scaape Location(optional)'),
               SizedBox(
@@ -324,9 +364,9 @@ class _AddScaapeState extends State<AddScaape> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0),
                     child: TextField(
-                      onChanged: (value) {
-                        ScaapeLocation=value;
-                      },
+                        onChanged: (value) {
+                          ScaapeLocation=value;
+                        },
                         decoration: InputDecoration(
 
                           border: InputBorder.none,
@@ -351,9 +391,9 @@ class _AddScaapeState extends State<AddScaape> {
                     GestureDetector(
                       onTap: () async {
                         final pickedFile =
-                            await picker.getImage(source: ImageSource.gallery);
+                        await picker.getImage(source: ImageSource.gallery);
                         setState(
-                          () {
+                              () {
                             if (pickedFile != null) {
                               _image = File(pickedFile.path);
                               _base64 = base64Encode(_image!.readAsBytesSync());
@@ -370,9 +410,9 @@ class _AddScaapeState extends State<AddScaape> {
                     _base64 == null
                         ? Container()
                         : Icon(
-                            Icons.done,
-                            color: Colors.green,
-                          ),
+                      Icons.done,
+                      color: Colors.green,
+                    ),
                   ],
                 ),
               ),
@@ -450,7 +490,7 @@ class _AddScaapeState extends State<AddScaape> {
                         Fluttertoast.showToast(msg: "Succesfully created",);
 
                       }
-                      },
+                    },
                     child: Container(
                       height: medq.height * 0.054,
                       width: medq.width * 0.3,
@@ -468,7 +508,7 @@ class _AddScaapeState extends State<AddScaape> {
                             height: 1.25,
                           ),
                           textHeightBehavior:
-                              TextHeightBehavior(applyHeightToFirstAscent: false),
+                          TextHeightBehavior(applyHeightToFirstAscent: false),
                           textAlign: TextAlign.left,
                         ),
                       ),
@@ -499,10 +539,11 @@ class _AddScaapeState extends State<AddScaape> {
           text,
           style: TextStyle(
             fontFamily: 'Roboto',
-            fontSize: medq.height * 0.02,
+            fontSize: medq.height * 0.015,
             color: Colors.white,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -510,13 +551,12 @@ class _AddScaapeState extends State<AddScaape> {
 
   Padding buildHeading(Size medq, String text) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 10.0,bottom: 4),
       child: Text(
         text,
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: medq.height * 0.023,
-          color: const Color(0xfff5f6f9),
+        style: GoogleFonts.roboto(
+          fontSize: medq.height * 0.02,
+          color: ScaapeTheme.kSecondTextCollor,
         ),
         textAlign: TextAlign.left,
       ),

@@ -68,7 +68,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
                         shrinkWrap: true,
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
+                          return a[index]['Accepted']==1?ListTile(
                             leading: CircleAvatar(
                               backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                               radius: 22,
@@ -85,7 +85,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
                                 "ScaapeId":"${a[index]['ScaapeId']}"
                               });
                             },
-                          );
+                          ):Text("");
                         }),
                   ],
                 ),

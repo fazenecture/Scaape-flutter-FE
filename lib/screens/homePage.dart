@@ -1327,15 +1327,36 @@ class HomeCard extends StatelessWidget {
                                           present == "true" ||
                                           admin == "True" ||
                                           admin == "true")
-                                      ? MaterialButton(
+                                      ?MaterialButton(onPressed: null,
+                                    elevation: 0,
+                                    textColor: Colors.white,
+                                    splashColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7)),
+                                    ),
+                                    disabledColor: ScaapeTheme.kPinkColor.withOpacity(0.15),
+                                    disabledTextColor: ScaapeTheme.kPinkColor,
+                                    color: ScaapeTheme.kPinkColor.withOpacity(0.2),
+                                    height: medq.height * 0.065,
+                                    minWidth: double.infinity,
+                                    child: Text(
+                                      'YOU HAVE ALREADY JOINED',
+                                      style: GoogleFonts.roboto(
+                                          color: ScaapeTheme.kPinkColor,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ):MaterialButton(
                                           onPressed: () async {
+                                            final FirebaseAuth auth = FirebaseAuth.instance;
                                             String url =
-                                                'http://65.0.121.93:4000//api/createParticipant';
+                                                'http://65.0.121.93:4000/api/createParticipant';
                                             Map<String, String> headers = {
                                               "Content-type": "application/json"
                                             };
                                             String json =
-                                                '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
+                                                '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
                                             http.Response response = await post(
                                                 Uri.parse(url),
                                                 headers: headers,
@@ -1368,27 +1389,7 @@ class HomeCard extends StatelessWidget {
                                                 fontWeight: FontWeight.w500),
                                           ),
                                         )
-                                      : MaterialButton(onPressed: null,
-                                    elevation: 0,
-                                    textColor: Colors.white,
-                                    splashColor: Colors.transparent,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(7)),
-                                    ),
-                                    disabledColor: ScaapeTheme.kPinkColor.withOpacity(0.15),
-                                    disabledTextColor: ScaapeTheme.kPinkColor,
-                                    color: ScaapeTheme.kPinkColor.withOpacity(0.2),
-                                    height: medq.height * 0.065,
-                                    minWidth: double.infinity,
-                                    child: Text(
-                                      'YOU HAVE ALREADY JOINED',
-                                      style: GoogleFonts.roboto(
-                                          color: ScaapeTheme.kPinkColor,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
+
                                 ),
                               ),
                             )
@@ -1550,7 +1551,15 @@ class HomeCard extends StatelessWidget {
                                         present == "true" ||
                                         admin == "True" ||
                                         admin == "true")
-                                    ? OutlinedButton(
+                                    ?  OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      primary: ScaapeTheme.kPinkColor,
+                                      side: BorderSide(
+                                          color: ScaapeTheme.kPinkColor,
+                                          width: 1),
+                                    ),
+                                    onPressed: () {},
+                                    child: Text('  Joined  ')):OutlinedButton(
                                         child: Text('    Join    '),
                                         style: OutlinedButton.styleFrom(
                                           primary: ScaapeTheme.kPinkColor,
@@ -1559,13 +1568,14 @@ class HomeCard extends StatelessWidget {
                                               width: 1),
                                         ),
                                         onPressed: () async {
+                                          final FirebaseAuth auth = FirebaseAuth.instance;
                                           String url =
-                                              'http://65.0.121.93:4000//api/createParticipant';
+                                              'http://65.0.121.93:4000/api/createParticipant';
                                           Map<String, String> headers = {
                                             "Content-type": "application/json"
                                           };
                                           String json =
-                                              '{"ScaapeId": "${scapeId}","UserId": "${uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"${1}"}';
+                                              '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
                                           http.Response response = await post(
                                               Uri.parse(url),
                                               headers: headers,
@@ -1580,15 +1590,7 @@ class HomeCard extends StatelessWidget {
                                           fun();
                                         },
                                       )
-                                    : OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          primary: ScaapeTheme.kPinkColor,
-                                          side: BorderSide(
-                                              color: ScaapeTheme.kPinkColor,
-                                              width: 1),
-                                        ),
-                                        onPressed: () {},
-                                        child: Text('  Joined  '))
+
                               ],
                             ),
                           ),
