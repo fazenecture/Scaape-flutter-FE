@@ -1871,9 +1871,9 @@ class HomeCard extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        final FirebaseAuth auth =
-                                            FirebaseAuth.instance;
-                                        auth==uid?
+                                        String auth =
+                                            FirebaseAuth.instance.currentUser!.uid;
+                                        auth!=uid?
                                         Navigator.pushNamed(context,UserProfileScreen.id,arguments: {
                                           "UserId":"${uid}"
                                         }):null;
@@ -2148,9 +2148,9 @@ class HomeCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      final FirebaseAuth auth =
-                          FirebaseAuth.instance;
-                      auth==uid?
+                      String auth =
+                          FirebaseAuth.instance.currentUser!.uid;
+                      auth!=uid?
                       Navigator.pushNamed(context,UserProfileScreen.id,arguments: {
                         "UserId":"${uid}"
                       }):null;
