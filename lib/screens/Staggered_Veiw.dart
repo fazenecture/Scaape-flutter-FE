@@ -11,15 +11,11 @@ import 'package:http/http.dart';
 class StaggeredVeiw extends StatefulWidget {
   @override
   _StaggeredVeiwState createState() => _StaggeredVeiwState();
+  String id;
+  StaggeredVeiw(this.id);
 }
 
-var currentUser = FirebaseAuth.instance.currentUser;
 
-getCurrentUser() async {
-  if (currentUser != null) {
-    return currentUser;
-  }
-}
 
 
 class _StaggeredVeiwState extends State<StaggeredVeiw> {
@@ -28,21 +24,16 @@ class _StaggeredVeiwState extends State<StaggeredVeiw> {
   @override
   void initState() {
     super.initState();
-    getImages();
+    getImages(widget.id);
   }
 
-  getCurrentUser() async {
-    if (currentUser != null) {
-      return currentUser;
-    }
-  }
 
 
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getImages(),
+      future: getImages(widget.id),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.data!=null){
           return StaggeredGridView.countBuilder(
@@ -83,9 +74,9 @@ class _StaggeredVeiwState extends State<StaggeredVeiw> {
   }
 }
 
-Future<List<dynamic>> getImages() async{
+Future<List<dynamic>> getImages(String id) async{
 
-  String url='http://65.0.121.93:4000/api/getUserPhotos/${currentUser!.uid}';
+  String url='http://65.0.121.93:4000/api/getUserPhotos/${id}';
   print(url);
   Response response = await get(Uri.parse(url));
   int statusCode = response.statusCode;

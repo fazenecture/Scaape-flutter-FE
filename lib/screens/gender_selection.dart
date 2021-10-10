@@ -21,7 +21,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
     'Intersex': false,
   };
   TextEditingController controller = TextEditingController() ;
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(2000);
 
   String getGender() {
     for(String gender in genderSelected.keys) {

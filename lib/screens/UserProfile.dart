@@ -8,19 +8,20 @@ import 'package:flutter/material.dart';
 import 'Staggered_Veiw.dart';
 
 
-class ProfileScreen extends StatefulWidget {
-  static String id = 'profile_screen';
+class UserProfileScreen extends StatefulWidget {
+  static String id = 'userProfile';
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
 
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    final datas = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
@@ -49,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: EdgeInsets.only(bottom: 30),
             color: Color(0xFF222831),
             child: FutureBuilder(
-                future: getUserDetails(currentUser!.uid),
+                future: getUserDetails(datas['UserId']),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
                     var data = snapshot.data[0];
@@ -247,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: StaggeredVeiw(),
+                          child: StaggeredVeiw(datas['UserId']),
                         ),
                         SizedBox(
                           height: 20,

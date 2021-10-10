@@ -42,7 +42,7 @@ class _Onboarding2State extends State<Onboarding2> {
     var medq = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+
         body: isLoading
             ? Center(
           child: CircularProgressIndicator(),

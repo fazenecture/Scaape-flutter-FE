@@ -411,7 +411,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: StaggeredVeiw(),
+                          child: StaggeredVeiw(currentUser!.uid),
                         ),
                         SizedBox(
                           height: 20,

@@ -13,6 +13,7 @@ import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:scaape/screens/UserProfile.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/location.dart';
 import 'package:dashed_circle/dashed_circle.dart';
@@ -34,6 +35,7 @@ class _HomePageViewState extends State<HomePageView>
     with TickerProviderStateMixin {
   static final _planeTween = CurveTween(curve: Curves.easeInOut);
   late AnimationController _planeController;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   IndicatorState? _prevState;
   Location _location = Location();
   String longitude = '';
@@ -1867,80 +1869,90 @@ class HomeCard extends StatelessWidget {
                                     SizedBox(
                                       height: medq.height * 0.014,
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)),
-                                      ),
-                                      width: medq.width * 0.56,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                    colors: [
-                                                      Color(0xFFFF416C),
-                                                      Color(0xFFFF4B2B)
-                                                    ],
-                                                    begin:
-                                                    Alignment.topCenter,
-                                                    end: Alignment
-                                                        .bottomCenter),
-                                                shape: BoxShape.circle),
-                                            height: 42,
-                                            width: 42,
-                                            child: CircleAvatar(
-                                              // radius: 33,
-                                              backgroundColor:
-                                              Color(0xFFFF4B2B)
-                                                  .withOpacity(0),
+                                    GestureDetector(
+                                      onTap: () {
+                                        final FirebaseAuth auth =
+                                            FirebaseAuth.instance;
+                                        auth==uid?
+                                        Navigator.pushNamed(context,UserProfileScreen.id,arguments: {
+                                          "UserId":"${uid}"
+                                        }):null;
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8)),
+                                        ),
+                                        width: medq.width * 0.56,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Color(0xFFFF416C),
+                                                        Color(0xFFFF4B2B)
+                                                      ],
+                                                      begin:
+                                                      Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter),
+                                                  shape: BoxShape.circle),
+                                              height: 42,
+                                              width: 42,
                                               child: CircleAvatar(
-                                                backgroundImage:
-                                                NetworkImage(
-                                                    '${adminDp}'),
+                                                // radius: 33,
                                                 backgroundColor:
-                                                Colors.transparent,
-                                                // radius: 34,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: medq.width * 0.24,
-                                                child: Text(
-                                                  '${adminName.titleCase}',
-                                                  maxLines: 1,
-                                                  softWrap: true,
-                                                  overflow:
-                                                  TextOverflow.clip,
-                                                  style:
-                                                  GoogleFonts.poppins(
-                                                    fontSize: 13,
-                                                    fontWeight:
-                                                    FontWeight.w500,
-                                                  ),
-                                                  textAlign: TextAlign.left,
+                                                Color(0xFFFF4B2B)
+                                                    .withOpacity(0),
+                                                child: CircleAvatar(
+                                                  backgroundImage:
+                                                  NetworkImage(
+                                                      '${adminDp}'),
+                                                  backgroundColor:
+                                                  Colors.transparent,
+                                                  // radius: 34,
                                                 ),
                                               ),
-                                              Text(
-                                                '@${adminInsta.substring(0, 10)}',
-                                                maxLines: 1,
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                    FontWeight.w400),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: medq.width * 0.24,
+                                                  child: Text(
+                                                    '${adminName.titleCase}',
+                                                    maxLines: 1,
+                                                    softWrap: true,
+                                                    overflow:
+                                                    TextOverflow.clip,
+                                                    style:
+                                                    GoogleFonts.poppins(
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                      FontWeight.w500,
+                                                    ),
+                                                    textAlign: TextAlign.left,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '@${adminInsta.substring(0, 10)}',
+                                                  maxLines: 1,
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                      FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -2136,7 +2148,12 @@ class HomeCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('nnaa');
+                      final FirebaseAuth auth =
+                          FirebaseAuth.instance;
+                      auth==uid?
+                      Navigator.pushNamed(context,UserProfileScreen.id,arguments: {
+                        "UserId":"${uid}"
+                      }):null;
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.only(
