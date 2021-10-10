@@ -76,7 +76,7 @@ class _StaggeredVeiwState extends State<StaggeredVeiw> {
 
 Future<List<dynamic>> getImages(String id) async{
 
-  String url='http://65.0.121.93:4000/api/getUserPhotos/${id}';
+  String url='https://api.scaape.online/api/getUserPhotos/${id}';
   print(url);
   Response response = await get(Uri.parse(url));
   int statusCode = response.statusCode;

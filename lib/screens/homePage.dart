@@ -1062,19 +1062,19 @@ class _HomePageViewState extends State<HomePageView>
     String url;
     // print("enter");
     // print(val.isEmpty);
-    url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+    url = 'https://api.scaape.online/api/getScaapesWithAuth/UserId=${id}';
     if (val.isNotEmpty) {
       url =
-      'http://65.0.121.93:4000/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
+      'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
       print("stories");
     } else {
       if (trend) {
         url =
-            'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+            'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
         print("trend clicked");
       } else if (rec) {
         url =
-            'http://65.0.121.93:4000/api/getLatestScaapesWithAuth/UserId=${id}';
+            'https://api.scaape.online/api/getLatestScaapesWithAuth/UserId=${id}';
         print("recent clicked");
         // print("recent clicked");
       }
@@ -2045,7 +2045,7 @@ class HomeCard extends StatelessWidget {
                                     final FirebaseAuth auth =
                                         FirebaseAuth.instance;
                                     String url =
-                                        'http://65.0.121.93:4000/api/createParticipant';
+                                        'https://api.scaape.online/api/createParticipant';
                                     Map<String, String> headers = {
                                       "Content-type":
                                       "application/json"
@@ -2270,7 +2270,7 @@ class HomeCard extends StatelessWidget {
                                     final FirebaseAuth auth =
                                         FirebaseAuth.instance;
                                     String url =
-                                        'http://65.0.121.93:4000/api/createParticipant';
+                                        'https://api.scaape.online/api/createParticipant';
                                     Map<String, String> headers = {
                                       "Content-type": "application/json"
                                     };
@@ -2309,7 +2309,7 @@ class HomeCard extends StatelessWidget {
 
 void onClick(String ScapeId) async {
   try {
-    String url = 'http://65.0.121.93:4000/api/OnClick';
+    String url = 'https://api.scaape.online/api/OnClick';
     Map<String, String> headers = {"Content-type": "application/json"};
     String json = '{"ScaapeId": "${ScapeId}"}';
     http.Response response =

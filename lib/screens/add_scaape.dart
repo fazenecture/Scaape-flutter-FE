@@ -506,7 +506,7 @@ class _AddScaapeState extends State<AddScaape> {
                         });
                         var paths;
                         try {
-                          String url = 'http://65.0.121.93:4000/testUpload';
+                          String url = 'https://api.scaape.online/testUpload';
                           var stream = new http.ByteStream(
                               DelegatingStream.typed(_image!.openRead()));
                           var length = await _image!.length();
@@ -531,8 +531,8 @@ class _AddScaapeState extends State<AddScaape> {
                           print(e);
                         }
 
-                        var imageurl = 'http://65.0.121.93:4000/ftp/$paths';
-                        String url = 'http://65.0.121.93:4000/api/createScaape';
+                        var imageurl = 'https://api.scaape.online/ftp/$paths';
+                        String url = 'https://api.scaape.online/api/createScaape';
                         Map<String, String> headers = {
                           "Content-type": "application/json"
                         };

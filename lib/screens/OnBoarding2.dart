@@ -389,7 +389,7 @@ class _Onboarding2State extends State<Onboarding2> {
                             var paths;
 
                             try {
-                              String url = 'http://65.0.121.93:4000/testUpload';
+                              String url = 'https://api.scaape.online/testUpload';
                               var stream = new http.ByteStream(
                                   DelegatingStream.typed(_image!.openRead()));
                               var length = await _image!.length();
@@ -408,9 +408,9 @@ class _Onboarding2State extends State<Onboarding2> {
                                 paths = data['path'].toString().substring(7);
                                 print(paths);
                               });
-                              var imageurls = 'http://65.0.121.93:4000/ftp/$paths';
+                              var imageurls = 'https://api.scaape.online/ftp/$paths';
                               String urls =
-                                  'http://65.0.121.93:4000/api/createUser';
+                                  'https://api.scaape.online/api/createUser';
                               Map<String, String> headers = {
                                 "Content-type": "application/json"
                               };

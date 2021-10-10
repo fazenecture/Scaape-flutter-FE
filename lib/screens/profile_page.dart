@@ -430,7 +430,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 Future<List<dynamic>> getUserDetails(String id)async{
 
-  String url='http://65.0.121.93:4000/api/getUserDetails/${id}';
+  String url='https://api.scaape.online/api/getUserDetails/${id}';
   print(url);
   Response response=await get(Uri.parse(url));
   int statusCode = response.statusCode;
