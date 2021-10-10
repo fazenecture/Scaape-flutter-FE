@@ -45,7 +45,7 @@ class _HomePageViewState extends State<HomePageView>
   final FirebaseAuth auther = FirebaseAuth.instance;
   bool trending = false;
   bool recent = false;
-  bool forYou = true;
+  bool forYou = false;
   late Animation gap;
   late Animation<double> base;
   late Animation<double> reverse;
@@ -1064,17 +1064,20 @@ class _HomePageViewState extends State<HomePageView>
     if (val.isNotEmpty) {
       url =
       'http://65.0.121.93:4000/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
+      print("stories");
     } else {
       if (trend) {
-        String url =
+        url =
             'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+        print("trend clicked");
       } else if (rec) {
-        String url =
+        url =
             'http://65.0.121.93:4000/api/getLatestScaapesWithAuth/UserId=${id}';
+        print("recent clicked");
         // print("recent clicked");
       }
     }
-
+    print(url);
     var response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     // print(statusCode);
