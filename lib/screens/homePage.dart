@@ -737,7 +737,7 @@ class _HomePageViewState extends State<HomePageView> with TickerProviderStateMix
                   if (_prevState != IndicatorState.idle)
                     Container(
                       height: _offsetToArmed * controller.value,
-                      color: Color(0xFFFDFEFF),
+                      color: ScaapeTheme.kBackColor,
                       width: double.infinity,
                       child: AnimatedBuilder(
                         animation: _clouds.first.controller!,

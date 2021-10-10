@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:scaape/screens/home_screen.dart';
@@ -22,6 +22,7 @@ class AddScaape extends StatefulWidget {
   double? latitude;
   double? longitude;
   static String id = 'AddScape';
+
   @override
   _AddScaapeState createState() => _AddScaapeState();
 }
@@ -31,30 +32,60 @@ class _AddScaapeState extends State<AddScaape> {
   String? _base64;
   List? imagesList;
   final picker = ImagePicker();
-  DateTime dateTime=DateTime.now();
+  DateTime dateTime = DateTime.now();
   List<bool> isSelected = [false, false, false];
-  String ScaapeName="",ScapeDescription="",ScaapeLocation="";
+  String ScaapeName = "", ScapeDescription = "", ScaapeLocation = "";
   Completer<GoogleMapController> _controller = Completer();
   double? lat;
   double? lon;
-  bool loading=false;
+  bool loading = false;
   final Set<Marker> _markers = {};
-  List<String> genderSelected =['Male','Female','Both'];
+  List<String> genderSelected = ['Male', 'Female', 'Both'];
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   String getPrefernce() {
-    for(int i=0;i<3;i++){
-      if(isSelected[i]){
+    for (int i = 0; i < 3; i++) {
+      if (isSelected[i]) {
         return genderSelected[i];
       }
     }
     return "Not selected";
   }
+
   @override
   Widget build(BuildContext context) {
     var medq = MediaQuery.of(context).size;
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Visibility(
+        visible: !keyboardIsOpen,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+          child: MaterialButton(
+            onPressed: () {},
+            elevation: 0,
+            textColor: Colors.white,
+            splashColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+            ),
+            color: ScaapeTheme.kPinkColor,
+            height: medq.height * 0.057,
+            minWidth: double.infinity,
+            child: Text(
+              'Create Scaape',
+              style: GoogleFonts.roboto(
+                  color: ScaapeTheme.kSecondTextCollor,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
+      ),
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title:  Row(
+        title: Row(
           children: [
             Image.asset(
               'images/logo.png',
@@ -92,7 +123,7 @@ class _AddScaapeState extends State<AddScaape> {
         ),
         leading: IconButton(
           icon: Icon(CupertinoIcons.back, color: Colors.white),
-          onPressed: (){
+          onPressed: () {
             Navigator.pushNamed(context, HomeScreen.id);
           },
         ),
@@ -101,7 +132,8 @@ class _AddScaapeState extends State<AddScaape> {
         shadowColor: ScaapeTheme.kBackColor.withOpacity(0.3),
       ),
       body: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+        scrollDirection: Axis.vertical,
+        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -158,24 +190,20 @@ class _AddScaapeState extends State<AddScaape> {
                   color: const Color(0xff393e46),
                 ),
                 child: TextField(
-                    onChanged: (text){
-                      ScaapeName=text;
+                    onChanged: (text) {
+                      ScaapeName = text;
                     },
                     cursorColor: ScaapeTheme.kPinkColor,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0
-                      ),
+                          vertical: 10.0, horizontal: 20.0),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7.0),
-                          borderSide: BorderSide.none
-                      ),
+                          borderSide: BorderSide.none),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7.0),
                           borderSide: BorderSide(
-                              width: 1,color: ScaapeTheme.kPinkColor
-                          )
-                      ),
+                              width: 1, color: ScaapeTheme.kPinkColor)),
                       border: InputBorder.none,
                       hintText: "Let's be creative while scaaping....",
                       hintStyle: TextStyle(
@@ -191,7 +219,7 @@ class _AddScaapeState extends State<AddScaape> {
               ),
               buildHeading(medq, 'Explain your Scaape'),
               SizedBox(
-                height: medq.height*0.01,
+                height: medq.height * 0.01,
               ),
               Container(
                 width: double.infinity,
@@ -202,24 +230,20 @@ class _AddScaapeState extends State<AddScaape> {
                 ),
                 child: TextField(
                   onChanged: (value) {
-                    ScapeDescription=value;
+                    ScapeDescription = value;
                   },
                   cursorColor: ScaapeTheme.kPinkColor,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 20.0
-                    ),
+                    contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(7.0),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(7.0),
                         borderSide: BorderSide(
-                            width: 1,color: ScaapeTheme.kPinkColor
-                        )
-                    ),
+                            width: 1, color: ScaapeTheme.kPinkColor)),
                     border: InputBorder.none,
                     hintText: "We want to know more about your Scaape...",
                     hintStyle: TextStyle(
@@ -290,7 +314,7 @@ class _AddScaapeState extends State<AddScaape> {
               ),
 
               SizedBox(
-                height: medq.height*0.02,
+                height: medq.height * 0.02,
               ),
               buildHeading(medq, 'When are you planning this Scaape?'),
               Padding(
@@ -309,7 +333,7 @@ class _AddScaapeState extends State<AddScaape> {
                             print('change $date');
                           }, onConfirm: (date) {
                             print('confirm $date');
-                            dateTime=date;
+                            dateTime = date;
                             print("done");
                           }, currentTime: DateTime.now(), locale: LocaleType.en);
                     },
@@ -336,15 +360,43 @@ class _AddScaapeState extends State<AddScaape> {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              Icon(
-                                  CupertinoIcons.calendar
-                              )
+                              Icon(CupertinoIcons.calendar)
                             ],
                           ),
                         ),
-
                       ],
                     )),
+              ),
+              SizedBox(
+                height: medq.height * 0.02,
+              ),
+              buildHeading(medq, 'Select Your Preference'),
+              SizedBox(
+                height: medq.height * 0.012,
+              ),
+              Container(
+                width: medq.width*0.6,
+                height: medq.height*0.06,
+                decoration: BoxDecoration(
+                  color: ScaapeTheme.kSecondBlue,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+
+                ),
+                child: DropdownSearch<String>(
+
+                  popupBackgroundColor: ScaapeTheme.kBackColor,
+                  popupShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8))
+                  ),
+
+                  mode: Mode.MENU,
+                  showSelectedItems: true,
+                  items: ['Cycling','Treking', 'Cafe'],
+                  onChanged: print,
+                ),
+              ),
+              SizedBox(
+                height: medq.height * 0.02,
               ),
               buildHeading(medq, 'Scaape Location(optional)'),
               SizedBox(
@@ -362,15 +414,14 @@ class _AddScaapeState extends State<AddScaape> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0),
                     child: TextField(
+                        cursorColor: ScaapeTheme.kPinkColor,
                         onChanged: (value) {
-                          ScaapeLocation=value;
+                          ScaapeLocation = value;
                         },
                         decoration: InputDecoration(
-
                           border: InputBorder.none,
                           hintText: "Location",
                           hintStyle: TextStyle(
-
                             fontFamily: 'Roboto',
                             fontSize: medq.height * 0.02,
                             color: const Color(0x5cffffff),
@@ -417,12 +468,11 @@ class _AddScaapeState extends State<AddScaape> {
               SizedBox(
                 height: medq.height * 0.1,
               ),
+
               Row(
                 children: [
                   GestureDetector(
-                    onTap: (){
-
-                    },
+                    onTap: () {},
                     child: Container(
                       height: medq.height * 0.06,
                       width: medq.width * 0.2,
@@ -439,37 +489,41 @@ class _AddScaapeState extends State<AddScaape> {
                     width: medq.width * 0.36,
                   ),
                   GestureDetector(
-                    onTap: () async{
+                    onTap: () async {
                       print(DateTime.now().millisecondsSinceEpoch);
-                      print(dateTime.toString().substring(0,16));
-                      if(ScaapeName.isEmpty||ScapeDescription.isEmpty||getPrefernce()=="Not selected"||ScaapeLocation.isEmpty){
-
-                        Fluttertoast.showToast(msg: "enter all details",);
-                      }
-                      else {
+                      print(dateTime.toString().substring(0, 16));
+                      if (ScaapeName.isEmpty ||
+                          ScapeDescription.isEmpty ||
+                          getPrefernce() == "Not selected" ||
+                          ScaapeLocation.isEmpty) {
+                        Fluttertoast.showToast(
+                          msg: "enter all details",
+                        );
+                      } else {
                         var paths;
                         try {
                           String url = 'http://65.0.121.93:4000/testUpload';
                           var stream = new http.ByteStream(
                               DelegatingStream.typed(_image!.openRead()));
                           var length = await _image!.length();
-                          var request = MultipartRequest('POST', Uri.parse(url));
+                          var request =
+                          MultipartRequest('POST', Uri.parse(url));
 
                           var multipartFile = new http.MultipartFile(
-                              'file', stream, length, filename: basename(_image!
-                              .path));
+                              'file', stream, length,
+                              filename: basename(_image!.path));
                           request.files.add(multipartFile);
                           var res = await request.send();
                           print(res.statusCode);
 
-                          await res.stream.transform(utf8.decoder).listen((
-                              value) {
+                          await res.stream
+                              .transform(utf8.decoder)
+                              .listen((value) {
                             var data = jsonDecode(value);
                             paths = data['path'].toString().substring(7);
                             print(paths);
                           });
-                        }
-                        catch (e) {
+                        } catch (e) {
                           print(e);
                         }
 
@@ -478,15 +532,17 @@ class _AddScaapeState extends State<AddScaape> {
                         Map<String, String> headers = {
                           "Content-type": "application/json"
                         };
-                        String json = '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
-                        http.Response response = await post(
-                            Uri.parse(url), headers: headers, body: json);
+                        String json =
+                            '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
+                        http.Response response = await post(Uri.parse(url),
+                            headers: headers, body: json);
                         //print(user.displayName);
                         int statusCode = response.statusCode;
                         print(statusCode);
                         print(response.body);
-                        Fluttertoast.showToast(msg: "Succesfully created",);
-
+                        Fluttertoast.showToast(
+                          msg: "Succesfully created",
+                        );
                       }
                     },
                     child: Container(
@@ -505,8 +561,8 @@ class _AddScaapeState extends State<AddScaape> {
                             color: const Color(0xd4ffffff),
                             height: 1.25,
                           ),
-                          textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
                           textAlign: TextAlign.left,
                         ),
                       ),
@@ -549,7 +605,7 @@ class _AddScaapeState extends State<AddScaape> {
 
   Padding buildHeading(Size medq, String text) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0,bottom: 4),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 4),
       child: Text(
         text,
         style: GoogleFonts.roboto(
