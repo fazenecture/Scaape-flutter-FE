@@ -42,7 +42,7 @@ class _AddScaapeState extends State<AddScaape> {
   final Set<Marker> _markers = {};
   List<String> genderSelected = ['Male', 'Female', 'Both'];
   final FirebaseAuth auth = FirebaseAuth.instance;
-
+  bool isLoading=false;
   String getPrefernce() {
     for (int i = 0; i < 3; i++) {
       if (isSelected[i]) {
@@ -131,7 +131,8 @@ class _AddScaapeState extends State<AddScaape> {
         backgroundColor: ScaapeTheme.kBackColor,
         shadowColor: ScaapeTheme.kBackColor.withOpacity(0.3),
       ),
-      body: SingleChildScrollView(
+      body: isLoading?Center(child:CircularProgressIndicator()):
+      SingleChildScrollView(
         scrollDirection: Axis.vertical,
         // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
         child: Padding(
@@ -495,11 +496,14 @@ class _AddScaapeState extends State<AddScaape> {
                       if (ScaapeName.isEmpty ||
                           ScapeDescription.isEmpty ||
                           getPrefernce() == "Not selected" ||
-                          ScaapeLocation.isEmpty) {
+                          ScaapeLocation.isEmpty||_image.isNull) {
                         Fluttertoast.showToast(
                           msg: "enter all details",
                         );
                       } else {
+                        setState(() {
+                          isLoading=true;
+                        });
                         var paths;
                         try {
                           String url = 'http://65.0.121.93:4000/testUpload';
@@ -543,7 +547,12 @@ class _AddScaapeState extends State<AddScaape> {
                         Fluttertoast.showToast(
                           msg: "Succesfully created",
                         );
+                        setState(() {
+                          isLoading=false;
+                        });
+                        Navigator.pushNamedAndRemoveUntil(context,HomeScreen.id, (route) => false);
                       }
+
                     },
                     child: Container(
                       height: medq.height * 0.054,

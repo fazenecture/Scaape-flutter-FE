@@ -8,37 +8,20 @@ import 'package:flutter/material.dart';
 import 'Staggered_Veiw.dart';
 
 
-class ProfileScreen extends StatefulWidget {
-  static String id = 'profile_screen';
+class UserProfileScreen extends StatefulWidget {
+  static String id = 'userProfile';
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  int _selectedIndex = 0;
+class _UserProfileScreenState extends State<UserProfileScreen> {
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
-  var currentUser = FirebaseAuth.instance.currentUser;
-  getCurrentUser() async {
-    if (currentUser != null) {
-      return currentUser;
-    }
-  }
-
-  String stringmani(String? values) {
-    String? value = values;
-    String? newString = value!.substring(0, value.indexOf('=') + 1) + 's700-c';
-    return newString;
-  }
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    final datas = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
@@ -50,15 +33,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       endDrawer: Container(
         width: MediaQuery.of(context).size.width * 0.56,
         child: Drawer(
-          
-          child:Column(
 
-            children: [
-              ListTile(
+            child:Column(
 
-              )
-            ],
-          )
+              children: [
+                ListTile(
+
+                )
+              ],
+            )
         ),
       ),
       body: SafeArea(
@@ -67,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: EdgeInsets.only(bottom: 30),
             color: Color(0xFF222831),
             child: FutureBuilder(
-                future: getUserDetails(currentUser!.uid),
+                future: getUserDetails(datas['UserId']),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
                     var data = snapshot.data[0];
@@ -77,19 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: <Widget>[
                         Stack(
                           children: [
-                            // Container(
-                            //   height: 300,
-                            //   width: double.infinity,
-                            //   decoration: BoxDecoration(
-                            //       color: Colors.red,
-                            //       borderRadius: BorderRadius.only(
-                            //           bottomRight: Radius.circular(55),
-                            //           bottomLeft: Radius.circular(55))),
-                            //   // child: Image.asset(
-                            //   //   'images/home-image.jpg',
-                            //   //   fit: BoxFit.fitWidth,
-                            //   // ),
-                            // ),
+
                             Center(
                               child: Container(
                                 margin: EdgeInsets.fromLTRB(10, 40, 2, 2),
@@ -206,47 +177,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ]
                         ),
-                        // Text(
-                        //   '@passionatetraveler',
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.w400,
-                        //     color: Colors.white,
-                        //     fontSize: 14,
-                        //   ),
-                        // ),
+
                         SizedBox(
                           height: 30,
                         ),
-                        //       ListView(
-                        //         children: [
-                        //           CarouselSlider(items:
-                        // [
-                        //   Container(
-                        //             child: Text('sda'),
-                        //           ),
-                        //   Container(
-                        //     child: Text('dasda'),
-                        //   ),
-                        //   Container(
-                        //     child: Text('qwrqwrwq'),
-                        //   ),
-                        //   Container(
-                        //     child: Text('jtyjyt'),
-                        //   ),
-                        // ],
-                        // options: CarouselOptions(
-                        // height: 20.0,
-                        // // enlargeCenterPage: true,
-                        // autoPlay: true,
-                        // aspectRatio: 16 / 9,
-                        // autoPlayCurve: Curves.fastOutSlowIn,
-                        // enableInfiniteScroll: true,
-                        // autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        // viewportFraction: 0.8,
-                        // )
-                        //           )
-                        // ],
-                        //       ),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -301,51 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(
                           height: 25,
                         ),
-                        MaterialButton(onPressed: (){},
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                          color: Color(0xff393E46),
-                          minWidth: 200,
-                          child:  Row(mainAxisSize: MainAxisSize.min,
-                            children: [Icon(Icons.edit) ,
-                              Text('Edit Profile',
-                                  style: new TextStyle(fontSize: 14.0, color: Colors.white)),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
 
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(horizontal: 60),
-                        //   child: MaterialButton(
-                        //     onPressed: () {},
-                        //     color: Color(0xFF393E46),
-                        //     height: 47,
-                        //     minWidth: 190,
-                        //     shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(12)),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       children: <Widget>[
-                        //         Icon(
-                        //           Icons.edit,
-                        //           color: Colors.white,
-                        //           size: 20,
-                        //         ),
-                        //         SizedBox(
-                        //           width: 10,
-                        //         ),
-                        //         Text(
-                        //           'Edit Profile',
-                        //           style: TextStyle(
-                        //             color: Colors.white,
-                        //           ),
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 40, vertical: 15),
@@ -354,64 +245,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Color(0xFFFF416C).withOpacity(0.4),
                           ),
                         ),
-                        // Row(
-                        //   children: <Widget>[
-                            // Expanded(
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         vertical: 7, horizontal: 7),
-                            //     child: Container(
-                            //       height: 200,
-                            //       decoration: BoxDecoration(
-                            //         color: Colors.white,
-                            //         image: DecorationImage(
-                            //           image: AssetImage('images/home-image.jpg'),
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            //         borderRadius: BorderRadius.circular(12),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Expanded(
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         vertical: 7, horizontal: 7),
-                            //     child: Container(
-                            //       height: 200,
-                            //       decoration: BoxDecoration(
-                            //         color: Colors.white,
-                            //         image: DecorationImage(
-                            //           image: AssetImage('images/home-image.jpg'),
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            //         borderRadius: BorderRadius.circular(12),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Expanded(
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         vertical: 7, horizontal: 7),
-                            //     child: Container(
-                            //       height: 200,
-                            //       decoration: BoxDecoration(
-                            //         color: Colors.white,
-                            //         image: DecorationImage(
-                            //           image: AssetImage('images/home-image.jpg'),
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            //         borderRadius: BorderRadius.circular(12),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                        //   ],
-                        // ),
+
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: StaggeredVeiw(currentUser!.uid),
+                          child: StaggeredVeiw(datas['UserId']),
                         ),
                         SizedBox(
                           height: 20,
