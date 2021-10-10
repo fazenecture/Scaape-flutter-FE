@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:recase/recase.dart';
-
+import 'package:scaape/utils/Cloud.dart' as cl;
 class HomePageView extends StatefulWidget {
   static String id = 'homePage';
 
@@ -25,15 +27,21 @@ class HomePageView extends StatefulWidget {
   _HomePageViewState createState() => _HomePageViewState();
 }
 
-class _HomePageViewState extends State<HomePageView> {
+class _HomePageViewState extends State<HomePageView> with TickerProviderStateMixin{
+  static final _planeTween = CurveTween(curve: Curves.easeInOut);
+  late AnimationController _planeController;
+  IndicatorState? _prevState;
   Location _location = Location();
   String longitude = '';
   String latitude = '';
   String cityName = '';
   bool _enabled = true;
+  String val="";
   var dbRef = FirebaseDatabase.instance.reference().child('Scaapes');
   final FirebaseAuth auther = FirebaseAuth.instance;
-
+  bool trending=false;
+  bool recent=false;
+  bool forYou=true;
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
     setState(() {
@@ -57,482 +65,767 @@ class _HomePageViewState extends State<HomePageView> {
   @override
   void initState() {
     // TODO: implement initState
+    _planeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    _setupCloudsAnimationControllers();
     super.initState();
     getCurrentLocation();
   }
+  void _setupCloudsAnimationControllers() {
+    for (final cloud in _clouds)
+      cloud.controller = AnimationController(
+        vsync: this,
+        duration: cloud.duration,
+        value: cloud.initialValue,
+      );
+  }
+  void _startPlaneAnimation() {
+    _planeController.repeat(reverse: true);
+  }
+
+  void _stopPlaneAnimation() {
+    _planeController
+      ..stop()
+      ..animateTo(0.0, duration: Duration(milliseconds: 100));
+  }
+
+  void _stopCloudAnimation() {
+    for (final cloud in _clouds) cloud.controller!.stop();
+  }
+
+  void _startCloudAnimation() {
+    for (final cloud in _clouds) cloud.controller!.repeat();
+  }
+
+  void _disposeCloudsControllers() {
+    for (final cloud in _clouds) cloud.controller!.dispose();
+  }
+
+  @override
+  void dispose() {
+    _planeController.dispose();
+    _disposeCloudsControllers();
+    super.dispose();
+  }
+
+  static const _offsetToArmed = 150.0;
+  static final _clouds = [
+    _Cloud(
+      color: _Cloud._dark,
+      initialValue: 0.6,
+      dy: 10.0,
+      image: AssetImage(_Cloud._assets[1]),
+      width: 100,
+      duration: Duration(milliseconds: 1600),
+    ),
+    _Cloud(
+      color: _Cloud._light,
+      initialValue: 0.15,
+      dy: 25.0,
+      image: AssetImage(_Cloud._assets[3]),
+      width: 40,
+      duration: Duration(milliseconds: 1600),
+    ),
+    _Cloud(
+      color: _Cloud._light,
+      initialValue: 0.3,
+      dy: 65.0,
+      image: AssetImage(_Cloud._assets[2]),
+      width: 60,
+      duration: Duration(milliseconds: 1600),
+    ),
+    _Cloud(
+      color: _Cloud._dark,
+      initialValue: 0.8,
+      dy: 70.0,
+      image: AssetImage(_Cloud._assets[3]),
+      width: 100,
+      duration: Duration(milliseconds: 1600),
+    ),
+    _Cloud(
+      color: _Cloud._normal,
+      initialValue: 0.0,
+      dy: 10,
+      image: AssetImage(_Cloud._assets[0]),
+      width: 80,
+      duration: Duration(milliseconds: 1600),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     Size medq = MediaQuery.of(context).size;
-    // initState(){
-    //   super.initState();
-    //   if (_auth != null) {
-    //   print('jdncd');
-    //   }
-    //   else{
-    //
-    //   }
-    // }
-    final _auth = FirebaseAuth.instance;
-    Future<User?> getCurrentUser() async {
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user == null) {
-          print('User is currently signed out!');
-        } else {
-          print(user.email);
-          print(user.photoURL);
-          print(user.phoneNumber);
-          print('User is signed in!');
-          print(user.displayName);
-        }
-      });
-    }
-
+    final plane = AnimatedBuilder(
+      animation: _planeController,
+      child: Image.asset(
+        "images/plane.png",
+        width: 172,
+        height: 50,
+        fit: BoxFit.contain,
+      ),
+      builder: (BuildContext context, Widget? child) {
+        return Transform.translate(
+          offset: Offset(
+              0.0, 10 * (0.5 - _planeTween.transform(_planeController.value))),
+          child: child,
+        );
+      },
+    );
     return SafeArea(
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: CustomRefreshIndicator(
+
+          offsetToArmed: _offsetToArmed,
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10),
-                    child: Row(
-                      children: [
-                        Image(
-                          image: AssetImage('images/logo.png'),
-                          height: 38,
-                          width: 38,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 5, bottom: 5, left: 10),
+                        child: Row(
+                          children: [
+                            Image(
+                              image: AssetImage('images/logo.png'),
+                              height: 38,
+                              width: 38,
+                            ),
+                            SizedBox(
+                              width: medq.width * 0.009,
+                            ),
+                            Text(
+                              'Scaape',
+                              style: TextStyle(
+                                fontFamily: 'TheSecret',
+                                fontSize: medq.height * 0.045,
+                                color: const Color(0xffffffff),
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: medq.width * 0.009,
-                        ),
-                        Text(
-                          'Scaape',
-                          style: TextStyle(
-                            fontFamily: 'TheSecret',
-                            fontSize: medq.height * 0.045,
-                            color: const Color(0xffffffff),
+                      ),
+                      FutureBuilder(
+                          future: getCityNameFromLatLong(latitude, longitude),
+                          builder: (context, snap) {
+                            if (snap.connectionState == ConnectionState
+                                .waiting) {
+                              return Image(
+                                image: AssetImage(
+                                    'animations/location-loader.gif'),
+                                height: 60,
+                                width: 60,
+                              );
+                            } else {
+                              if (snap.hasData) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 5, bottom: 5, right: 10),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF262930),
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(22))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_pin,
+                                            size: 23,
+                                            color: ScaapeTheme.kPinkColor,
+                                          ),
+                                          Text(
+                                            '${snap.data}',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: medq.height * 0.0145,
+                                              color: const Color(0xffffffff),
+                                            ),
+                                            // style: TextStyle(
+                                            //   fontSize: medq.height * 0.025,
+                                            //   color: const Color(0xffffffff),
+                                            //
+                                            // ),
+                                            textAlign: TextAlign.left,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Image(
+                                  image:
+                                  AssetImage('animations/location-loader.gif'),
+                                  height: 60,
+                                  width: 60,
+                                );
+                              }
+                            }
+                          })
+                    ],
+                  ),
+                  // SearchBoxContainer(medq: medq.height),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          val = "Cycling";
+                          trending = false;
+                          recent = false;
+                          forYou = false;
+                          setState(() {
+
+                          });
+                        },
+                        child: CircleCards(
+                          circleImg: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                            // backgroundColor: Colors.transparent,
+                            radius: 31,
                           ),
-                          textAlign: TextAlign.left,
+                          text: 'Cycling',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          val = "Cafe";
+                          trending = false;
+                          recent = false;
+                          forYou = false;
+                          setState(() {
+
+                          });
+                        },
+                        child: CircleCards(
+                          circleImg: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                            // backgroundColor: Colors.transparent,
+                            radius: 31,
+                          ),
+                          text: 'Cafe',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          val = "Trekking";
+                          trending = false;
+                          recent = false;
+                          forYou = false;
+                          setState(() {
+
+                          });
+                        },
+                        child: CircleCards(
+                          circleImg: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                            // backgroundColor: Colors.transparent,
+                            radius: 31,
+                          ),
+                          text: 'Trekking',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          trending = false;
+                          recent = false;
+                          forYou = false;
+                          val = "Gym";
+                          setState(() {
+
+                          });
+                        },
+                        child: CircleCards(
+                          circleImg: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                            // backgroundColor: Colors.transparent,
+                            radius: 31,
+                          ),
+                          text: 'Gym',
+                        ),
+                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     trending=false;
+                      //     recent=false;
+                      //     forYou=false;
+                      //     val="Concert";
+                      //     setState(() {
+                      //
+                      //     });
+                      //   },
+                      //   child: CircleCards(
+                      //     circleImg: CircleAvatar(
+                      //       backgroundImage: NetworkImage(
+                      //           'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                      //       // backgroundColor: Colors.transparent,
+                      //       radius: 31,
+                      //     ),
+                      //     text: 'Concert',
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 9,
+                  ),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   physics: BouncingScrollPhysics(),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //       children: [
+                  //         HomeButtons(
+                  //           medq: medq,
+                  //           icon: FontAwesomeIcons.chartLine,
+                  //           buttontext: 'Trending',
+                  //         ),
+                  //         SizedBox(
+                  //           width: 10,
+                  //         ),
+                  //         HomeButtons(
+                  //           medq: medq,
+                  //           icon: FontAwesomeIcons.history,
+                  //           buttontext: 'Recent',
+                  //         ),
+                  //         SizedBox(
+                  //           width: 10,
+                  //         ),
+                  //         HomeButtons(
+                  //           medq: medq,
+                  //           icon: FontAwesomeIcons.thumbsUp,
+                  //           buttontext: 'Recommended',
+                  //         ),
+                  //         SizedBox(
+                  //           width: 10,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 6),
+                    child: Divider(
+                      thickness: 0.4,
+                      color: ScaapeTheme.kSecondTextCollor.withOpacity(0.1),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+
+                          onTap: () {
+                            recent = false;
+                            forYou = !false;
+                            trending = !trending;
+                            val = '';
+                            setState(() {
+
+                            });
+                          },
+                          child: TopCards(
+                            medq: medq,
+                            img: Image.asset(
+                              'images/trending.png',
+                              height: medq.height * 0.02,
+                              // width: medq.width * 0.03,
+                              fit: BoxFit.fill,
+                            ),
+                            text: 'Trending',
+                            color: ScaapeTheme.kPinkColor.withOpacity(0.14),
+                            textcolor: ScaapeTheme.kPinkColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            trending = false;
+                            recent = !recent;
+                            forYou = false;
+                            val = '';
+                            setState(() {
+
+                            });
+                          },
+                          child: TopCards(
+                            medq: medq,
+                            img: Image.asset(
+                              'images/recent.png',
+                              height: medq.height * 0.017,
+                              // width: medq.width * 0.03,
+                              fit: BoxFit.fill,
+                            ),
+                            text: 'Recent',
+                            color: ScaapeTheme.kSecondBlue,
+                            textcolor: ScaapeTheme.kSecondTextCollor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            trending = false;
+                            recent = false;
+                            forYou = !forYou;
+                            val = '';
+                            setState(() {
+
+                            });
+                          },
+                          child: TopCards(
+                            medq: medq,
+                            img: Image.asset(
+                              'images/recommendation.png',
+                              height: medq.height * 0.02,
+                              // width: medq.width * 0.03,
+                              fit: BoxFit.fill,
+                            ),
+                            text: 'For you',
+                            color: ScaapeTheme.kSecondBlue,
+                            textcolor: ScaapeTheme.kSecondTextCollor,
+                          ),
                         ),
                       ],
                     ),
+                  ),
+                  //TODO delete
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   physics: BouncingScrollPhysics(),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.max,
+                  //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //       children: <Widget>[
+                  //         Container(
+                  //           decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(14.0),
+                  //               color: ScaapeTheme.kPinkColor.withOpacity(0.14)
+                  //             // gradient: LinearGradient(
+                  //             //   begin: Alignment(0.0, -1.0),
+                  //             //   end: Alignment(0.0, 1.0),
+                  //             //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                  //             //   stops: [0.0, 1.0],
+                  //             // ),
+                  //           ),
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.symmetric(
+                  //                 horizontal: 19, vertical: 9),
+                  //             child: Row(
+                  //               mainAxisSize: MainAxisSize.min,
+                  //               children: [
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.only(right: 3.0),
+                  //                   // child: Icon(
+                  //                   //   icon,
+                  //                   //   size: 20,
+                  //                   //   color: ScaapeTheme.kPinkColor,
+                  //                   // ),
+                  //                   child: Image.asset(
+                  //                     'images/trending.png',
+                  //                     height: 25,
+                  //                     width: 25,
+                  //                     fit: BoxFit.fill,
+                  //                   ),
+                  //                 ),
+                  //                 Text(
+                  //                   'Trending',
+                  //                   style: GoogleFonts.lato(
+                  //                     fontSize: 15,
+                  //                     color: ScaapeTheme.kPinkColor,
+                  //                   ),
+                  //                   // style: TextStyle(
+                  //                   //   fontFamily: 'Roboto',
+                  //                   //   fontSize: 12,
+                  //                   //   color: const ScaapeTheme.kPinkColor,
+                  //                   // ),
+                  //                   textAlign: TextAlign.left,
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         SizedBox(
+                  //           width: medq.width * 0.03,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+
+                  // FutureBuilder(
+                  //   future: dbRef.once(),
+                  //   builder: (_, AsyncSnapshot snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return Center(
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.all(10.0),
+                  //           child: Container(
+                  //             height: medq.height,
+                  //             width: medq.width,
+                  //             child: Column(
+                  //               children: <Widget>[
+                  //                 Expanded(
+                  //                   child: Shimmer.fromColors(
+                  //                     baseColor: Colors.white38,
+                  //                     highlightColor: Colors.white70,
+                  //                     enabled: _enabled,
+                  //                     child: ListView.builder(
+                  //                       itemBuilder: (_, __) => Padding(
+                  //                         padding: const EdgeInsets.only(bottom: 8.0),
+                  //                         child: Container(
+                  //                           decoration: BoxDecoration(
+                  //                               color: Color(0x5cffffff),
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(20)),
+                  //                           width: medq.width * 0.94,
+                  //                           height: medq.height * 0.3,
+                  //                         ),
+                  //                       ),
+                  //                       itemCount: 6,
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       if (snapshot.data.value != null) {
+                  //         List timeStampList = [];
+                  //         List valueList = [];
+                  //         var data = snapshot.data.value;
+                  //         data.forEach((key, value) {
+                  //           timeStampList.add(key);
+                  //           valueList.add(value);
+                  //         });
+                  //         return Column(
+                  //           children: valueList.map<Widget>((element) {
+                  //             return GestureDetector(
+                  //               onTap: _showBottomSheet,
+                  //               child: TrendingCards(
+                  //                   imageUrl: element["Image"],
+                  //                   medq: medq,
+                  //                   description: element["Desc"],
+                  //                   title: element["Name"]),
+                  //             );
+                  //           }).toList(),
+                  //         );
+                  //
+                  //         // return GestureDetector(
+                  //         //   onTap: _showBottomSheet,
+                  //         //   child: TrendingCards(
+                  //         //     medq: medq,
+                  //         //     title: 'Road Trip',
+                  //         //     description:
+                  //         //         'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut …..',
+                  //         //     username: '@pasissontraveller',
+                  //         //   ),
+                  //         // );
+                  //       } else {
+                  //         return Text('Sorry We Encountered an Error');
+                  //       }
+                  //     }
+                  //   },
+                  // ),
+                  SizedBox(
+                    height: 7,
                   ),
                   FutureBuilder(
-                      future: getCityNameFromLatLong(latitude, longitude),
-                      builder: (context, snap) {
-                        if (snap.connectionState == ConnectionState.waiting) {
-                          return Image(
-                            image: AssetImage('animations/location-loader.gif'),
-                            height: 60,
-                            width: 60,
-                          );
-                        } else {
-                          if (snap.hasData) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 5, bottom: 5, right: 10),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Color(0xFF262930),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(22))),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 6),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_pin,
-                                        size: 23,
-                                        color: ScaapeTheme.kPinkColor,
+                    future: getScapesByAuth(
+                        auther.currentUser!.uid, trending, recent, forYou, val),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      print(auther.currentUser!.uid);
+                      if (snapshot.hasData) {
+                        var a = snapshot.data;
+                        print(a);
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          //itemCount: 1,
+                          itemCount: snapshot.data.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return HomeCard(() {
+                              setState(() {});
+                            },
+                                medq,
+                                a[index]["ScaapeImg"],
+                                a[index]["ScaapeName"],
+                                a[index]["Description"],
+                                a[index]["Location"],
+                                a[index]['UserId'],
+                                a[index]["ScaapeId"],
+                                a[index]["ScaapePref"],
+                                a[index]["Admin"],
+                                a[index]["isPresent"],
+                                a[index]["ScaapeDate"],
+                                a[index]["AdminName"],
+                                a[index]["AdminEmail"],
+                                a[index]["AdminDP"],
+                                a[index]["AdminGender"],
+                                a[index]["ScaapeDate"],
+                                a[index]["count"]
+                            );
+                          },
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            ShimmerCard(medq: medq),
+                            ShimmerCard(medq: medq),
+                            ShimmerCard(medq: medq),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+
+                  SizedBox(
+                    height: 50,
+                  )
+                ],
+              ),
+            ),
+          ),
+        onRefresh: () => Future.delayed(const Duration(seconds: 3)),
+        builder:
+            (BuildContext context, Widget child, IndicatorController controller) {
+          return AnimatedBuilder(
+            animation: controller,
+            child: child,
+            builder: (context, child) {
+              final currentState = controller.state;
+              if (_prevState == IndicatorState.armed &&
+                  currentState == IndicatorState.loading) {
+                _startCloudAnimation();
+                _startPlaneAnimation();
+              } else if (_prevState == IndicatorState.loading &&
+                  currentState == IndicatorState.hiding) {
+                _stopPlaneAnimation();
+              } else if (_prevState == IndicatorState.hiding &&
+                  currentState != _prevState) {
+                _stopCloudAnimation();
+              }
+
+              _prevState = currentState;
+
+              return Stack(
+                clipBehavior: Clip.hardEdge,
+                children: <Widget>[
+                  if (_prevState != IndicatorState.idle)
+                    Container(
+                      height: _offsetToArmed * controller.value,
+                      color: Color(0xFFFDFEFF),
+                      width: double.infinity,
+                      child: AnimatedBuilder(
+                        animation: _clouds.first.controller!,
+                        builder: (BuildContext context, Widget? child) {
+                          return Stack(
+                            clipBehavior: Clip.hardEdge,
+                            children: <Widget>[
+                              for (final cloud in _clouds)
+                                Transform.translate(
+                                  offset: Offset(
+                                    ((screenWidth + cloud.width!) *
+                                        cloud.controller!.value) -
+                                        cloud.width!,
+                                    cloud.dy! * controller.value,
+                                  ),
+                                  child: OverflowBox(
+                                    minWidth: cloud.width,
+                                    minHeight: cloud.width,
+                                    maxHeight: cloud.width,
+                                    maxWidth: cloud.width,
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      child: Image(
+                                        color: cloud.color,
+                                        image: cloud.image!,
+                                        fit: BoxFit.contain,
                                       ),
-                                      Text(
-                                        '${snap.data}',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: medq.height * 0.0145,
-                                          color: const Color(0xffffffff),
-                                        ),
-                                        // style: TextStyle(
-                                        //   fontSize: medq.height * 0.025,
-                                        //   color: const Color(0xffffffff),
-                                        //
-                                        // ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
+
+                              /// plane
+                              Center(
+                                child: OverflowBox(
+                                  child: plane,
+                                  maxWidth: 172,
+                                  minWidth: 172,
+                                  maxHeight: 50,
+                                  minHeight: 50,
+                                  alignment: Alignment.center,
+                                ),
                               ),
-                            );
-                          } else {
-                            return Image(
-                              image:
-                                  AssetImage('animations/location-loader.gif'),
-                              height: 60,
-                              width: 60,
-                            );
-                          }
-                        }
-                      })
-                ],
-              ),
-              // SearchBoxContainer(medq: medq.height),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
-                    ),
-                    text: 'Cycling',
-                  ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
-                    ),
-                    text: 'Cafe',
-                  ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
-                    ),
-                    text: 'Treking',
-                  ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
-                    ),
-                    text: 'Beach',
-                  ),
-                  CircleCards(
-                    circleImg: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      // backgroundColor: Colors.transparent,
-                      radius: 31,
-                    ),
-                    text: 'Concert',
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 9,
-              ),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   physics: BouncingScrollPhysics(),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [
-              //         HomeButtons(
-              //           medq: medq,
-              //           icon: FontAwesomeIcons.chartLine,
-              //           buttontext: 'Trending',
-              //         ),
-              //         SizedBox(
-              //           width: 10,
-              //         ),
-              //         HomeButtons(
-              //           medq: medq,
-              //           icon: FontAwesomeIcons.history,
-              //           buttontext: 'Recent',
-              //         ),
-              //         SizedBox(
-              //           width: 10,
-              //         ),
-              //         HomeButtons(
-              //           medq: medq,
-              //           icon: FontAwesomeIcons.thumbsUp,
-              //           buttontext: 'Recommended',
-              //         ),
-              //         SizedBox(
-              //           width: 10,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                child: Divider(
-                  thickness: 0.4,
-                  color: ScaapeTheme.kSecondTextCollor.withOpacity(0.1),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TopCards(
-                      medq: medq,
-                      img: Image.asset(
-                        'images/trending.png',
-                        height: medq.height * 0.02,
-                        // width: medq.width * 0.03,
-                        fit: BoxFit.fill,
-                      ),
-                      text: 'Trending',
-                      color: ScaapeTheme.kPinkColor.withOpacity(0.14),
-                      textcolor: ScaapeTheme.kPinkColor,
-                    ),
-                    TopCards(
-                      medq: medq,
-                      img: Image.asset(
-                        'images/recent.png',
-                        height: medq.height * 0.017,
-                        // width: medq.width * 0.03,
-                        fit: BoxFit.fill,
-                      ),
-                      text: 'Recent',
-                      color: ScaapeTheme.kSecondBlue,
-                      textcolor: ScaapeTheme.kSecondTextCollor,
-                    ),
-                    TopCards(
-                      medq: medq,
-                      img: Image.asset(
-                        'images/recommendation.png',
-                        height: medq.height * 0.02,
-                        // width: medq.width * 0.03,
-                        fit: BoxFit.fill,
-                      ),
-                      text: 'For you',
-                      color: ScaapeTheme.kSecondBlue,
-                      textcolor: ScaapeTheme.kSecondTextCollor,
-                    ),
-                  ],
-                ),
-              ),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   physics: BouncingScrollPhysics(),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Row(
-              //       mainAxisSize: MainAxisSize.max,
-              //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: <Widget>[
-              //         Container(
-              //           decoration: BoxDecoration(
-              //               borderRadius: BorderRadius.circular(14.0),
-              //               color: ScaapeTheme.kPinkColor.withOpacity(0.14)
-              //             // gradient: LinearGradient(
-              //             //   begin: Alignment(0.0, -1.0),
-              //             //   end: Alignment(0.0, 1.0),
-              //             //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-              //             //   stops: [0.0, 1.0],
-              //             // ),
-              //           ),
-              //           child: Padding(
-              //             padding: const EdgeInsets.symmetric(
-              //                 horizontal: 19, vertical: 9),
-              //             child: Row(
-              //               mainAxisSize: MainAxisSize.min,
-              //               children: [
-              //                 Padding(
-              //                   padding: const EdgeInsets.only(right: 3.0),
-              //                   // child: Icon(
-              //                   //   icon,
-              //                   //   size: 20,
-              //                   //   color: ScaapeTheme.kPinkColor,
-              //                   // ),
-              //                   child: Image.asset(
-              //                     'images/trending.png',
-              //                     height: 25,
-              //                     width: 25,
-              //                     fit: BoxFit.fill,
-              //                   ),
-              //                 ),
-              //                 Text(
-              //                   'Trending',
-              //                   style: GoogleFonts.lato(
-              //                     fontSize: 15,
-              //                     color: ScaapeTheme.kPinkColor,
-              //                   ),
-              //                   // style: TextStyle(
-              //                   //   fontFamily: 'Roboto',
-              //                   //   fontSize: 12,
-              //                   //   color: const ScaapeTheme.kPinkColor,
-              //                   // ),
-              //                   textAlign: TextAlign.left,
-              //                 )
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         SizedBox(
-              //           width: medq.width * 0.03,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
-              // FutureBuilder(
-              //   future: dbRef.once(),
-              //   builder: (_, AsyncSnapshot snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return Center(
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(10.0),
-              //           child: Container(
-              //             height: medq.height,
-              //             width: medq.width,
-              //             child: Column(
-              //               children: <Widget>[
-              //                 Expanded(
-              //                   child: Shimmer.fromColors(
-              //                     baseColor: Colors.white38,
-              //                     highlightColor: Colors.white70,
-              //                     enabled: _enabled,
-              //                     child: ListView.builder(
-              //                       itemBuilder: (_, __) => Padding(
-              //                         padding: const EdgeInsets.only(bottom: 8.0),
-              //                         child: Container(
-              //                           decoration: BoxDecoration(
-              //                               color: Color(0x5cffffff),
-              //                               borderRadius:
-              //                                   BorderRadius.circular(20)),
-              //                           width: medq.width * 0.94,
-              //                           height: medq.height * 0.3,
-              //                         ),
-              //                       ),
-              //                       itemCount: 6,
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     } else {
-              //       if (snapshot.data.value != null) {
-              //         List timeStampList = [];
-              //         List valueList = [];
-              //         var data = snapshot.data.value;
-              //         data.forEach((key, value) {
-              //           timeStampList.add(key);
-              //           valueList.add(value);
-              //         });
-              //         return Column(
-              //           children: valueList.map<Widget>((element) {
-              //             return GestureDetector(
-              //               onTap: _showBottomSheet,
-              //               child: TrendingCards(
-              //                   imageUrl: element["Image"],
-              //                   medq: medq,
-              //                   description: element["Desc"],
-              //                   title: element["Name"]),
-              //             );
-              //           }).toList(),
-              //         );
-              //
-              //         // return GestureDetector(
-              //         //   onTap: _showBottomSheet,
-              //         //   child: TrendingCards(
-              //         //     medq: medq,
-              //         //     title: 'Road Trip',
-              //         //     description:
-              //         //         'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut …..',
-              //         //     username: '@pasissontraveller',
-              //         //   ),
-              //         // );
-              //       } else {
-              //         return Text('Sorry We Encountered an Error');
-              //       }
-              //     }
-              //   },
-              // ),
-              SizedBox(
-                height: 7,
-              ),
-              FutureBuilder(
-                future: getScapesByAuth(auther.currentUser!.uid),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  print(auther.currentUser!.uid);
-                  if (snapshot.hasData) {
-                    var a = snapshot.data;
-                    print(a);
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      //itemCount: 1,
-                      itemCount: snapshot.data.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return HomeCard(() {
-                          setState(() {});
+                            ],
+                          );
                         },
-                            medq,
-                            a[index]["ScaapeImg"],
-                            a[index]["ScaapeName"],
-                            a[index]["Description"],
-                            a[index]["Location"],
-                            a[index]['UserId'],
-                            a[index]["ScaapeId"],
-                            a[index]["ScaapePref"],
-                            a[index]["Admin"],
-                            a[index]["isPresent"],
-                            a[index]["ScaapeDate"],
-                            a[index]["AdminName"],
-                            a[index]["AdminEmail"],
-                            a[index]["AdminDP"],
-                            a[index]["AdminGender"]);
-                      },
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        ShimmerCard(medq: medq),
-                        ShimmerCard(medq: medq),
-                        ShimmerCard(medq: medq),
-                      ],
-                    );
-                  }
-                },
-              ),
+                      ),
+                    ),
+                  Transform.translate(
+                    offset: Offset(0.0, _offsetToArmed * controller.value),
+                    child: child,
+                  ),
+                ],
+              );
+            },
+          );
+        },
 
-              SizedBox(
-                height: 50,
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
 
-  Future<List<dynamic>> getScapesByAuth(String id) async {
-    String url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+  Future<List<dynamic>> getScapesByAuth(String id,bool trend,bool rec,bool forU,String val) async {
+    String url;
+    print("enter");
+    print(val.isEmpty);
+    url = 'http://65.0.121.93:4000/api/getScaapesWithAuth/UserId=${id}';
+    if(val.isNotEmpty){
+      url='http://65.0.121.93:4000/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
+    }
+    else{
+      if(trend){
+        String url = 'http://65.0.121.93:4000/api/getTrendingScaapesWithAuth/UserId=${id}';
+      }
+      else if(rec){
+        String url='http://65.0.121.93:4000/api/getLatestScaapesWithAuth/UserId=${id}';
+        print("recent clicked");
+      }
+
+    }
+
+
     Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     print(statusCode);
     //print(json.decode(response.body));
     return json.decode(response.body);
   }
+
 
   _showBottomSheet() {
     double _sigmaX = 0.0; // from 0-10
@@ -772,6 +1065,35 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
+class _Cloud {
+  static const _light = Color(0xFF96CDDE);
+  static const _dark = Color(0xFF6AABBF);
+  static const _normal = Color(0xFFACCFDA);
+
+  static const _assets = [
+    "images/cloud1.png",
+    "images/cloud2.png",
+    "images/cloud3.png",
+    "images/cloud4.png",
+  ];
+
+  AnimationController? controller;
+  final Color? color;
+  final AssetImage? image;
+  final double? width;
+  final double? dy;
+  final double? initialValue;
+  final Duration? duration;
+  _Cloud({
+    this.color,
+    this.image,
+    this.width,
+    this.dy,
+    this.initialValue,
+    this.duration,
+  });
+}
+
 class ShimmerCard extends StatelessWidget {
   const ShimmerCard({
     Key? key,
@@ -939,37 +1261,35 @@ class CircleCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
-                  shape: BoxShape.circle),
-              height: 69,
-              width: 69,
-              child: CircleAvatar(
-                radius: 33,
-                backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                child: circleImg,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter),
+                shape: BoxShape.circle),
+            height: 69,
+            width: 69,
+            child: CircleAvatar(
+              radius: 33,
+              backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+              child: circleImg,
             ),
-            SizedBox(
-              height: 6,
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          Text(
+            '$text',
+            style: GoogleFonts.lato(
+              color: Color(0xFFF5F6F9),
             ),
-            Text(
-              '$text',
-              style: GoogleFonts.lato(
-                color: Color(0xFFF5F6F9),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -993,47 +1313,44 @@ class TopCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-        child: Container(
-          // height: 34,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14.0), color: color
-              // gradient: LinearGradient(
-              //   begin: Alignment(0.0, -1.0),
-              //   end: Alignment(0.0, 1.0),
-              //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-              //   stops: [0.0, 1.0],
-              // ),
-              ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 4),
-                  child: img,
-                ),
-                Text(
-                  '$text',
-                  style: GoogleFonts.lato(
-                    fontSize: medq.height * 0.015,
-                    color: textcolor,
-                  ),
-                  // style: TextStyle(
-                  //   fontFamily: 'Roboto',
-                  //   fontSize: 12,
-                  //   color: const ScaapeTheme.kPinkColor,
-                  // ),
-                  textAlign: TextAlign.left,
-                )
-              ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      child: Container(
+        // height: 34,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14.0), color: color
+            // gradient: LinearGradient(
+            //   begin: Alignment(0.0, -1.0),
+            //   end: Alignment(0.0, 1.0),
+            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+            //   stops: [0.0, 1.0],
+            // ),
             ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: img,
+              ),
+              Text(
+                '$text',
+                style: GoogleFonts.lato(
+                  fontSize: medq.height * 0.015,
+                  color: textcolor,
+                ),
+                // style: TextStyle(
+                //   fontFamily: 'Roboto',
+                //   fontSize: 12,
+                //   color: const ScaapeTheme.kPinkColor,
+                // ),
+                textAlign: TextAlign.left,
+              )
+            ],
           ),
         ),
       ),
@@ -1058,7 +1375,9 @@ class HomeCard extends StatelessWidget {
       this.adminName,
       this.adminEmail,
       this.adminDp,
-      this.adminGender);
+      this.adminGender,
+      this.adminInsta,
+      this.count);
 
   Function fun;
   final Size medq;
@@ -1075,14 +1394,21 @@ class HomeCard extends StatelessWidget {
       adminName,
       adminEmail,
       adminDp,
-      adminGender;
+      adminGender,
+      adminInsta;
+      int count;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       child: GestureDetector(
-        onTap: () {
+        onTap: () async{
+          //TODO:call on click
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          if((auth.currentUser!.uid)!=uid){
+             onClick(scapeId);
+          }
           showMaterialModalBottomSheet(
               backgroundColor: ScaapeTheme.kBackColor,
               context: context,
@@ -1178,7 +1504,7 @@ class HomeCard extends StatelessWidget {
                                                 children: [
                                                   Icon(Icons.group_outlined),
                                                   Text(
-                                                    '123',
+                                                    count.toString(),
                                                     style: GoogleFonts.lato(
                                                         fontSize: 21,
                                                         fontWeight:
@@ -1256,7 +1582,7 @@ class HomeCard extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '@username',
+                                                    '@${adminInsta.substring(0,10)}',
                                                     maxLines: 1,
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 10,
@@ -1607,7 +1933,26 @@ class HomeCard extends StatelessWidget {
     );
   }
 }
+void onClick(String ScapeId)async{
+  try{
+    String url = 'http://65.0.121.93:4000/api/OnClick';
+    Map<String, String> headers = {
+      "Content-type": "application/json"
+    };
+    String json = '{"ScaapeId": "${ScapeId}"}';
+    http.Response response = await post(
+        Uri.parse(url), headers: headers, body: json);
 
+    int statusCode = response.statusCode;
+    print(statusCode);
+    print(response.body);
+    print("Sucesfully uploaded on click");
+  }
+  catch(e){
+    print(e);
+  }
+
+}
 // ScaapeTheme.kBackColor
 
 // import 'dart:convert';
