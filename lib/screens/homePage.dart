@@ -270,27 +270,27 @@ class _HomePageViewState extends State<HomePageView> {
                       ),
                       text: 'Gym',
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      trending=false;
-                      recent=false;
-                      forYou=false;
-                      val="Concert";
-                      setState(() {
-
-                      });
-                    },
-                    child: CircleCards(
-                      circleImg: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                        // backgroundColor: Colors.transparent,
-                        radius: 31,
-                      ),
-                      text: 'Concert',
-                    ),
-                  ),
+                   ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     trending=false;
+                  //     recent=false;
+                  //     forYou=false;
+                  //     val="Concert";
+                  //     setState(() {
+                  //
+                  //     });
+                  //   },
+                  //   child: CircleCards(
+                  //     circleImg: CircleAvatar(
+                  //       backgroundImage: NetworkImage(
+                  //           'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                  //       // backgroundColor: Colors.transparent,
+                  //       radius: 31,
+                  //     ),
+                  //     text: 'Concert',
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(
@@ -418,6 +418,7 @@ class _HomePageViewState extends State<HomePageView> {
                   ],
                 ),
               ),
+              //TODO delete
               // SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,
               //   physics: BouncingScrollPhysics(),
@@ -1053,37 +1054,35 @@ class CircleCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
-                  shape: BoxShape.circle),
-              height: 69,
-              width: 69,
-              child: CircleAvatar(
-                radius: 33,
-                backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                child: circleImg,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter),
+                shape: BoxShape.circle),
+            height: 69,
+            width: 69,
+            child: CircleAvatar(
+              radius: 33,
+              backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+              child: circleImg,
             ),
-            SizedBox(
-              height: 6,
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          Text(
+            '$text',
+            style: GoogleFonts.lato(
+              color: Color(0xFFF5F6F9),
             ),
-            Text(
-              '$text',
-              style: GoogleFonts.lato(
-                color: Color(0xFFF5F6F9),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -1107,47 +1106,44 @@ class TopCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-        child: Container(
-          // height: 34,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14.0), color: color
-              // gradient: LinearGradient(
-              //   begin: Alignment(0.0, -1.0),
-              //   end: Alignment(0.0, 1.0),
-              //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-              //   stops: [0.0, 1.0],
-              // ),
-              ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 4),
-                  child: img,
-                ),
-                Text(
-                  '$text',
-                  style: GoogleFonts.lato(
-                    fontSize: medq.height * 0.015,
-                    color: textcolor,
-                  ),
-                  // style: TextStyle(
-                  //   fontFamily: 'Roboto',
-                  //   fontSize: 12,
-                  //   color: const ScaapeTheme.kPinkColor,
-                  // ),
-                  textAlign: TextAlign.left,
-                )
-              ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      child: Container(
+        // height: 34,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14.0), color: color
+            // gradient: LinearGradient(
+            //   begin: Alignment(0.0, -1.0),
+            //   end: Alignment(0.0, 1.0),
+            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+            //   stops: [0.0, 1.0],
+            // ),
             ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: img,
+              ),
+              Text(
+                '$text',
+                style: GoogleFonts.lato(
+                  fontSize: medq.height * 0.015,
+                  color: textcolor,
+                ),
+                // style: TextStyle(
+                //   fontFamily: 'Roboto',
+                //   fontSize: 12,
+                //   color: const ScaapeTheme.kPinkColor,
+                // ),
+                textAlign: TextAlign.left,
+              )
+            ],
           ),
         ),
       ),
