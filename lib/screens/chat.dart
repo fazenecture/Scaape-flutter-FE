@@ -37,104 +37,15 @@ class _ScaapeChatState extends State<ScaapeChat> {
           future: getActiveScaapes(authId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if(snapshot.hasData){
-              var a=snapshot.data.length;
-              print(a);
+              var a=snapshot.data;
 
-              if(snapshot.data.length != 0){
-                return SingleChildScrollView(
-                  child: Container(
-                    // color: ScaapeTheme.kBackColor,
-                    margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Icon(
-                                Icons.notification_important_outlined,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                'Social Messages(${snapshot.data.length})',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 26,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return a[index]['Accepted']==1?Column(
-                                children: [
-                                  ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: ScaapeTheme.kPinkColor.withOpacity(0.9),
-                                      radius: 28,
-                                      child: CircleAvatar(
-                                        backgroundColor: ScaapeTheme.kSecondBlue,
-                                        backgroundImage: NetworkImage(a[index]['ScaapeImg']),
-                                        radius: 26,
-                                      ),
-                                    ),
-                                    title: Text(a[index]['ScaapeName']),
-                                    subtitle: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          size: 13,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Text(
-                                          '${a[index]['Location']}',
-                                          maxLines: 1,
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w400),
-                                        )
-                                      ],
-                                    ),
-                                    onTap: () {
-                                      Navigator.pushNamed(context, UserChat.id,arguments:{
-                                        "ScaapeId":"${a[index]['ScaapeId']}"
-                                      });
-                                    },
-                                    // selectedTileColor: ScaapeTheme.kSecondBlue,
-                                    focusColor: ScaapeTheme.kSecondBlue,
-                                    selectedTileColor: ScaapeTheme.kSecondBlue,
-                                    hoverColor: ScaapeTheme.kSecondBlue,
-                                  ),
-                                  Divider(
-                                    endIndent: 34,
-                                    indent: 68,
-                                  ),
-                                ],
-                              ):Text("");
-                            }),
-                      ],
-                    ),
-                  ),
-                );
-
-              }else{
-                return Container(
+              return SingleChildScrollView(
+                child: Container(
+                  // color: ScaapeTheme.kBackColor,
                   margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
                   child: Column(
-                    children: [
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
@@ -155,26 +66,63 @@ class _ScaapeChatState extends State<ScaapeChat> {
                                 fontSize: 26,
                               ),
                             ),
-
                           ],
                         ),
                       ),
-                      Container(
-                        height: MediaQuery.of(context).size.height*0.5,
-                        child: Center(
-                          child: Text('No Messages!',
-                            style: GoogleFonts.roboto(
-                                fontSize: 14
-                            ),
-                          ),
-                        ),
-
-                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return a[index]['Accepted']==1?Column(
+                              children: [
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor: ScaapeTheme.kSecondBlue,
+                                    backgroundImage: NetworkImage(a[index]['ScaapeImg']),
+                                    radius: 26,
+                                  ),
+                                  title: Text(a[index]['ScaapeName']),
+                                  subtitle: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.location_on_outlined,
+                                        size: 13,
+                                      ),
+                                      SizedBox(
+                                        width: 3,
+                                      ),
+                                      Text(
+                                        '${a[index]['Location']}',
+                                        maxLines: 1,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400),
+                                      )
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Navigator.pushNamed(context, UserChat.id,arguments:{
+                                      "ScaapeId":"${a[index]['ScaapeId']}"
+                                    });
+                                  },
+                                  // selectedTileColor: ScaapeTheme.kSecondBlue,
+                                  focusColor: ScaapeTheme.kSecondBlue,
+                                  selectedTileColor: ScaapeTheme.kSecondBlue,
+                                  hoverColor: ScaapeTheme.kSecondBlue,
+                                ),
+                                Divider(
+                                  endIndent: 34,
+                                  indent: 68,
+                                ),
+                              ],
+                            ):Text("");
+                          }),
                     ],
                   ),
-                );
-              }
-
+                ),
+              );
             }
             else{
               return Container(
@@ -309,8 +257,8 @@ Future<List<dynamic>> getActiveScaapes(String id)async{
 
   Response response=await get(Uri.parse(url));
   int statusCode = response.statusCode;
-  // print(statusCode);
-  // print(response.body);
-  // print(json.decode(response.body));
+  print(statusCode);
+  print(response.body);
+  print(json.decode(response.body));
   return json.decode(response.body);
 }
