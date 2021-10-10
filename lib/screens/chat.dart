@@ -104,7 +104,8 @@ class _ScaapeChatState extends State<ScaapeChat> {
                                   ),
                                   onTap: () {
                                     Navigator.pushNamed(context, UserChat.id,arguments:{
-                                      "ScaapeId":"${a[index]['ScaapeId']}"
+                                      "ScaapeId":"${a[index]['ScaapeId']}",
+                                      "ScaapeName":"${a[index]['ScaapeName']}"
                                     });
                                   },
                                   // selectedTileColor: ScaapeTheme.kSecondBlue,

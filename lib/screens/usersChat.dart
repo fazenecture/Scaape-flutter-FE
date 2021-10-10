@@ -44,12 +44,14 @@ class _UserChatState extends State<UserChat> {
     final chats=ModalRoute.of(context)!.settings.arguments as Map;
     final FirebaseAuth auth = FirebaseAuth.instance;
     String ScaapeId=chats['ScaapeId'];
+    String ScaapeName=chats['ScaapeName'];
 
 
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Group Chat'),
+          title: Text('$ScaapeName'),
+          // title: Text('sd'),
           backgroundColor: ScaapeTheme.kBackColor,
         ),
         body: Container(
@@ -75,7 +77,7 @@ class _UserChatState extends State<UserChat> {
                       );
                     }
                     final chatDocs = snapshot.data!.docs;
-                    var users = FirebaseAuth.instance.currentUser;
+                    var users =  FirebaseAuth.instance.currentUser;
 
                     return ListView.builder(
                       itemCount: chatDocs.length,

@@ -5,6 +5,9 @@ import 'package:scaape/screens/imageScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/screens/onboardingScreen.dart';
+import 'package:scaape/screens/signIn_page.dart';
+import 'package:scaape/utils/constants.dart';
 import 'Staggered_Veiw.dart';
 
 
@@ -17,6 +20,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 0;
+
+
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,9 +48,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: IconButton(icon: Icon(Icons.menu,size: 35,),
-        onPressed: (){
-          Scaffold.of(context).openEndDrawer();
+      floatingActionButton: IconButton(icon: Icon(Icons.logout,size: 26,),
+        onPressed: ()async{
+          // Scaffold.of(context).openEndDrawer();
+          await FirebaseAuth.instance.signOut();
+          Navigator.pushNamedAndRemoveUntil(context, SignInScreen.id, (route) => false);
+
         },
       ),
       endDrawer: Container(
@@ -65,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(bottom: 30),
-            color: Color(0xFF222831),
+            color: ScaapeTheme.kBackColor,
             child: FutureBuilder(
                 future: getUserDetails(currentUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -301,17 +310,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(
                           height: 25,
                         ),
-                        MaterialButton(onPressed: (){},
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                          color: Color(0xff393E46),
-                          minWidth: 200,
-                          child:  Row(mainAxisSize: MainAxisSize.min,
-                            children: [Icon(Icons.edit) ,
-                              Text('Edit Profile',
-                                  style: new TextStyle(fontSize: 14.0, color: Colors.white)),
-                            ],
-                          ),
-                        ),
+                        // MaterialButton(onPressed: (){},
+                        //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        //   color: Color(0xff393E46),
+                        //   minWidth: 200,
+                        //   child:  Row(mainAxisSize: MainAxisSize.min,
+                        //     children: [Icon(Icons.edit) ,
+                        //       Text('Edit Profile',
+                        //           style: new TextStyle(fontSize: 14.0, color: Colors.white)),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 5,
                         ),

@@ -67,7 +67,7 @@ class _StaggeredVeiwState extends State<StaggeredVeiw> {
           );
         }
         else{
-          return Container(child:Text('do exception'));
+          return Container(child:Text("Let's Start by creating Scaape"));
         }
       },
     );

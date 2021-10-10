@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scaape/utils/constants.dart';
 
 class MessageBubble extends StatelessWidget {
   MessageBubble(this.userName,this.message,this.isMe);
@@ -18,7 +19,8 @@ class MessageBubble extends StatelessWidget {
           children: [
             Container(
                 decoration: BoxDecoration(
-                    color:isMe?Colors.grey[300]:Theme.of(context).accentColor,
+                    color:isMe?ScaapeTheme.kPinkColor.withOpacity(0.3):
+                    ScaapeTheme.kSecondBlue.withOpacity(0.6),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
@@ -30,11 +32,16 @@ class MessageBubble extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 14,horizontal: 16),
                 child: Column(crossAxisAlignment: isMe?CrossAxisAlignment.end:CrossAxisAlignment.start,
                   children: [
-                    Text(userName,style:TextStyle(fontWeight:FontWeight.bold,
-                        color:isMe?Colors.black:Colors.blue),),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0 , 4, 0, 4),
+                      child: isMe?Container():Text(userName,style:TextStyle(fontWeight:FontWeight.bold,
+                          color:isMe?ScaapeTheme.kSecondTextCollor:
+                          ScaapeTheme.kSecondTextCollor),),
+                    ),
                     Text(message,textAlign: isMe?TextAlign.end:TextAlign.start,
                       style: TextStyle(
-                          color:isMe?Colors.black:Colors.blue),),],)
+                          color:isMe?ScaapeTheme.kSecondTextCollor:
+                          ScaapeTheme.kSecondTextCollor),),],)
             ),
           ],
         ),
