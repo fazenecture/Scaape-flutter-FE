@@ -709,7 +709,9 @@ class _HomePageViewState extends State<HomePageView> with TickerProviderStateMix
               ),
             ),
           ),
-        onRefresh: () => Future.delayed(const Duration(seconds: 3)),
+        onRefresh: () => Future.delayed(const Duration(seconds:0)).then((value){
+          setState((){});
+        }),
         builder:
             (BuildContext context, Widget child, IndicatorController controller) {
           return AnimatedBuilder(
@@ -1585,6 +1587,7 @@ class HomeCard extends StatelessWidget {
                                                     '@${adminInsta.substring(0,10)}',
                                                     maxLines: 1,
                                                     style: GoogleFonts.poppins(
+
                                                         fontSize: 10,
                                                         fontWeight:
                                                             FontWeight.w400),

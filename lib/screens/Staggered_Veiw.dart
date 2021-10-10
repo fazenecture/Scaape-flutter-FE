@@ -44,7 +44,7 @@ class _StaggeredVeiwState extends State<StaggeredVeiw> {
     return FutureBuilder(
       future: getImages(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if(snapshot.hasData){
+        if(snapshot.data!=null){
           return StaggeredGridView.countBuilder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,

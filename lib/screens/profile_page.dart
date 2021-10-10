@@ -202,8 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 80,vertical: 10),
-                                child: Text('A computer program is a collection of instructions '
-                                    'to perform a specific task. For this, go travel',textAlign: TextAlign.center,),
+                                child: Text('${data['Bio']}',textAlign: TextAlign.center,),
                               ),
                             ]
                         ),
@@ -255,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Text(
-                                    '133',
+                                    '${data['ScaapesCreated']}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 22,
@@ -278,7 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Text(
-                                    '233',
+                                    '${data['ScaapesJoined']}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 22,
