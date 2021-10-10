@@ -240,16 +240,14 @@ class _AddScaapeState extends State<AddScaape> {
               ),
               ToggleButtons(
                 children: [
-                  Expanded(
-                    child: buildButtons(
-                        medq,
-                        'Men',
-                        0.23,
-                        ToggleButtons(
-                          children: [],
-                          isSelected: [],
-                        ).fillColor),
-                  ),
+                  buildButtons(
+                      medq,
+                      'Men',
+                      0.23,
+                      ToggleButtons(
+                        children: [],
+                        isSelected: [],
+                      ).fillColor),
                   buildButtons(
                       medq,
                       'Women',
