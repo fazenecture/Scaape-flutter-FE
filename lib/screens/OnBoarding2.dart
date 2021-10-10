@@ -48,7 +48,6 @@ class _Onboarding2State extends State<Onboarding2> {
           child: CircularProgressIndicator(),
         )
             : SingleChildScrollView(
-          s
               child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 40, 25, 20),
           child: Column(
