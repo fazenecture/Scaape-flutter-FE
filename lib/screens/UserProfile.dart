@@ -5,6 +5,7 @@ import 'package:scaape/screens/imageScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/utils/constants.dart';
 import 'Staggered_Veiw.dart';
 
 
@@ -24,12 +25,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final datas = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       key: _scaffoldKey,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: IconButton(icon: Icon(Icons.menu,size: 35,),
-        onPressed: (){
-          Scaffold.of(context).openEndDrawer();
-        },
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      // floatingActionButton: IconButton(icon: Icon(Icons.menu,size: 35,),
+      //   onPressed: (){
+      //     Scaffold.of(context).openEndDrawer();
+      //   },
+      // ),
       endDrawer: Container(
         width: MediaQuery.of(context).size.width * 0.56,
         child: Drawer(
@@ -48,7 +49,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(bottom: 30),
-            color: Color(0xFF222831),
+            color: ScaapeTheme.kBackColor,
             child: FutureBuilder(
                 future: getUserDetails(datas['UserId']),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
