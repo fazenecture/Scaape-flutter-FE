@@ -9,8 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:recase/recase.dart';
+import 'package:scaape/screens/UserProfile.dart';
 import 'package:scaape/screens/add_scaape.dart';
+import 'package:scaape/screens/all_notifications.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -35,6 +38,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     String authId = auth.currentUser!.uid;
+    Size medq = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -93,12 +97,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              TextButton(
+                              snapshot.data.length > 2 ? TextButton(
                                 style: ButtonStyle(
                                   overlayColor: MaterialStateProperty.all(ScaapeTheme.kPinkColor.withOpacity(0.2)),
                                 ),
                                 onPressed: (){
-
+                                  Navigator.pushNamed(context, AllNotifications.id);
                                 },
                                 child: Text(
                                   'See all',
@@ -108,7 +112,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     fontSize: 16,
                                   ),
                                 ),
-                              ),
+                              ): Container(),
                             ],
                           ),
                         ),
@@ -122,11 +126,311 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   //var datas=snapshot.data;
                                   return Column(
                                     children: [
-                                      GroupNotificationCard(
-                                        a[index]["ScaapeImg"],
-                                        a[index]['ScaapeName'],
-                                        a[index]['count'].toString(),
-                                        a[index]['Location'],
+                                      GestureDetector(
+                                        onTap:(){
+                                          // if ((auth.currentUser!.uid) != uid) {
+                                          //   onClick(a[index]['ScaapeId']);
+                                          // }
+
+                                          showMaterialModalBottomSheet(
+                                              backgroundColor: ScaapeTheme.kBackColor,
+                                              context: context,
+                                              elevation: 13,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.only(
+                                                      topRight: Radius.circular(16),
+                                                      topLeft: Radius.circular(16))),
+                                              builder: (context) => Container(
+                                                height: MediaQuery.of(context).size.height * 0.7,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Stack(
+                                                      children: [
+                                                        Container(
+                                                          height: medq.height * 0.4,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                                topRight: Radius.circular(16),
+                                                                topLeft: Radius.circular(16)),
+                                                            color: Colors.white,
+                                                            image: DecorationImage(
+                                                              image: NetworkImage(a[index]["ScaapeImg"]),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          height: medq.height * 0.4,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.only(
+                                                                  topRight: Radius.circular(16),
+                                                                  topLeft: Radius.circular(16)),
+                                                              gradient: LinearGradient(
+                                                                  colors: [
+                                                                    ScaapeTheme.kBackColor.withOpacity(0.2),
+                                                                    ScaapeTheme.kBackColor
+                                                                  ],
+                                                                  begin: Alignment.topCenter,
+                                                                  end: Alignment.bottomCenter)),
+                                                        ),
+                                                        Align(
+                                                          alignment: Alignment.topCenter,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(10.0),
+                                                            child: Container(
+                                                              height: 5.5,
+                                                              width: medq.width * 0.13,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors.white,
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(34))),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          height: medq.height * 0.56,
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.end,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets.symmetric(
+                                                                    horizontal: 23, vertical: 18),
+                                                                child: Column(
+                                                                  mainAxisSize: MainAxisSize.min,
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                      CrossAxisAlignment.start,
+                                                                      mainAxisAlignment:
+                                                                      MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        Container(
+                                                                          width: medq.width * 0.6,
+                                                                          child: Text(
+                                                                            '${a[index]['ScaapeName'].toString().sentenceCase}',
+                                                                            style: GoogleFonts.lato(
+                                                                                fontSize: 24,
+                                                                                fontWeight:
+                                                                                FontWeight.w500),
+                                                                            maxLines: 2,
+                                                                            softWrap: true,
+                                                                            overflow: TextOverflow.clip,
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          child: Row(
+                                                                            children: [
+                                                                              Icon(Icons.group_outlined),
+                                                                              Text(
+                                                                                a[index]['count'].toString(),
+                                                                                style: GoogleFonts.lato(
+                                                                                    fontSize: 21,
+                                                                                    fontWeight:
+                                                                                    FontWeight.w500),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: medq.height * 0.014,
+                                                                    ),
+                                                                    // GestureDetector(
+                                                                    //   onTap: () {
+                                                                    //     // String auth = FirebaseAuth
+                                                                    //     //     .instance.currentUser!.uid;
+                                                                    //     // auth != uid ? Navigator.pushNamed(context,
+                                                                    //     //     UserProfileScreen.id,
+                                                                    //     //     arguments: {
+                                                                    //     //       "UserId": "${uid}"
+                                                                    //     //     })
+                                                                    //     //     : null;
+                                                                    //   },
+                                                                    //   child: Container(
+                                                                    //     decoration: BoxDecoration(
+                                                                    //       borderRadius: BorderRadius.all(
+                                                                    //           Radius.circular(8)),
+                                                                    //     ),
+                                                                    //     width: medq.width * 0.56,
+                                                                    //     child: Row(
+                                                                    //       children: [
+                                                                    //         Container(
+                                                                    //           decoration: BoxDecoration(
+                                                                    //               gradient: LinearGradient(
+                                                                    //                   colors: [
+                                                                    //                     Color(0xFFFF416C),
+                                                                    //                     Color(0xFFFF4B2B)
+                                                                    //                   ],
+                                                                    //                   begin: Alignment
+                                                                    //                       .topCenter,
+                                                                    //                   end: Alignment
+                                                                    //                       .bottomCenter),
+                                                                    //               shape: BoxShape.circle),
+                                                                    //           height: 42,
+                                                                    //           width: 42,
+                                                                    //           child: CircleAvatar(
+                                                                    //             // radius: 33,
+                                                                    //             backgroundColor:
+                                                                    //             Color(0xFFFF4B2B)
+                                                                    //                 .withOpacity(0),
+                                                                    //             child: CircleAvatar(
+                                                                    //               backgroundImage:
+                                                                    //               NetworkImage(
+                                                                    //                   '${a[index]['DP']}'),
+                                                                    //               backgroundColor:
+                                                                    //               Colors.transparent,
+                                                                    //               // radius: 34,
+                                                                    //             ),
+                                                                    //           ),
+                                                                    //         ),
+                                                                    //         SizedBox(
+                                                                    //           width: 8,
+                                                                    //         ),
+                                                                    //         Column(
+                                                                    //           crossAxisAlignment:
+                                                                    //           CrossAxisAlignment.start,
+                                                                    //           mainAxisAlignment:
+                                                                    //           MainAxisAlignment.center,
+                                                                    //           children: [
+                                                                    //             Container(
+                                                                    //               width: medq.width * 0.24,
+                                                                    //               child: Text(
+                                                                    //                 '${a[index]['Name']}',
+                                                                    //                 maxLines: 1,
+                                                                    //                 softWrap: true,
+                                                                    //                 overflow:
+                                                                    //                 TextOverflow.clip,
+                                                                    //                 style:
+                                                                    //                 GoogleFonts.poppins(
+                                                                    //                   fontSize: 13,
+                                                                    //                   fontWeight:
+                                                                    //                   FontWeight.w500,
+                                                                    //                 ),
+                                                                    //                 textAlign:
+                                                                    //                 TextAlign.left,
+                                                                    //               ),
+                                                                    //             ),
+                                                                    //             Text(
+                                                                    //               '@${a[index]['InstaId']}',
+                                                                    //               maxLines: 1,
+                                                                    //               style:
+                                                                    //               GoogleFonts.poppins(
+                                                                    //                   fontSize: 10,
+                                                                    //                   fontWeight:
+                                                                    //                   FontWeight
+                                                                    //                       .w400),
+                                                                    //             ),
+                                                                    //           ],
+                                                                    //         ),
+                                                                    //       ],
+                                                                    //     ),
+                                                                    //   ),
+                                                                    // ),
+                                                                    SizedBox(
+                                                                      height: medq.height * 0.02,
+                                                                    ),
+                                                                    Container(
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.all(
+                                                                            Radius.circular(8)),
+                                                                      ),
+                                                                      width: medq.width * 0.75,
+                                                                      child: SingleChildScrollView(
+                                                                        scrollDirection: Axis.vertical,
+                                                                        child: Text(
+                                                                          '${a[index]['Description'].toString().length > 80 ? a[index]['Description'].toString().substring(0, 80) : a[index]['Description'].toString().sentenceCase}',
+                                                                          maxLines: 4,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          softWrap: true,
+                                                                          style: GoogleFonts.nunitoSans(
+                                                                            fontSize: 17,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: medq.height * 0.006,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                      MainAxisAlignment.start,
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons.location_on_outlined,
+                                                                          size: 12,
+                                                                        ),
+                                                                        Text(
+                                                                          '${a[index]['Location']}',
+                                                                          maxLines: 1,
+                                                                          style: GoogleFonts.poppins(
+                                                                              fontSize: 10,
+                                                                              fontWeight: FontWeight.w400),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          height: MediaQuery.of(context).size.height * 0.67,
+                                                          child: Align(
+                                                            alignment: Alignment.bottomCenter,
+                                                            child: Padding(
+                                                                padding: const EdgeInsets.symmetric(
+                                                                    vertical: 12, horizontal: 19),
+                                                                child: MaterialButton(
+                                                                  onPressed: (){
+
+                                                                  },
+                                                                  elevation: 0,
+                                                                  textColor: Colors.white,
+                                                                  splashColor: Colors.transparent,
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.all(
+                                                                        Radius.circular(7)),
+                                                                    side: BorderSide(
+                                                                      color: ScaapeTheme.kSecondBlue
+                                                                    )
+                                                                  ),
+                                                                  disabledColor: ScaapeTheme
+                                                                      .kPinkColor
+                                                                      .withOpacity(0.15),
+                                                                  disabledTextColor:
+                                                                  Colors.transparent,
+                                                                  color: Colors.transparent,
+                                                                  height: medq.height * 0.06,
+                                                                  minWidth: double.infinity,
+                                                                  child: Text(
+                                                                    'DELETE SCAAPE',
+                                                                    style: GoogleFonts.roboto(
+                                                                        color: ScaapeTheme.kSecondBlue,
+                                                                        fontSize: 15,
+                                                                        fontWeight: FontWeight.w500),
+                                                                  ),
+                                                                )),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ));
+                                  },
+                                        child: GroupNotificationCard(
+                                          a[index]["ScaapeImg"],
+                                          a[index]['ScaapeName'],
+                                          a[index]['count'].toString(),
+                                          a[index]['Location'],
+                                        ),
                                       ),
                                     ],
                                   );
@@ -208,7 +512,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 return ListView.builder(
                                   itemCount: snapshot.data.length,
                                   shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
+                                  // scrollDirection: Axis.vertical,
+                                  physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     return a[index]['UserId'] == authId
                                         ? Text("")
@@ -303,20 +608,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              TextButton(
-                                style: ButtonStyle(
-                                  overlayColor: MaterialStateProperty.all(ScaapeTheme.kPinkColor.withOpacity(0.2)),
-                                ),
-                                onPressed: null,
-                                child: Text(
-                                  'See all',
-                                  style: GoogleFonts.roboto(
-                                    color: ScaapeTheme.kPinkColor,
-
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
+                              // TextButton(
+                              //   style: ButtonStyle(
+                              //     overlayColor: MaterialStateProperty.all(ScaapeTheme.kPinkColor.withOpacity(0.2)),
+                              //   ),
+                              //   onPressed: null,
+                              //   child: Text(
+                              //     'See all',
+                              //     style: GoogleFonts.roboto(
+                              //       color: ScaapeTheme.kPinkColor,
+                              //
+                              //       fontSize: 16,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -527,6 +832,25 @@ Future<List<dynamic>> getRecentRequest(String id) async {
   return json.decode(response.body);
 }
 
+
+void onClick(String ScapeId) async {
+  try {
+    String url = 'https://api.scaape.online/api/OnClick';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    String json = '{"ScaapeId": "${ScapeId}"}';
+    http.Response response =
+    await post(Uri.parse(url), headers: headers, body: json);
+
+    int statusCode = response.statusCode;
+    // print(statusCode);
+    // print(response.body);
+    print("Sucesfully uploaded on click");
+  } catch (e) {
+    print(e);
+  }
+}
+
+
 // Recent Request Card
 class RecentRequestCard extends StatelessWidget {
   String Scaapeid, userId, Name, location, ImageUrl;
@@ -565,7 +889,7 @@ class RecentRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width*0.4,
+                      width: MediaQuery.of(context).size.width*0.37,
                       child: Text(
                         '${Name.titleCase}',
                         style: TextStyle(
@@ -578,12 +902,22 @@ class RecentRequestCard extends StatelessWidget {
                     SizedBox(
                       height: 2,
                     ),
-                    Text(
-                      '@${location}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 12,
+                        ),
+                        Text(
+                          '${location.sentenceCase}',
+                          maxLines: 1,
+                          style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        )
+                      ],
                     ),
                   ],
                 ),
@@ -593,7 +927,7 @@ class RecentRequestCard extends StatelessWidget {
               children: <Widget>[
                 Container(
                   height: 37,
-                  width: 84,
+                  // width: 84,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
                       Color(0xFFFF416C).withOpacity(0.16),
@@ -692,7 +1026,7 @@ class GroupNotificationCard extends StatelessWidget {
           child: Row(
             children: <Widget>[
               CircleAvatar(
-                backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
+                backgroundColor: ScaapeTheme.kPinkColor.withOpacity(0.5),
                 radius: 35,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
@@ -716,12 +1050,22 @@ class GroupNotificationCard extends StatelessWidget {
                   SizedBox(
                     height: 4,
                   ),
-                  Text(
-                    '@${location}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 14,
+                      ),
+                      Text(
+                        '${location.sentenceCase}',
+                        maxLines: 1,
+                        style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      )
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 6),

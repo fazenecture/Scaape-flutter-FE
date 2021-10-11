@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:scaape/screens/OnBoarding2.dart';
 import 'package:scaape/screens/UserProfile.dart';
+import 'package:scaape/screens/all_notifications.dart';
 import 'package:scaape/screens/chat.dart';
 import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/homePage.dart';
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> {
         HomeScreen.id: (context) => HomeScreen(),
         SignInScreen.id: (context) => SignInScreen(),
         GenderSelectionPage.id: (context) => GenderSelectionPage(),
+        AllNotifications.id: (context) => AllNotifications(),
       },
       // home: HomeScreen(),
     );

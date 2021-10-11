@@ -84,9 +84,12 @@ class _HomePageViewState extends State<HomePageView>
         AnimationController(vsync: this, duration: Duration(seconds: 4));
     controllerCafe =
         AnimationController(vsync: this, duration: Duration(seconds: 4));
-    controllerTrek = AnimationController(vsync: this, duration: Duration(seconds: 4));
-    controllerClub = AnimationController(vsync: this, duration: Duration(seconds: 4));
-    controllerGym = AnimationController(vsync: this, duration: Duration(seconds: 4));
+    controllerTrek =
+        AnimationController(vsync: this, duration: Duration(seconds: 4));
+    controllerClub =
+        AnimationController(vsync: this, duration: Duration(seconds: 4));
+    controllerGym =
+        AnimationController(vsync: this, duration: Duration(seconds: 4));
 
     base = CurvedAnimation(parent: controller, curve: Curves.easeOut);
     reverse = Tween<double>(begin: 0.0, end: -1.0).animate(base);
@@ -223,7 +226,7 @@ class _HomePageViewState extends State<HomePageView>
                   children: [
                     Padding(
                       padding:
-                      const EdgeInsets.only(top: 5, bottom: 5, left: 10),
+                          const EdgeInsets.only(top: 5, bottom: 5, left: 10),
                       child: Row(
                         children: [
                           Image(
@@ -252,7 +255,7 @@ class _HomePageViewState extends State<HomePageView>
                           if (snap.connectionState == ConnectionState.waiting) {
                             return Image(
                               image:
-                              AssetImage('animations/location-loader.gif'),
+                                  AssetImage('animations/location-loader.gif'),
                               height: 60,
                               width: 60,
                             );
@@ -710,7 +713,9 @@ class _HomePageViewState extends State<HomePageView>
                             fit: BoxFit.fill,
                           ),
                           text: 'Trending',
-                          color: trending ? ScaapeTheme.kPinkColor.withOpacity(0.2) : ScaapeTheme.kSecondBlue,
+                          color: trending
+                              ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                              : ScaapeTheme.kSecondBlue,
                           textcolor: ScaapeTheme.kSecondTextCollor,
                         ),
                       ),
@@ -734,7 +739,9 @@ class _HomePageViewState extends State<HomePageView>
                             fit: BoxFit.fill,
                           ),
                           text: 'Recent',
-                          color: recent ? ScaapeTheme.kPinkColor.withOpacity(0.2) : ScaapeTheme.kSecondBlue,
+                          color: recent
+                              ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                              : ScaapeTheme.kSecondBlue,
                           textcolor: ScaapeTheme.kSecondTextCollor,
                         ),
                       ),
@@ -758,7 +765,9 @@ class _HomePageViewState extends State<HomePageView>
                             fit: BoxFit.fill,
                           ),
                           text: 'For you',
-                          color: forYou ? ScaapeTheme.kPinkColor.withOpacity(0.2) : ScaapeTheme.kSecondBlue,
+                          color: forYou
+                              ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                              : ScaapeTheme.kSecondBlue,
                           textcolor: ScaapeTheme.kSecondTextCollor,
                         ),
                       ),
@@ -966,8 +975,9 @@ class _HomePageViewState extends State<HomePageView>
           ),
         ),
         // onRefresh: () => Future.delayed(const Duration(seconds: 3)),
-        onRefresh: () => Future.delayed(const Duration(seconds: 2)).then((value){
-          setState((){});
+        onRefresh: () =>
+            Future.delayed(const Duration(seconds: 2)).then((value) {
+          setState(() {});
         }),
         builder: (BuildContext context, Widget child,
             IndicatorController controller) {
@@ -1008,7 +1018,7 @@ class _HomePageViewState extends State<HomePageView>
                                 Transform.translate(
                                   offset: Offset(
                                     ((screenWidth + cloud.width!) *
-                                        cloud.controller!.value) -
+                                            cloud.controller!.value) -
                                         cloud.width!,
                                     cloud.dy! * controller.value,
                                   ),
@@ -1065,7 +1075,7 @@ class _HomePageViewState extends State<HomePageView>
     url = 'https://api.scaape.online/api/getScaapesWithAuth/UserId=${id}';
     if (val.isNotEmpty) {
       url =
-      'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
+          'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
       print("stories");
     } else {
       if (trend) {
@@ -1168,7 +1178,7 @@ class _HomePageViewState extends State<HomePageView>
                         backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                         child: CircleAvatar(
                           backgroundImage:
-                          AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                           backgroundColor: Colors.transparent,
                           radius: 25,
                         ),
@@ -1184,7 +1194,7 @@ class _HomePageViewState extends State<HomePageView>
                             style: TextStyle(
                               color: Colors.white,
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.03,
+                                  MediaQuery.of(context).size.height * 0.03,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -1193,7 +1203,7 @@ class _HomePageViewState extends State<HomePageView>
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.02,
+                                  MediaQuery.of(context).size.height * 0.02,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w500,
                             ),
@@ -1262,7 +1272,7 @@ class _HomePageViewState extends State<HomePageView>
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
+                      const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -1270,7 +1280,7 @@ class _HomePageViewState extends State<HomePageView>
                         backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                         child: CircleAvatar(
                           backgroundImage:
-                          AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/profile-photo.jpg'),
                           backgroundColor: Colors.transparent,
                           radius: 20,
                         ),
@@ -1283,7 +1293,7 @@ class _HomePageViewState extends State<HomePageView>
                             style: TextStyle(
                               color: Colors.white,
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.023,
+                                  MediaQuery.of(context).size.height * 0.023,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -1292,7 +1302,7 @@ class _HomePageViewState extends State<HomePageView>
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize:
-                              MediaQuery.of(context).size.height * 0.02,
+                                  MediaQuery.of(context).size.height * 0.02,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w400,
                             ),
@@ -1328,13 +1338,13 @@ class _HomePageViewState extends State<HomePageView>
 class TopCircleCards extends StatelessWidget {
   const TopCircleCards(
       {Key? key,
-        required this.base,
-        required this.controller,
-        required this.reverse,
-        required this.backgroundColor,
-        required this.dashes,
-        required this.text,
-        required this.circleImg})
+      required this.base,
+      required this.controller,
+      required this.reverse,
+      required this.backgroundColor,
+      required this.dashes,
+      required this.text,
+      required this.circleImg})
       : super(key: key);
 
   final Animation<double> base;
@@ -1354,10 +1364,10 @@ class TopCircleCards extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              // gradient: LinearGradient(
-              //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter),
+                // gradient: LinearGradient(
+                //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                //     begin: Alignment.topCenter,
+                //     end: Alignment.bottomCenter),
                 shape: BoxShape.circle),
             height: 69,
             width: 69,
@@ -1521,16 +1531,16 @@ class ShimmerCard extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration:
-                                    BoxDecoration(shape: BoxShape.circle),
+                                        BoxDecoration(shape: BoxShape.circle),
                                     height: 42,
                                     width: 42,
                                     child: CircleAvatar(
                                       // radius: 33,
                                       backgroundColor:
-                                      Color(0xFFFF4B2B).withOpacity(0),
+                                          Color(0xFFFF4B2B).withOpacity(0),
                                       child: CircleAvatar(
                                         backgroundColor:
-                                        ScaapeTheme.kShimmerTextColor,
+                                            ScaapeTheme.kShimmerTextColor,
                                         // radius: 34,
                                       ),
                                     ),
@@ -1540,7 +1550,7 @@ class ShimmerCard extends StatelessWidget {
                                   ),
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
@@ -1584,10 +1594,10 @@ class ShimmerCard extends StatelessWidget {
 class CircleCards extends StatelessWidget {
   const CircleCards(
       {required this.text,
-        required this.circleImg,
-        required this.gap,
-        required this.reverse,
-        required this.base});
+      required this.circleImg,
+      required this.gap,
+      required this.reverse,
+      required this.base});
 
   final String text;
   final CircleAvatar circleImg;
@@ -1604,10 +1614,10 @@ class CircleCards extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              // gradient: LinearGradient(
-              //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter),
+                // gradient: LinearGradient(
+                //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                //     begin: Alignment.topCenter,
+                //     end: Alignment.bottomCenter),
                 shape: BoxShape.circle),
             height: 69,
             width: 69,
@@ -1645,12 +1655,12 @@ class CircleCards extends StatelessWidget {
 class TopCards extends StatelessWidget {
   const TopCards(
       {Key? key,
-        required this.medq,
-        required this.color,
-        required this.img,
-        required this.text,
-        required this.textcolor,
-        required this.border})
+      required this.medq,
+      required this.color,
+      required this.img,
+      required this.text,
+      required this.textcolor,
+      required this.border})
       : super(key: key);
 
   final Size medq;
@@ -1670,13 +1680,13 @@ class TopCards extends StatelessWidget {
             borderRadius: BorderRadius.circular(14.0),
             border: border,
             color: color
-          // gradient: LinearGradient(
-          //   begin: Alignment(0.0, -1.0),
-          //   end: Alignment(0.0, 1.0),
-          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-          //   stops: [0.0, 1.0],
-          // ),
-        ),
+            // gradient: LinearGradient(
+            //   begin: Alignment(0.0, -1.0),
+            //   end: Alignment(0.0, 1.0),
+            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+            //   stops: [0.0, 1.0],
+            // ),
+            ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
@@ -1769,328 +1779,334 @@ class HomeCard extends StatelessWidget {
                       topRight: Radius.circular(16),
                       topLeft: Radius.circular(16))),
               builder: (context) => Container(
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          height: medq.height * 0.4,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(16),
-                                topLeft: Radius.circular(16)),
-                            color: Colors.white,
-                            image: DecorationImage(
-                              image: NetworkImage(ScapeImage),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: medq.height * 0.4,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(16),
-                                  topLeft: Radius.circular(16)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    ScaapeTheme.kBackColor.withOpacity(0.2),
-                                    ScaapeTheme.kBackColor
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter)),
-                        ),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(
-                              height: 5.5,
-                              width: medq.width * 0.13,
+                        Stack(
+                          children: [
+                            Container(
+                              height: medq.height * 0.4,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(34))),
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(16),
+                                    topLeft: Radius.circular(16)),
+                                color: Colors.white,
+                                image: DecorationImage(
+                                  image: NetworkImage(ScapeImage),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          height: medq.height * 0.56,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 23, vertical: 18),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: medq.width * 0.6,
-                                          child: Text(
-                                            '${ScapeName.sentenceCase}',
-                                            style: GoogleFonts.lato(
-                                                fontSize: 24,
-                                                fontWeight:
-                                                FontWeight.w500),
-                                            maxLines: 2,
-                                            softWrap: true,
-                                            overflow: TextOverflow.clip,
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.group_outlined),
-                                              Text(
-                                                count.toString(),
-                                                style: GoogleFonts.lato(
-                                                    fontSize: 21,
-                                                    fontWeight:
-                                                    FontWeight.w500),
-                                              )
-                                            ],
-                                          ),
-                                        )
+                            Container(
+                              height: medq.height * 0.4,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(16),
+                                      topLeft: Radius.circular(16)),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        ScaapeTheme.kBackColor.withOpacity(0.2),
+                                        ScaapeTheme.kBackColor
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: medq.height * 0.014,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        String auth =
-                                            FirebaseAuth.instance.currentUser!.uid;
-                                        auth!=uid?
-                                        Navigator.pushNamed(context,UserProfileScreen.id,arguments: {
-                                          "UserId":"${uid}"
-                                        }):null;
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(8)),
-                                        ),
-                                        width: medq.width * 0.56,
-                                        child: Row(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  height: 5.5,
+                                  width: medq.width * 0.13,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(34))),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: medq.height * 0.56,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 23, vertical: 18),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
-                                              decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Color(0xFFFF416C),
-                                                        Color(0xFFFF4B2B)
-                                                      ],
-                                                      begin:
-                                                      Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter),
-                                                  shape: BoxShape.circle),
-                                              height: 42,
-                                              width: 42,
-                                              child: CircleAvatar(
-                                                // radius: 33,
-                                                backgroundColor:
-                                                Color(0xFFFF4B2B)
-                                                    .withOpacity(0),
-                                                child: CircleAvatar(
-                                                  backgroundImage:
-                                                  NetworkImage(
-                                                      '${adminDp}'),
-                                                  backgroundColor:
-                                                  Colors.transparent,
-                                                  // radius: 34,
-                                                ),
+                                              width: medq.width * 0.6,
+                                              child: Text(
+                                                '${ScapeName.sentenceCase}',
+                                                style: GoogleFonts.lato(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                maxLines: 2,
+                                                softWrap: true,
+                                                overflow: TextOverflow.clip,
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: 8,
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.group_outlined),
+                                                  Text(
+                                                    count.toString(),
+                                                    style: GoogleFonts.lato(
+                                                        fontSize: 21,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: medq.height * 0.014,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            String auth = FirebaseAuth
+                                                .instance.currentUser!.uid;
+                                            auth != uid
+                                                ? Navigator.pushNamed(context,
+                                                    UserProfileScreen.id,
+                                                    arguments: {
+                                                        "UserId": "${uid}"
+                                                      })
+                                                : null;
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8)),
                                             ),
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                            width: medq.width * 0.56,
+                                            child: Row(
                                               children: [
                                                 Container(
-                                                  width: medq.width * 0.24,
-                                                  child: Text(
-                                                    '${adminName.titleCase}',
-                                                    maxLines: 1,
-                                                    softWrap: true,
-                                                    overflow:
-                                                    TextOverflow.clip,
-                                                    style:
-                                                    GoogleFonts.poppins(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                      FontWeight.w500,
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Color(0xFFFF416C),
+                                                            Color(0xFFFF4B2B)
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter),
+                                                      shape: BoxShape.circle),
+                                                  height: 42,
+                                                  width: 42,
+                                                  child: CircleAvatar(
+                                                    // radius: 33,
+                                                    backgroundColor:
+                                                        Color(0xFFFF4B2B)
+                                                            .withOpacity(0),
+                                                    child: CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              '${adminDp}'),
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      // radius: 34,
                                                     ),
-                                                    textAlign: TextAlign.left,
                                                   ),
                                                 ),
-                                                Text(
-                                                  '@${adminInsta.substring(0, 10)}',
-                                                  maxLines: 1,
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                      FontWeight.w400),
+                                                SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: medq.width * 0.24,
+                                                      child: Text(
+                                                        '${adminName.titleCase}',
+                                                        maxLines: 1,
+                                                        softWrap: true,
+                                                        overflow:
+                                                            TextOverflow.clip,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '@${adminInsta.substring(0, 10)}',
+                                                      maxLines: 1,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 10,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: medq.height * 0.02,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)),
-                                      ),
-                                      width: medq.width * 0.75,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.vertical,
-                                        child: Text(
-                                          '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                          softWrap: true,
-                                          style: GoogleFonts.nunitoSans(
-                                            fontSize: 17,
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: medq.height * 0.006,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          size: 12,
+                                        SizedBox(
+                                          height: medq.height * 0.02,
                                         ),
-                                        Text(
-                                          '${Location.sentenceCase}',
-                                          maxLines: 1,
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400),
-                                        )
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                          ),
+                                          width: medq.width * 0.75,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Text(
+                                              '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
+                                              style: GoogleFonts.nunitoSans(
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: medq.height * 0.006,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.location_on_outlined,
+                                              size: 12,
+                                            ),
+                                            Text(
+                                              '${Location.sentenceCase}',
+                                              maxLines: 1,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.67,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 19),
-                                child: (present == "True" ||
-                                    present == "true" ||
-                                    admin == "True" ||
-                                    admin == "true")
-                                    ? MaterialButton(
-                                  onPressed: null,
-                                  elevation: 0,
-                                  textColor: Colors.white,
-                                  splashColor: Colors.transparent,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(7)),
-                                  ),
-                                  disabledColor: ScaapeTheme
-                                      .kPinkColor
-                                      .withOpacity(0.15),
-                                  disabledTextColor:
-                                  ScaapeTheme.kPinkColor,
-                                  color: ScaapeTheme.kPinkColor
-                                      .withOpacity(0.2),
-                                  height: medq.height * 0.065,
-                                  minWidth: double.infinity,
-                                  child: Text(
-                                    'YOU HAVE ALREADY JOINED',
-                                    style: GoogleFonts.roboto(
-                                        color: ScaapeTheme.kPinkColor,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                )
-                                    : MaterialButton(
-                                  onPressed: () async {
-                                    final FirebaseAuth auth =
-                                        FirebaseAuth.instance;
-                                    String url =
-                                        'https://api.scaape.online/api/createParticipant';
-                                    Map<String, String> headers = {
-                                      "Content-type":
-                                      "application/json"
-                                    };
-                                    String json =
-                                        '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
-                                    http.Response response =
-                                    await post(Uri.parse(url),
-                                        headers: headers,
-                                        body: json);
-                                    //print(user.displayName);
-                                    int statusCode =
-                                        response.statusCode;
-                                    print(statusCode);
-                                    // print(response.body);
-                                    Fluttertoast.showToast(
-                                      msg: "Succesfully joined",
-                                    );
-                                    fun();
-                                  },
-                                  elevation: 0,
-                                  textColor: Colors.white,
-                                  splashColor: ScaapeTheme.kPinkColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(7)),
-                                  ),
-                                  color: ScaapeTheme.kPinkColor,
-                                  height: medq.height * 0.065,
-                                  minWidth: double.infinity,
-                                  child: Text(
-                                    'JOIN THIS SCAAPE',
-                                    style: GoogleFonts.roboto(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                )),
-                          ),
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.67,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 19),
+                                    child: (present == "True" ||
+                                            present == "true" ||
+                                            admin == "True" ||
+                                            admin == "true")
+                                        ? MaterialButton(
+                                            onPressed: null,
+                                            elevation: 0,
+                                            textColor: Colors.white,
+                                            splashColor: Colors.transparent,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(7)),
+                                            ),
+                                            disabledColor: ScaapeTheme
+                                                .kPinkColor
+                                                .withOpacity(0.15),
+                                            disabledTextColor:
+                                                ScaapeTheme.kPinkColor,
+                                            color: ScaapeTheme.kPinkColor
+                                                .withOpacity(0.2),
+                                            height: medq.height * 0.065,
+                                            minWidth: double.infinity,
+                                            child: Text(
+                                              'YOU HAVE ALREADY JOINED',
+                                              style: GoogleFonts.roboto(
+                                                  color: ScaapeTheme.kPinkColor,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          )
+                                        : MaterialButton(
+                                            onPressed: () async {
+                                              final FirebaseAuth auth =
+                                                  FirebaseAuth.instance;
+                                              String url =
+                                                  'https://api.scaape.online/api/createParticipant';
+                                              Map<String, String> headers = {
+                                                "Content-type":
+                                                    "application/json"
+                                              };
+                                              String json =
+                                                  '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
+                                              http.Response response =
+                                                  await post(Uri.parse(url),
+                                                      headers: headers,
+                                                      body: json);
+                                              //print(user.displayName);
+                                              int statusCode =
+                                                  response.statusCode;
+                                              print(statusCode);
+                                              // print(response.body);
+                                              Fluttertoast.showToast(
+                                                msg: "Succesfully joined",
+                                              );
+                                              fun();
+                                            },
+                                            elevation: 0,
+                                            textColor: Colors.white,
+                                            splashColor: ScaapeTheme.kPinkColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(7)),
+                                            ),
+                                            color: ScaapeTheme.kPinkColor,
+                                            height: medq.height * 0.065,
+                                            minWidth: double.infinity,
+                                            child: Text(
+                                              'JOIN THIS SCAAPE',
+                                              style: GoogleFonts.roboto(
+                                                  color: Colors.white,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          )),
+                              ),
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
-                ),
-              ));
+                    ),
+                  ));
         },
         child: Container(
           height: medq.height * 0.3,
@@ -2148,12 +2164,11 @@ class HomeCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      String auth =
-                          FirebaseAuth.instance.currentUser!.uid;
-                      auth!=uid?
-                      Navigator.pushNamed(context,UserProfileScreen.id,arguments: {
-                        "UserId":"${uid}"
-                      }):null;
+                      String auth = FirebaseAuth.instance.currentUser!.uid;
+                      auth != uid
+                          ? Navigator.pushNamed(context, UserProfileScreen.id,
+                              arguments: {"UserId": "${uid}"})
+                          : null;
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.only(
@@ -2192,10 +2207,10 @@ class HomeCard extends StatelessWidget {
                                       child: CircleAvatar(
                                         // radius: 33,
                                         backgroundColor:
-                                        Color(0xFFFF4B2B).withOpacity(0),
+                                            Color(0xFFFF4B2B).withOpacity(0),
                                         child: CircleAvatar(
                                           backgroundImage:
-                                          NetworkImage('${adminDp}'),
+                                              NetworkImage('${adminDp}'),
                                           backgroundColor: Colors.transparent,
                                           // radius: 34,
                                         ),
@@ -2206,9 +2221,9 @@ class HomeCard extends StatelessWidget {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         Container(
                                           width: medq.width * 0.24,
@@ -2226,7 +2241,7 @@ class HomeCard extends StatelessWidget {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Icon(
                                               Icons.location_on_outlined,
@@ -2246,50 +2261,50 @@ class HomeCard extends StatelessWidget {
                                   ],
                                 ),
                                 (present == "True" ||
-                                    present == "true" ||
-                                    admin == "True" ||
-                                    admin == "true")
+                                        present == "true" ||
+                                        admin == "True" ||
+                                        admin == "true")
                                     ? OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      primary: ScaapeTheme.kPinkColor,
-                                      side: BorderSide(
-                                          color: ScaapeTheme.kPinkColor,
-                                          width: 1),
-                                    ),
-                                    onPressed: () {},
-                                    child: Text('  Joined  '))
+                                        style: OutlinedButton.styleFrom(
+                                          primary: ScaapeTheme.kPinkColor,
+                                          side: BorderSide(
+                                              color: ScaapeTheme.kPinkColor,
+                                              width: 1),
+                                        ),
+                                        onPressed: () {},
+                                        child: Text('  Joined  '))
                                     : OutlinedButton(
-                                  child: Text('    Join    '),
-                                  style: OutlinedButton.styleFrom(
-                                    primary: ScaapeTheme.kPinkColor,
-                                    side: BorderSide(
-                                        color: ScaapeTheme.kPinkColor,
-                                        width: 1),
-                                  ),
-                                  onPressed: () async {
-                                    final FirebaseAuth auth =
-                                        FirebaseAuth.instance;
-                                    String url =
-                                        'https://api.scaape.online/api/createParticipant';
-                                    Map<String, String> headers = {
-                                      "Content-type": "application/json"
-                                    };
-                                    String json =
-                                        '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
-                                    http.Response response = await post(
-                                        Uri.parse(url),
-                                        headers: headers,
-                                        body: json);
-                                    //print(user.displayName);
-                                    int statusCode = response.statusCode;
-                                    print(statusCode);
-                                    // print(response.body);
-                                    Fluttertoast.showToast(
-                                      msg: "Succesfully joined",
-                                    );
-                                    fun();
-                                  },
-                                )
+                                        child: Text('    Join    '),
+                                        style: OutlinedButton.styleFrom(
+                                          primary: ScaapeTheme.kPinkColor,
+                                          side: BorderSide(
+                                              color: ScaapeTheme.kPinkColor,
+                                              width: 1),
+                                        ),
+                                        onPressed: () async {
+                                          final FirebaseAuth auth =
+                                              FirebaseAuth.instance;
+                                          String url =
+                                              'https://api.scaape.online/api/createParticipant';
+                                          Map<String, String> headers = {
+                                            "Content-type": "application/json"
+                                          };
+                                          String json =
+                                              '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
+                                          http.Response response = await post(
+                                              Uri.parse(url),
+                                              headers: headers,
+                                              body: json);
+                                          //print(user.displayName);
+                                          int statusCode = response.statusCode;
+                                          print(statusCode);
+                                          // print(response.body);
+                                          Fluttertoast.showToast(
+                                            msg: "Succesfully joined",
+                                          );
+                                          fun();
+                                        },
+                                      )
                               ],
                             ),
                           ),
@@ -2313,7 +2328,7 @@ void onClick(String ScapeId) async {
     Map<String, String> headers = {"Content-type": "application/json"};
     String json = '{"ScaapeId": "${ScapeId}"}';
     http.Response response =
-    await post(Uri.parse(url), headers: headers, body: json);
+        await post(Uri.parse(url), headers: headers, body: json);
 
     int statusCode = response.statusCode;
     // print(statusCode);
