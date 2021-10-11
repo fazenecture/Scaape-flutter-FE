@@ -15,6 +15,99 @@
       },
       "oauth_client": [
         {
+          "client_id": "674426264898-0fftffle5pgrejc2v6160b4mer3uld0v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "977c712bbbf44578ac4b087bee566d924d71dbc1"
+          }
+        },
+        {
+          "client_id": "674426264898-7lglm1j1n698justb8475vvb1sj65icr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "a06da0b7ba660bc37a05f39c7bc4671647808d61"
+          }
+        },
+        {
+          "client_id": "674426264898-dk4ks61cegljdkr7itfnuus144usd1ja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "073bbcae1fd14b8197e7229117f4046dd5f1613b"
+          }
+        },
+        {
+          "client_id": "674426264898-f353egbu3lbdtbakt1e6h0mjmuf4lf4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "58d727fd743b5cbc5bf6884c24448058679af58b"
+          }
+        },
+        {
+          "client_id": "674426264898-g15ip7ir25tn4s48bk4sba0piqm8696q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "9b709aa037a5a8b567b01f95febe943f69ffeb96"
+          }
+        },
+        {
+          "client_id": "674426264898-hpnh678m3afb8rcv1sdejolqmc8eta5v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "8c96cbd881ce29ffd571d5a4c1ffab8ac8354d4b"
+          }
+        },
+        {
+          "client_id": "674426264898-iihnou7619vlka5g4e1b5aotv4kbutqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "f5b4dd4291b7d2ebbd0bd0e00d8254d3c07fe597"
+          }
+        },
+        {
+          "client_id": "674426264898-s96v3fl009vnougn54f2pnv8kb26el9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "9298e6505930bba1d942694b67fb89edb82fc210"
+          }
+        },
+        {
+          "client_id": "674426264898-q3a831du2fqhhslri4glks3hfh326i20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtWeBxpGYXSpbaljnxXNL7dLrBgegKO2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674426264898-q3a831du2fqhhslri4glks3hfh326i20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674426264898:android:33329cde0541aa26447cdb",
+        "android_client_info": {
+          "package_name": "com.scaapers.scaape"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "674426264898-q3a831du2fqhhslri4glks3hfh326i20.apps.googleusercontent.com",
           "client_type": 3
         }

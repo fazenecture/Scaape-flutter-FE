@@ -43,6 +43,7 @@ dependencies:
   shimmer: ^2.0.0
   transparent_image: ^2.0.0
   custom_refresh_indicator: ^1.0.0
+  change_app_package_name: ^1.0.0
 
 
 
