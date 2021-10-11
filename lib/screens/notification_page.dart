@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart';
@@ -14,8 +15,11 @@ import 'package:recase/recase.dart';
 import 'package:scaape/screens/UserProfile.dart';
 import 'package:scaape/screens/add_scaape.dart';
 import 'package:scaape/screens/all_notifications.dart';
+import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'home_screen.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
@@ -121,7 +125,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 scrollDirection: Axis.vertical,
-                                itemCount: snapshot.data.length == 2 ? 2 : 1,
+                                itemCount: snapshot.data.length >= 2 ? 2 : 1,
                                 itemBuilder: (context, index) {
                                   //var datas=snapshot.data;
                                   return Column(
@@ -388,7 +392,35 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                 padding: const EdgeInsets.symmetric(
                                                                     vertical: 12, horizontal: 19),
                                                                 child: MaterialButton(
-                                                                  onPressed: (){
+                                                                  onPressed: () async{
+                                                                    try {
+                                                                      setState(() async{
+                                                                        String url =
+                                                                            'https://api.scaape.online/api/DeleteScaape';
+                                                                        Map<String, String> headers = {
+                                                                          "Content-type": "application/json"
+                                                                        };
+                                                                        String json =
+                                                                            '{"ScaapeId": "${a[index]['ScaapeId']}","UserId": "${a[index]['UserId']}"}';
+                                                                        http.Response response = await post(Uri.parse(url),
+                                                                            headers: headers, body: json);
+                                                                        int statusCode = response.statusCode;
+                                                                        print(statusCode);
+                                                                        Navigator.pop(context);
+                                                                        // getActiveScaape(authId);
+                                                                        // Navigator.of(context).push(new MaterialPageRoute(builder: (context) => NotificationScreen())).whenComplete(retrieveData);
+                                                                        // Navigator.of(context).pushNamedAndRemoveUntil(NotificationScreen.id, (Route<dynamic> route) => false);
+                                                                        // Navigator.pushReplacementNamed(context, NotificationScreen.id);
+                                                                        Navigator.pushReplacementNamed(context, HomeScreen.id);
+                                                                        Fluttertoast.showToast(msg: 'Scaape Deleted');
+
+                                                                        print(response.body);
+                                                                      });
+
+                                                                    } catch (e) {
+                                                                      print(e);
+                                                                    }
+
 
                                                                   },
                                                                   elevation: 0,
@@ -849,6 +881,9 @@ void onClick(String ScapeId) async {
     print(e);
   }
 }
+
+
+
 
 
 // Recent Request Card

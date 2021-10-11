@@ -82,7 +82,7 @@ class _AllNotificationsState extends State<AllNotifications> {
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.vertical,
-                          itemCount: snapshot.data.length == 2 ? 2 : 1,
+                          itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             //var datas=snapshot.data;
                             var a = snapshot.data;

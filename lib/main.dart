@@ -8,6 +8,7 @@ import 'package:scaape/screens/chat.dart';
 import 'package:scaape/screens/gender_selection.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/home_screen.dart';
+import 'package:scaape/screens/notification_page.dart';
 import 'package:scaape/screens/profile_page.dart';
 import 'package:scaape/screens/homePage.dart';
 import 'package:scaape/screens/signIn_page.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
         SignInScreen.id: (context) => SignInScreen(),
         GenderSelectionPage.id: (context) => GenderSelectionPage(),
         AllNotifications.id: (context) => AllNotifications(),
+        NotificationScreen.id: (context) => NotificationScreen(),
       },
       // home: HomeScreen(),
     );
