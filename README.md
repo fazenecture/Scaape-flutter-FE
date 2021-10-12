@@ -27,7 +27,9 @@
   <li>NodeJs</li>
   <li>AWS EC2 (Graviton based instance) AWS RDS</li>
   <li>Firebase</li>
+  <li>SQL</li>
+  <li>NoSQL</li>
 </ul>
-
+<h2>Backend Repository: <a href="https://github.com/Scaape/Scaape_node_BE">SCAAPE-BE</a></h2>
 <h1>License</h1>
 Licensed under the <a href="https://github.com/Scaape/Scaape-flutter-FE/blob/readme/LICENSE">MIT License</a>.
