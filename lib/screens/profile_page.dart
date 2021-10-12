@@ -1,11 +1,18 @@
+
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
+import 'package:async/async.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart';
+import 'package:path/path.dart';
 import 'package:scaape/screens/imageScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scaape/screens/onboardingScreen.dart';
+import 'dart:async';
 import 'package:scaape/screens/signIn_page.dart';
 import 'package:scaape/utils/constants.dart';
 import 'Staggered_Veiw.dart';
@@ -43,6 +50,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return newString;
   }
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  File? _image;
+  final picker = ImagePicker();
+  final pickedImage = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,11 +203,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: 10,
                             ),
-                            Image.asset(
+
+                            data['Vaccine']==1?Image.asset(
                               'images/tick.png',
                               height: 28,
                               width: 28,
-                            ),
+                            ):Text(""),
                           ],
                         ),
                         Column(
@@ -210,19 +221,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 80,vertical: 10),
+                                padding: const EdgeInsets.fromLTRB(80, 10,80,0),
                                 child: Text('${data['Bio']}',textAlign: TextAlign.center,),
                               ),
+                              (data['Vaccine']==0)&&(data['UserId']==currentUser!.uid)?
+                              Padding(
+                                padding: const EdgeInsets.only(left: 80,right: 80),
+                                child: Row(
+                                  children: [
+                                    Text('To get verified Badge',textAlign: TextAlign.center,),
+                                    TextButton(
+                                      child: Text("Click Here"),
+                                      onPressed: () async {
+                                        final pickedFile =
+                                        await picker.getImage(source: ImageSource.gallery);
+                                        setState(
+                                              () {
+                                            if (pickedFile != null) {
+                                              _image = File(pickedFile.path);
+                                              print(pickedFile.path);
+                                            } else {
+                                              print('No image selected');
+                                            }
+                                          },
+                                        );
+                                        var paths;
+                                        try {
+                                          String url = 'https://api.scaape.online/testUpload';
+                                          var stream = new http.ByteStream(
+                                              DelegatingStream.typed(_image!.openRead()));
+                                          var length = await _image!.length();
+                                          var request =
+                                          MultipartRequest('POST', Uri.parse(url));
+
+                                          var multipartFile = new http.MultipartFile(
+                                              'file', stream, length,
+                                              filename: basename(_image!.path));
+                                          request.files.add(multipartFile);
+                                          var res = await request.send();
+                                          print(res.statusCode);
+
+                                          await res.stream
+                                              .transform(utf8.decoder)
+                                              .listen((value) {
+                                            var data = jsonDecode(value);
+                                            paths = data['path'].toString().substring(7);
+                                            print(paths);
+                                            var imageurl = 'https://api.scaape.online/ftp/$paths';
+                                            print(imageurl);
+                                            Fluttertoast.showToast(
+                                              msg: "Uploaded successfully",
+                                            );
+                                          });
+                                        } catch (e) {
+                                          print(e);
+                                        }
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ):Text("")
                             ]
                         ),
-                        // Text(
-                        //   '@passionatetraveler',
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.w400,
-                        //     color: Colors.white,
-                        //     fontSize: 14,
-                        //   ),
-                        // ),
+
                         SizedBox(
                           height: 30,
                         ),
