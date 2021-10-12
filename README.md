@@ -30,4 +30,4 @@
 </ul>
 
 <h1>License</h1>
-Licensed under the [MIT License](LICENSE).
+Licensed under the <a href="https://github.com/Scaape/Scaape-flutter-FE/blob/readme/LICENSE">MIT License</a>.
