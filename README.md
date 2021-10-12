@@ -22,5 +22,10 @@
   <img src="ReadmeImages/scaape-app-icon (5).png"  width="30%">
 </div>
 <h1>Tech Stack</h1>
-
+<ul>
+  <li>Flutter</li>
+  <li>NodeJs</li>
+  <li>AWS EC2 (Graviton based instance) AWS RDS</li>
+  <li>Firebase</li>
+</ul>
 
