@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,10 +18,14 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:scaape/screens/home_screen.dart';
 import 'package:scaape/utils/constants.dart';
+import 'package:scaape/utils/location.dart';
+
+
 
 class AddScaape extends StatefulWidget {
   double? latitude;
   double? longitude;
+
   static String id = 'AddScape';
 
   @override
@@ -39,6 +44,10 @@ class _AddScaapeState extends State<AddScaape> {
   double? lat;
   double? lon;
   bool loading = false;
+  Location _location = Location();
+  String longitude = '';
+  String latitude = '';
+  String yourLocation = '';
   var pref;
   final Set<Marker> _markers = {};
   List<String> genderSelected = ['Male', 'Female', 'Both'];
@@ -52,6 +61,39 @@ class _AddScaapeState extends State<AddScaape> {
     }
     return "Not selected";
   }
+
+
+  getCurrentLocation() async {
+    Position position = await _location.getCurrentLocation();
+    setState(() {
+      latitude = position.latitude.toString();
+      longitude = position.longitude.toString();
+    });
+    print(latitude);
+  }
+
+  getCityNameFromLatLong(String lat, String long) async {
+    http.Response response = await http.get(Uri.parse(
+        'http://api.openweathermap.org/geo/1.0/reverse?lat=$lat&lon=$long&limit=1&appid=0bc99a1469e0265da6ffacbf340e4e35'));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        yourLocation = data[0]['name'];
+      });
+      print('$yourLocation');
+      return data[0]['name'];
+    }
+    else {
+      return null;
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    getCurrentLocation();
+    getCityNameFromLatLong(latitude, longitude);
+  }
+
 
   Future<bool> _willPopCallback() async {
     // await showDialog or Show add banners or whatever
@@ -158,6 +200,64 @@ class _AddScaapeState extends State<AddScaape> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // FutureBuilder(
+                //     future: getCityNameFromLatLong(latitude, longitude),
+                //     builder: (context, snap) {
+                //       if (snap.connectionState == ConnectionState.waiting) {
+                //         return Image(
+                //           image:
+                //           AssetImage('animations/location-loader.gif'),
+                //           height: 60,
+                //           width: 60,
+                //         );
+                //       } else {
+                //         if (snap.hasData) {
+                //           return Padding(
+                //             padding: const EdgeInsets.only(
+                //                 top: 5, bottom: 5, right: 10),
+                //             child: Container(
+                //               decoration: BoxDecoration(
+                //                   color: Color(0xFF262930),
+                //                   borderRadius: BorderRadius.all(
+                //                       Radius.circular(22))),
+                //               child: Padding(
+                //                 padding: const EdgeInsets.symmetric(
+                //                     horizontal: 12, vertical: 6),
+                //                 child: Row(
+                //                   children: [
+                //                     Icon(
+                //                       Icons.location_pin,
+                //                       size: 23,
+                //                       color: ScaapeTheme.kPinkColor,
+                //                     ),
+                //                     Text(
+                //                       '${snap.data}',
+                //                       style: GoogleFonts.poppins(
+                //                         fontSize: medq.height * 0.0145,
+                //                         color: const Color(0xffffffff),
+                //                       ),
+                //                       // style: TextStyle(
+                //                       //   fontSize: medq.height * 0.025,
+                //                       //   color: const Color(0xffffffff),
+                //                       //
+                //                       // ),
+                //                       textAlign: TextAlign.left,
+                //                     )
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //         } else {
+                //           return Image(
+                //             image: AssetImage(
+                //                 'animations/location-loader.gif'),
+                //             height: 60,
+                //             width: 60,
+                //           );
+                //         }
+                //       }
+                //     }),
                 // Row(
                 //   children: [
                 //     Image.asset(
@@ -389,19 +489,43 @@ class _AddScaapeState extends State<AddScaape> {
                 SizedBox(
                   height: medq.height * 0.02,
                 ),
-                buildHeading(medq, 'Select Your Preference'),
+
+                buildHeading(medq, 'Select Your Activity $yourLocation'),
                 SizedBox(
                   height: medq.height * 0.012,
                 ),
                 Container(
-                  width: medq.width*0.7,
-                  height: medq.height*0.06,
+                  // width: medq.width*0.7,
+                  // height: medq.height*0.06,
                   decoration: BoxDecoration(
                     color: ScaapeTheme.kSecondBlue,
                     borderRadius: BorderRadius.all(Radius.circular(8)),
 
                   ),
                   child: pref == "Other, I will type it" ? TextField(
+                      decoration: InputDecoration(
+                  suffixIcon: GestureDetector(child: Icon(Icons.close,)),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7.0),
+                            borderSide: BorderSide.none),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7.0),
+                            borderSide: BorderSide(
+                                width: 1, color: ScaapeTheme.kPinkColor)),
+                        border: InputBorder.none,
+                        hintText: "Your Preference",
+                        hintStyle: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: medq.height * 0.02,
+                          color: const Color(0x5cffffff),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    onChanged: (value) {
+                      pref = value;
+                    },
                   ) : DropdownSearch<String>(
                     maxHeight: medq.height*0.3,
                     popupBackgroundColor: ScaapeTheme.kBackColor,
@@ -409,7 +533,7 @@ class _AddScaapeState extends State<AddScaape> {
                         borderRadius: BorderRadius.all(Radius.circular(8))
                     ),
                     dropdownSearchDecoration: InputDecoration(
-                      hintText: 'Select Your Preference',
+                      hintText: 'Select Your Activity',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 5.0, horizontal: 15.0
                         ),
@@ -457,7 +581,8 @@ class _AddScaapeState extends State<AddScaape> {
                               color: const Color(0x5cffffff),
                               fontWeight: FontWeight.w300,
                             ),
-                          )),
+                          )
+                      ),
                     ),
                   ),
                 ),
@@ -566,7 +691,7 @@ class _AddScaapeState extends State<AddScaape> {
                             "Content-type": "application/json"
                           };
                           String json =
-                              '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","ScaapeImg": "${imageurl}","Status": "true","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
+                              '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","City": "$yourLocation","ScaapeImg": "${imageurl}","Status": "true","Activity":"${pref}","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
                           http.Response response = await post(Uri.parse(url),
                               headers: headers, body: json);
                           //print(user.displayName);
@@ -656,3 +781,4 @@ class _AddScaapeState extends State<AddScaape> {
     );
   }
 }
+
