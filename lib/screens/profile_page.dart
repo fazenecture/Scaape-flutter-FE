@@ -263,11 +263,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                           await res.stream
                                               .transform(utf8.decoder)
-                                              .listen((value) {
+                                              .listen((value) async {
                                             var data = jsonDecode(value);
                                             paths = data['path'].toString().substring(7);
                                             print(paths);
                                             var imageurl = 'https://api.scaape.online/ftp/$paths';
+                                            try{
+                                              String url = 'https://api.scaape.online/api/UpdateVaccineCert';
+                                              Map<String, String> headers = {
+                                                "Content-type": "application/json"
+                                              };
+                                              String json ='{"VaccineCert":"${imageurl}","UserId":"${currentUser!.uid}"}';
+                                              http.Response response = await post(Uri.parse(url),
+                                                  headers: headers, body: json);
+
+                                              int statusCode = response.statusCode;
+                                              print(statusCode);
+                                              print(response.body);
+                                            }catch(e){
+                                              print(e);
+                                            }
                                             print(imageurl);
                                             Fluttertoast.showToast(
                                               msg: "Uploaded successfully",
