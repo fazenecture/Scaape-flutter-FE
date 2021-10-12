@@ -29,3 +29,5 @@
   <li>Firebase</li>
 </ul>
 
+<h1>License</h1>
+Licensed under the [MIT License](LICENSE).
