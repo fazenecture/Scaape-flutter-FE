@@ -5,15 +5,22 @@
 </p>
 
 <h1>About</h2>
-<p> With Scaape we intend to help you meet new people around your place, with the same interest and hobbies as you,  who may accompany you in your daily walks, gym, or tour to a new city or landmark. With Scaape you can create an event or as we like to call it ‘Scaape’ and people around your place can join the event to give you company. You can create a Scaape for whatever you like from going out to try out a new hangout location to just wanting to have a walk with some people, no matter how silly it is if it’s something related to meeting people, we got you covered.
+<p> With Scaape we intend to help you meet new people around your place, with the same interest and hobbies as you,  who may accompany you in your daily walks, gym, or tour to a new city or landmark. With Scaape you can create an event or as we like to call it <b>‘Scaape’</b>and people around your place can join the event to give you company. You can create a Scaape for whatever you like from going out to try out a new hangout location to just wanting to have a walk with some people, no matter how silly it is if it’s something related to meeting people, we got you covered.
 </p>
 
 <h1>Features</h2>
+
 <div>
-  <img src="">
-  <img src="">
-  <img src="">
+  <img src="ReadmeImages/scaape-app-icon (1).png"  width="30%">
+  <img src="ReadmeImages/scaape-app-icon (4).png"  width="30%">
+  <img src="ReadmeImages/scaape-app-icon (3).png"  width="30%">
+</div>
+
+<div>
+  <img src="ReadmeImages/scaape-app-icon (6).png"  width="30%">
+  <img src="ReadmeImages/scaape-app-icon (2).png"  width="30%">
+  <img src="ReadmeImages/scaape-app-icon (5).png"  width="30%">
 </div>
 <h1>Tech Stack</h1>
-Frontend
+
 
