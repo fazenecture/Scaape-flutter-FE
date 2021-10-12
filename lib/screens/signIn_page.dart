@@ -45,17 +45,22 @@ class _SignInScreenState extends State<SignInScreen> {
                   // fit: BoxFit.cover,
                 ),
               ),
+              SizedBox(
+                height: 50,
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
                     'images/logo.png',
+
                     height: 35,
                     width: 35,
                   ),
                   SizedBox(
                     width: 4,
                   ),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -88,6 +93,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         color: ScaapeTheme.kPinkColor),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 10,
               ),
               MaterialButton(
                 onPressed: () async {
@@ -144,28 +152,28 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(
                 height: 10,
               ),
-              MaterialButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, GenderSelectionPage.id) ;
-                },
-                height: 60,
-                minWidth: double.infinity,
-                color: Color(0xFF393E46),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(13)),
-                elevation: 0,
-                child: ListTile(
-                  leading: Image.asset(
-                    'images/facebook-icon.png',
-                    height: 33,
-                    width: 33,
-                  ),
-                  title: Text(
-                    'Sign In with Facebook',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-              ),
+              // MaterialButton(
+              //   onPressed: () {
+              //     Navigator.pushNamed(context, GenderSelectionPage.id) ;
+              //   },
+              //   height: 60,
+              //   minWidth: double.infinity,
+              //   color: Color(0xFF393E46),
+              //   shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(13)),
+              //   elevation: 0,
+              //   child: ListTile(
+              //     leading: Image.asset(
+              //       'images/facebook-icon.png',
+              //       height: 33,
+              //       width: 33,
+              //     ),
+              //     title: Text(
+              //       'Sign In with Facebook',
+              //       style: TextStyle(color: Colors.white, fontSize: 16),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
