@@ -245,97 +245,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                     SizedBox(
                                                                       height: medq.height * 0.014,
                                                                     ),
-                                                                    // GestureDetector(
-                                                                    //   onTap: () {
-                                                                    //     // String auth = FirebaseAuth
-                                                                    //     //     .instance.currentUser!.uid;
-                                                                    //     // auth != uid ? Navigator.pushNamed(context,
-                                                                    //     //     UserProfileScreen.id,
-                                                                    //     //     arguments: {
-                                                                    //     //       "UserId": "${uid}"
-                                                                    //     //     })
-                                                                    //     //     : null;
-                                                                    //   },
-                                                                    //   child: Container(
-                                                                    //     decoration: BoxDecoration(
-                                                                    //       borderRadius: BorderRadius.all(
-                                                                    //           Radius.circular(8)),
-                                                                    //     ),
-                                                                    //     width: medq.width * 0.56,
-                                                                    //     child: Row(
-                                                                    //       children: [
-                                                                    //         Container(
-                                                                    //           decoration: BoxDecoration(
-                                                                    //               gradient: LinearGradient(
-                                                                    //                   colors: [
-                                                                    //                     Color(0xFFFF416C),
-                                                                    //                     Color(0xFFFF4B2B)
-                                                                    //                   ],
-                                                                    //                   begin: Alignment
-                                                                    //                       .topCenter,
-                                                                    //                   end: Alignment
-                                                                    //                       .bottomCenter),
-                                                                    //               shape: BoxShape.circle),
-                                                                    //           height: 42,
-                                                                    //           width: 42,
-                                                                    //           child: CircleAvatar(
-                                                                    //             // radius: 33,
-                                                                    //             backgroundColor:
-                                                                    //             Color(0xFFFF4B2B)
-                                                                    //                 .withOpacity(0),
-                                                                    //             child: CircleAvatar(
-                                                                    //               backgroundImage:
-                                                                    //               NetworkImage(
-                                                                    //                   '${a[index]['DP']}'),
-                                                                    //               backgroundColor:
-                                                                    //               Colors.transparent,
-                                                                    //               // radius: 34,
-                                                                    //             ),
-                                                                    //           ),
-                                                                    //         ),
-                                                                    //         SizedBox(
-                                                                    //           width: 8,
-                                                                    //         ),
-                                                                    //         Column(
-                                                                    //           crossAxisAlignment:
-                                                                    //           CrossAxisAlignment.start,
-                                                                    //           mainAxisAlignment:
-                                                                    //           MainAxisAlignment.center,
-                                                                    //           children: [
-                                                                    //             Container(
-                                                                    //               width: medq.width * 0.24,
-                                                                    //               child: Text(
-                                                                    //                 '${a[index]['Name']}',
-                                                                    //                 maxLines: 1,
-                                                                    //                 softWrap: true,
-                                                                    //                 overflow:
-                                                                    //                 TextOverflow.clip,
-                                                                    //                 style:
-                                                                    //                 GoogleFonts.poppins(
-                                                                    //                   fontSize: 13,
-                                                                    //                   fontWeight:
-                                                                    //                   FontWeight.w500,
-                                                                    //                 ),
-                                                                    //                 textAlign:
-                                                                    //                 TextAlign.left,
-                                                                    //               ),
-                                                                    //             ),
-                                                                    //             Text(
-                                                                    //               '@${a[index]['InstaId']}',
-                                                                    //               maxLines: 1,
-                                                                    //               style:
-                                                                    //               GoogleFonts.poppins(
-                                                                    //                   fontSize: 10,
-                                                                    //                   fontWeight:
-                                                                    //                   FontWeight
-                                                                    //                       .w400),
-                                                                    //             ),
-                                                                    //           ],
-                                                                    //         ),
-                                                                    //       ],
-                                                                    //     ),
-                                                                    //   ),
-                                                                    // ),
+
                                                                     SizedBox(
                                                                       height: medq.height * 0.02,
                                                                     ),
@@ -905,58 +815,67 @@ class RecentRequestCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context,
+                    UserProfileScreen.id,
+                    arguments: {
+                      "UserId": "${userId}"
+                    });
+              },
+              child: Row(
 
-              children: <Widget>[
-                CircleAvatar(
-                  backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
-                  radius: 22,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    backgroundImage: NetworkImage(ImageUrl),
-                    radius: 19,
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
+                    radius: 22,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      backgroundImage: NetworkImage(ImageUrl),
+                      radius: 19,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.37,
-                      child: Text(
-                        '${Name.titleCase}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width*0.37,
+                        child: Text(
+                          '${Name.titleCase}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          size: 12,
-                        ),
-                        Text(
-                          '${location.sentenceCase}',
-                          maxLines: 1,
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            size: 12,
+                          ),
+                          Text(
+                            '${location.sentenceCase}',
+                            maxLines: 1,
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Row(
               children: <Widget>[
