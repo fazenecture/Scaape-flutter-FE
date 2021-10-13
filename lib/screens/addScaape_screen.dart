@@ -74,7 +74,9 @@ class _AddScaapeState extends State<AddScaape> {
 
   getCityNameFromLatLong(String lat, String long) async {
     http.Response response = await http.get(Uri.parse(
-        'http://api.openweathermap.org/geo/1.0/reverse?lat=$lat&lon=$long&limit=1&appid=0bc99a1469e0265da6ffacbf340e4e35'));
+        'http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&limit=1&appid=0bc99a1469e0265da6ffacbf340e4e35'));
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       setState(() {
@@ -88,11 +90,12 @@ class _AddScaapeState extends State<AddScaape> {
     }
   }
   @override
-  void initState() {
+  void initState(){
     super.initState();
     getCurrentLocation();
-    getCityNameFromLatLong(latitude, longitude);
+
   }
+
 
 
   Future<bool> _willPopCallback() async {
@@ -645,12 +648,12 @@ class _AddScaapeState extends State<AddScaape> {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        getCityNameFromLatLong(latitude, longitude);
                         print(DateTime.now().millisecondsSinceEpoch);
                         print(dateTime.toString().substring(0, 16));
                         if (ScaapeName.isEmpty ||
                             ScapeDescription.isEmpty ||
-                            getPrefernce() == "Not selected" ||
-                            ScaapeLocation.isEmpty||_image.isNull) {
+                            getPrefernce() == "Not selected" ||_image.isNull) {
                           Fluttertoast.showToast(
                             msg: "enter all details",
                           );
@@ -691,7 +694,7 @@ class _AddScaapeState extends State<AddScaape> {
                             "Content-type": "application/json"
                           };
                           String json =
-                              '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","City": "$yourLocation","ScaapeImg": "${imageurl}","Status": "true","Activity":"${pref}","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
+                              '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${ScaapeName}","Description": "${ScapeDescription}","ScaapePref": "${getPrefernce()}","Location": "${ScaapeLocation}","City": "${yourLocation}","ScaapeImg": "${imageurl}","Status": "true","Activity":"${pref}","ScaapeDate": "${dateTime.toString().substring(0, 16)}"}';
                           http.Response response = await post(Uri.parse(url),
                               headers: headers, body: json);
                           //print(user.displayName);
