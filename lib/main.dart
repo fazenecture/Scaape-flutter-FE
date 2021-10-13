@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:scaape/screens/onBoarding2_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/screens/allNotification_screen.dart';
@@ -33,6 +34,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _auth = FirebaseAuth.instance;
   Future<User?> getCurrentUser() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String version = packageInfo.version;
+    String code = packageInfo.buildNumber;
+    print(version);
+    print(code);
     User? currentUser;
     currentUser = _auth.currentUser;
     return currentUser;
