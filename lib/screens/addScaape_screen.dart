@@ -16,9 +16,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:scaape/screens/home_screen.dart';
+import 'package:scaape/screens/bottom_navigatin_bar.dart';
 import 'package:scaape/utils/constants.dart';
-import 'package:scaape/utils/location.dart';
+import 'package:scaape/utils/location_class.dart';
 
 
 

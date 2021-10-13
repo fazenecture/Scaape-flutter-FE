@@ -10,11 +10,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:recase/recase.dart';
-import 'package:scaape/screens/add_scaape.dart';
+import 'package:scaape/screens/addScaape_screen.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'notification_page.dart';
+import 'notification_screen.dart';
 
 
 class AllNotifications extends StatefulWidget {

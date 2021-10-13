@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scaape/screens/OnBoarding2.dart';
-import 'package:scaape/screens/homePage.dart';
+import 'package:scaape/screens/onBoarding2_screen.dart';
+import 'package:scaape/screens/dashboard_screen.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:scaape/utils/constants.dart';

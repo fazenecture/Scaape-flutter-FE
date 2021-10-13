@@ -302,3 +302,4 @@ class TrendingCards extends StatelessWidget {
     );
   }
 }
+

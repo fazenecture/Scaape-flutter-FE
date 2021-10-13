@@ -8,8 +8,8 @@ import 'package:rive/rive.dart';
 
 import 'package:http/http.dart';
 import 'package:scaape/networking/google_signin.dart';
-import 'package:scaape/screens/gender_selection.dart';
-import 'package:scaape/screens/home_screen.dart';
+import 'package:scaape/screens/onBoarding1_screen.dart';
+import 'package:scaape/screens/bottom_navigatin_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:scaape/utils/constants.dart';
 

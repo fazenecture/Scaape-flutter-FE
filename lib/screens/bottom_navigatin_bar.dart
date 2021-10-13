@@ -2,11 +2,11 @@ import 'package:blur_bottom_bar/blur_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:scaape/utils/constants.dart';
 
-import 'add_scaape.dart';
-import 'chat.dart';
-import 'homePage.dart';
-import 'notification_page.dart';
-import 'profile_page.dart';
+import 'addScaape_screen.dart';
+import 'chat_screen.dart';
+import 'dashboard_screen.dart';
+import 'notification_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'homeScreen';

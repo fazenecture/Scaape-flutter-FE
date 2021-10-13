@@ -13,16 +13,16 @@ import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:scaape/screens/UserProfile.dart';
+import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/utils/constants.dart';
-import 'package:scaape/utils/location.dart';
+import 'package:scaape/utils/location_class.dart';
 import 'package:dashed_circle/dashed_circle.dart';
 import 'package:scaape/utils/ui_components.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:recase/recase.dart';
-import 'package:scaape/utils/Cloud.dart' as cl;
+
 
 class HomePageView extends StatefulWidget {
   static String id = 'homePage';
@@ -2347,7 +2347,7 @@ void onClick(String ScapeId) async {
 // import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-// import 'package:scaape/utils/location.dart';
+// import 'package:scaape/utils/location_class.dart';
 // import 'package:scaape/utils/ui_components.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'package:http/http.dart' as http;

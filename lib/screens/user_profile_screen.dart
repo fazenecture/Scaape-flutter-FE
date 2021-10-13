@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart';
-import 'package:scaape/screens/imageScreen.dart';
+import 'package:scaape/utils/image_viewer_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaape/utils/constants.dart';
-import 'Staggered_Veiw.dart';
+import '../utils/staggered_view_widget.dart';
 
 
 class UserProfileScreen extends StatefulWidget {

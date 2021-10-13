@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:scaape/screens/signIn_page.dart';
+import 'package:scaape/screens/signIn_screen.dart';
 import 'package:scaape/utils/constants.dart';
 
 const kBackgroundColor = ScaapeTheme.kBackColor;

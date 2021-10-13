@@ -12,14 +12,14 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:recase/recase.dart';
-import 'package:scaape/screens/UserProfile.dart';
-import 'package:scaape/screens/add_scaape.dart';
-import 'package:scaape/screens/all_notifications.dart';
-import 'package:scaape/screens/homePage.dart';
+import 'package:scaape/screens/user_profile_screen.dart';
+import 'package:scaape/screens/addScaape_screen.dart';
+import 'package:scaape/screens/allNotification_screen.dart';
+import 'package:scaape/screens/dashboard_screen.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'home_screen.dart';
+import 'bottom_navigatin_bar.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
