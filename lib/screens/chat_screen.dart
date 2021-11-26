@@ -30,9 +30,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String authId=auth.currentUser!.uid;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
+    return Container(
         child: FutureBuilder(
           future: getActiveScaapes(authId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -174,8 +172,7 @@ class _ScaapeChatState extends State<ScaapeChat> {
           },
 
         ),
-      ),
-    );
+      );
   }
 }
 

@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "674426264898-825drlmap5jq9hff438h64c0a9ck4jtg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scaape",
+            "certificate_hash": "b0a30c23ce989b7f72f74ef7859ff41c1cc42673"
+          }
+        },
+        {
           "client_id": "674426264898-dk4ks61cegljdkr7itfnuus144usd1ja.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -107,6 +115,46 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "674426264898-7le6g2ljk5fsbtctnfe5fgqmh0tu14q7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scaapers.scaape",
+            "certificate_hash": "43c84088bb4b6d31495014f4995c852656c06fb4"
+          }
+        },
+        {
+          "client_id": "674426264898-apea1bll5jjq0tvm8r8spmu753252s4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scaapers.scaape",
+            "certificate_hash": "9298e6505930bba1d942694b67fb89edb82fc210"
+          }
+        },
+        {
+          "client_id": "674426264898-e4193aidbqu9katl7ss3j8klt9ldvlgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scaapers.scaape",
+            "certificate_hash": "8c96cbd881ce29ffd571d5a4c1ffab8ac8354d4b"
+          }
+        },
+        {
+          "client_id": "674426264898-icoei51p9oo1k3796jel8dcs14b4edir.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scaapers.scaape",
+            "certificate_hash": "977c712bbbf44578ac4b087bee566d924d71dbc1"
+          }
+        },
+        {
+          "client_id": "674426264898-taq8d7k2i8bj98cf0709nmst5hj6n3e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scaapers.scaape",
+            "certificate_hash": "368aac35ca26db344bd7171dd47fc3b70c79de63"
+          }
+        },
         {
           "client_id": "674426264898-q3a831du2fqhhslri4glks3hfh326i20.apps.googleusercontent.com",
           "client_type": 3

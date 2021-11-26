@@ -43,8 +43,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     String authId = auth.currentUser!.uid;
     Size medq = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SafeArea(
+    return SafeArea(
         child: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
@@ -610,8 +609,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 

@@ -101,7 +101,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 onPressed: () async {
                   User? user =
                       await Authentication.signInWithGoogle(context: context);
-
+                  print(user);
+                  print('user');
                   if (user != null) {
                     var data=await getUserDetails(user.uid);
                     if(data.length==0){
@@ -118,8 +119,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       }
                       catch(e){
                         print(e);
-
-
                       }
                     }
                     else{

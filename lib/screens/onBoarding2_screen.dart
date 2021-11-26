@@ -32,7 +32,7 @@ class _Onboarding2State extends State<Onboarding2> {
   String? _base64;
   List? imagesList;
   final picker = ImagePicker();
-  String Instagram = '';
+    String Instagram = '';
   bool isLoading = false;
   String Bio='';
 
@@ -196,35 +196,35 @@ class _Onboarding2State extends State<Onboarding2> {
                       //     ),
                       //   ],
                       // ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              final pickedFile =
-                              await picker.getImage(source: ImageSource.gallery);
-                              setState(
-                                    () {
-                                  if (pickedFile != null) {
-                                    _image = File(pickedFile.path);
-                                    _base64 = base64Encode(_image!.readAsBytesSync());
-                                    print(pickedFile.path);
-                                  } else {
-                                    print('No image selected');
-                                  }
-                                },
-                              );
-                            },
-                            child: buildButtons(
-                                medq, "Upload Image", 0.36, Color(0xff393e46)),
-                          ),
-                          _base64 == null
-                              ? Container()
-                              : Icon(
-                            Icons.done,
-                            color: Colors.green,
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     GestureDetector(
+                      //       onTap: () async {
+                      //         final pickedFile =
+                      //         await picker.getImage(source: ImageSource.gallery);
+                      //         setState(
+                      //               () {
+                      //             if (pickedFile != null) {
+                      //               _image = File(pickedFile.path);
+                      //               _base64 = base64Encode(_image!.readAsBytesSync());
+                      //               print(pickedFile.path);
+                      //             } else {
+                      //               print('No image selected');
+                      //             }
+                      //           },
+                      //         );
+                      //       },
+                      //       child: buildButtons(
+                      //           medq, "Upload Image", 0.36, Color(0xff393e46)),
+                      //     ),
+                      //     _base64 == null
+                      //         ? Container()
+                      //         : Icon(
+                      //       Icons.done,
+                      //       color: Colors.green,
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(height: 40),
                       Container(
                           child: Text(
@@ -414,6 +414,7 @@ class _Onboarding2State extends State<Onboarding2> {
                               Map<String, String> headers = {
                                 "Content-type": "application/json"
                               };
+
                               String json =
                                   '{"UserId": "${signInData['UserId']}","EmailId": "${signInData['EmailId']}","BirthDate": "${signInData['BirthDate']}","Gender": "${signInData['BirthDate']}","Name": "${signInData['Name']}","ProfileImg": "${imageurls}","InstaId": "${Instagram}","Vaccine": "true","Bio":"${Bio}"}';
 

@@ -24,7 +24,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:recase/recase.dart';
 
 
-class HomePageView extends StatefulWidget {
+class   HomePageView extends StatefulWidget {
   static String id = 'homePage';
 
   @override
