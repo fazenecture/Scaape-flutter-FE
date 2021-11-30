@@ -26,6 +26,8 @@ class _SignInScreenState extends State<SignInScreen> {
   var _auth = FirebaseAuth.instance;
   final databaseReference = FirebaseDatabase.instance.reference();
 
+  bool checkNew = false;
+  // AdditionalUserInfo isNewUser = AdditionalUserInfo(isNewUser: isNewUser)
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +116,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           'Name': '${user.displayName}',
                           'ProfileImage': '${user.photoURL}',
                           'Vaccine': false,
-                          'Verified': false
+                          'Verified': false,
+                          'TutorialStatus': true,
                         } );
                       }
                       catch(e){
@@ -123,7 +126,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     }
                     else{
                       Navigator.pushNamedAndRemoveUntil(
-                          context, HomeScreen.id, (route) => false);
+                          context, HomeScreen.id, (route) => false, arguments: {
+                        'TutorialStatus': false
+                      });
                     }
 
                   } else {

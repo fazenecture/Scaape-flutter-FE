@@ -272,7 +272,7 @@ Future<List<dynamic>> getUserDetails(String id)async{
   print(url);
   Response response=await get(Uri.parse(url));
   int statusCode = response.statusCode;
-  print(statusCode);
+  print(json.decode(response.body));
 
   return json.decode(response.body);
 }

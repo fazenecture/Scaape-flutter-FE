@@ -22,7 +22,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:recase/recase.dart';
-
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class   HomePageView extends StatefulWidget {
   static String id = 'homePage';
@@ -56,6 +56,18 @@ class _HomePageViewState extends State<HomePageView>
   late AnimationController controllerTrek;
   late AnimationController controllerGym;
   late AnimationController controllerClub;
+  late TutorialCoachMark tutorialCoachMark;
+  List<TargetFocus> targets = [];
+
+  GlobalKey key = GlobalKey();
+  GlobalKey _key1 = GlobalKey();
+  GlobalKey _key2 = GlobalKey();
+  GlobalKey _key3 = GlobalKey();
+
+
+
+
+
 
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
@@ -65,6 +77,28 @@ class _HomePageViewState extends State<HomePageView>
     });
     // print(latitude);
   }
+
+
+  Future<int> getUserDetails()async{
+    String url='https://api.scaape.online/api/getUserDetails/${auther.currentUser!.uid}';
+    // print(url);
+    http.Response response=await get(Uri.parse(url));
+    int statusCode = response.statusCode;
+    print("hello");
+    var data = json.decode(response.body);
+
+    print(data);
+    var tStatus = await data[0]["showTutorial"];
+    print(tStatus);
+    // if(tStatus){
+    //   return true;
+    // }else{
+    //   return false;
+    // }
+    return tStatus;
+  }
+
+
 
   getCityNameFromLatLong(String lat, String long) async {
     http.Response response = await http.get(Uri.parse(
@@ -104,9 +138,156 @@ class _HomePageViewState extends State<HomePageView>
     );
 
     _setupCloudsAnimationControllers();
+
+    getUserDetails().then((value){
+      print(value);
+      if(value == 1){
+        print("HOgaa");
+        setState(() {
+          initTargets();
+          WidgetsBinding.instance!.addPostFrameCallback(_layout);
+
+        });
+      }
+    });
+
+
     super.initState();
     getCurrentLocation();
   }
+
+
+
+
+  //tutorial coach initTarget Function
+
+
+  void _layout(_){
+    Future.delayed(Duration(milliseconds: 100));
+    showTutorial();
+  }
+
+  void showTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      context,
+      targets: targets,
+      colorShadow: Colors.pink,
+      textSkip: "SKIP",
+      paddingFocus: 10,
+      opacityShadow: 0.8,
+      onFinish: () async{
+
+        String url =  'https://api.scaape.online/api/UpdateTutorial';
+        Map<String, String> headers = {
+          "Content-type": "application/json"
+        };
+        String json = '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
+        http.Response response = await post(
+          Uri.parse(url),
+          headers: headers,
+          body: json
+        );
+        int statuscode = response.statusCode;
+        print(statuscode);
+        print(response.body);
+
+
+        print("finish");
+      },
+      onClickTarget: (target) {
+        print('onClickTarget: $target');
+      },
+      onSkip: () async{
+        String url =  'https://api.scaape.online/api/UpdateTutorial';
+        Map<String, String> headers = {
+          "Content-type": "application/json"
+        };
+        String json = '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
+        http.Response response = await post(
+            Uri.parse(url),
+            headers: headers,
+            body: json
+        );
+        int statuscode = response.statusCode;
+        print(statuscode);
+        print(response.body);
+        print("skip");
+      },
+      onClickOverlay: (target) {
+        print('onClickOverlay: $target');
+      },
+    )..show();
+  }
+
+  void initTargets(){
+
+      targets.add(
+          TargetFocus(
+            identify: "Target 0",
+            keyTarget: _key1,
+            color: ScaapeTheme.kSecondBlue,
+            contents: [
+              TargetContent(
+                  align: ContentAlign.bottom,
+                  child: Container(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Lorem Ipum",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
+                        ),
+                        Text("Lorem Ipsum Dolor sir", style: TextStyle(color: Colors.white),)
+                      ],
+                    ),
+                  )
+              )
+            ],
+            shape: ShapeLightFocus.Circle,
+            radius: 5,
+          )
+      );
+      targets.add(
+          TargetFocus(
+            identify: "Target 1",
+            keyTarget: _key2,
+            color: ScaapeTheme.kSecondBlue,
+            contents: [
+              TargetContent(
+                  align: ContentAlign.bottom,
+                  child: Container(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Lorem Ipum",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
+                        ),
+                        Text("Lorem Ipsum Dolor sir", style: TextStyle(color: Colors.white),)
+                      ],
+                    ),
+                  )
+              )
+            ],
+            shape: ShapeLightFocus.Circle,
+            radius: 5,
+          )
+      );
+
+
+  }
+
+
+
+
+
+
+
+
+
+
 
   void _setupCloudsAnimationControllers() {
     for (final cloud in _clouds)
@@ -190,6 +371,11 @@ class _HomePageViewState extends State<HomePageView>
       duration: Duration(milliseconds: 1600),
     ),
   ];
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -419,6 +605,7 @@ class _HomePageViewState extends State<HomePageView>
                             setState(() {});
                           },
                           child: TopCircleCards(
+                            key: _key2,
                             circleImg: CircleAvatar(
                               backgroundImage: NetworkImage(
                                   'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
@@ -458,6 +645,8 @@ class _HomePageViewState extends State<HomePageView>
                             setState(() {});
                           },
                           child: TopCircleCards(
+
+                            key: _key1,
                             circleImg: CircleAvatar(
                               backgroundImage: NetworkImage(
                                   'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
@@ -920,6 +1109,7 @@ class _HomePageViewState extends State<HomePageView>
                   height: 7,
                 ),
                 FutureBuilder(
+
                   future: getScapesByAuth(
                       auther.currentUser!.uid, trending, recent, forYou, val),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1076,20 +1266,20 @@ class _HomePageViewState extends State<HomePageView>
     if (val.isNotEmpty) {
       url =
           'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
-      print("stories");
+      // print("stories");
     } else {
       if (trend) {
         url =
             'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
-        print("trend clicked");
+        // print("trend clicked");
       } else if (rec) {
         url =
             'https://api.scaape.online/api/getLatestScaapesWithAuth/UserId=${id}';
-        print("recent clicked");
+        // print("recent clicked");
         // print("recent clicked");
       }
     }
-    print(url);
+    // print(url);
     var response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     // print(statusCode);
@@ -2075,7 +2265,7 @@ class HomeCard extends StatelessWidget {
                                               //print(user.displayName);
                                               int statusCode =
                                                   response.statusCode;
-                                              print(statusCode);
+                                              // print(statusCode);
                                               // print(response.body);
                                               Fluttertoast.showToast(
                                                 msg: "Succesfully joined",
@@ -2297,7 +2487,7 @@ class HomeCard extends StatelessWidget {
                                               body: json);
                                           //print(user.displayName);
                                           int statusCode = response.statusCode;
-                                          print(statusCode);
+                                          // print(statusCode);
                                           // print(response.body);
                                           Fluttertoast.showToast(
                                             msg: "Succesfully joined",
@@ -2333,9 +2523,9 @@ void onClick(String ScapeId) async {
     int statusCode = response.statusCode;
     // print(statusCode);
     // print(response.body);
-    print("Sucesfully uploaded on click");
+    // print("Sucesfully uploaded on click");
   } catch (e) {
-    print(e);
+    // print(e);
   }
 }
 // ScaapeTheme.kBackColor

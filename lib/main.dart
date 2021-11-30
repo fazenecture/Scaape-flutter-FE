@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:scaape/screens/explore_page.dart';
 import 'package:scaape/screens/onBoarding2_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/screens/allNotification_screen.dart';
@@ -44,6 +48,24 @@ class _MyAppState extends State<MyApp> {
     return currentUser;
   }
 
+
+
+  Future<List<dynamic>> getUserDetails()async{
+    User? currentUser;
+    currentUser = _auth.currentUser;
+    // currentUser!.uid;
+    String url='https://api.scaape.online/api/getUserDetails/${currentUser!.uid}';
+    // print(url);
+    Response response=await get(Uri.parse(url));
+    int statusCode = response.statusCode;
+    // print(json.decode(response.body));
+
+
+    return json.decode(response.body);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -59,11 +81,10 @@ class _MyAppState extends State<MyApp> {
           subtitle1: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
         ),
       ),
-      home: //Login(),
-          FutureBuilder(
-          future: getCurrentUser(),
+      home: FutureBuilder(
+          future: getUserDetails(),
           builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.data != []) {
             return HomeScreen();
           } else {
             return OnBoarding();
@@ -86,6 +107,7 @@ class _MyAppState extends State<MyApp> {
         GenderSelectionPage.id: (context) => GenderSelectionPage(),
         AllNotifications.id: (context) => AllNotifications(),
         NotificationScreen.id: (context) => NotificationScreen(),
+        ExplorePage.id: (context)=> ExplorePage(),
       },
       // home: HomeScreen(),
     );
