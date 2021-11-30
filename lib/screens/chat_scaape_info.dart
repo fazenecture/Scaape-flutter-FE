@@ -15,6 +15,7 @@ class _ChatDescState extends State<ChatDesc> {
         child: Column(
           children: [
             Container(
+              height: 12,
 
             )
           ],
