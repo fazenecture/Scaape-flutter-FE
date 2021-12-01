@@ -39,9 +39,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   var currentUser = FirebaseAuth.instance.currentUser;
   getCurrentUser() async {
-    if (currentUser != null) {
-      return currentUser;
+    print("idhar arha h");
+    try{
+      if (currentUser != null) {
+        return currentUser;
+      }
+    }catch(e){
+      print("Hello $e");
     }
+
+
   }
 
   String stringmani(String? values) {
