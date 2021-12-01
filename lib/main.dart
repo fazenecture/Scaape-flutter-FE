@@ -55,7 +55,6 @@ class _MyAppState extends State<MyApp> {
     currentUser = _auth.currentUser;
     // currentUser!.uid;
     String url='https://api.scaape.online/api/getUserDetails/${currentUser!.uid}';
-    // print(url);
     Response response=await get(Uri.parse(url));
     int statusCode = response.statusCode;
     // print(json.decode(response.body));
@@ -63,6 +62,7 @@ class _MyAppState extends State<MyApp> {
 
     return json.decode(response.body);
   }
+
 
 
 
@@ -81,10 +81,12 @@ class _MyAppState extends State<MyApp> {
           subtitle1: TextStyle(color: Color(0xFFFFFFFF), fontFamily: 'Roboto'),
         ),
       ),
-      home: FutureBuilder(
+      home:
+      FutureBuilder(
           future: getUserDetails(),
           builder: (context, snapshot) {
-          if (snapshot.data != []) {
+          if (snapshot.hasData) {
+            print(snapshot.data);
             return HomeScreen();
           } else {
             return OnBoarding();

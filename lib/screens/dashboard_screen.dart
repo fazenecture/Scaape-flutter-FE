@@ -727,7 +727,7 @@ class _HomePageViewState extends State<HomePageView>
                       //     child: TopCircleCards(
                       //       base: base,
                       //       controller: controllerCafe,
-                      //       reverse: reverse,
+                      //       reverse: r everse,
                       //       backgroundColor: controllerCafe.isAnimating
                       //           ? ScaapeTheme.kPinkColor.withOpacity(0)
                       //           : ScaapeTheme.kPinkColor.withOpacity(0.8),
