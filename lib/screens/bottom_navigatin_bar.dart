@@ -1,9 +1,11 @@
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/screens/explore_page.dart';
 import 'package:scaape/utils/constants.dart';
 
 import 'addScaape_screen.dart';
 import 'chat_screen.dart';
+import 'create_scaape.dart';
 import 'dashboard_screen.dart';
 import 'notification_screen.dart';
 import 'profile_screen.dart';
@@ -18,8 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List pageList = [
     HomePageView(),
-    ScaapeChat(),
-    AddScaape(),
+    ExplorePage(),
+    CreateScaape(),
     NotificationScreen(),
     ProfileScreen(),
     // Container(color: Colors.red,),
@@ -43,23 +45,23 @@ class _HomeScreenState extends State<HomeScreen> {
             unselectedItemColor: Colors.white,
             bottomNavigationBarItems: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(Icons.home_rounded),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.chat_outlined),
-                label: 'Chat',
+                icon: Icon(Icons.explore_rounded),
+                label: 'Explore',
               ),
               BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('images/logo.png'),),
                 label: 'Add Scape',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.notifications_none_outlined),
+                icon: Icon(Icons.notifications_rounded),
                 label: 'Notification',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_pin_circle_rounded),
+                icon: Icon(Icons.person_rounded),
                 label: 'Profile',
               )
             ],

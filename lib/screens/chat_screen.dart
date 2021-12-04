@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:scaape/screens/addScaape_screen.dart';
 import 'package:scaape/screens/user_chat_screen.dart';
 import 'package:recase/recase.dart';
 import 'package:scaape/utils/constants.dart';
@@ -31,148 +33,97 @@ class _ScaapeChatState extends State<ScaapeChat> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String authId=auth.currentUser!.uid;
     return Container(
-        child: FutureBuilder(
-          future: getActiveScaapes(authId),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if(snapshot.hasData){
-              var a=snapshot.data;
+          child: FutureBuilder(
+            future: getActiveScaapes(authId),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if(snapshot.hasData){
+                var a=snapshot.data;
 
-              return SingleChildScrollView(
-                child: Container(
-                  // color: ScaapeTheme.kBackColor,
-                  margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Icon(
-                              Icons.notification_important_outlined,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Social Messages',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 26,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            return a[index]['Accepted']==1?Column(
-                              children: [
-                                ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundColor: ScaapeTheme.kSecondBlue,
-                                    backgroundImage: NetworkImage(a[index]['ScaapeImg']),
-                                    radius: 26,
-                                  ),
-                                  title: Text(a[index]['ScaapeName']),
-                                  subtitle: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.location_on_outlined,
-                                        size: 13,
-                                      ),
-                                      SizedBox(
-                                        width: 3,
-                                      ),
-                                      Text(
-                                        '${a[index]['Location']}',
-                                        maxLines: 1,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    Navigator.pushNamed(context, UserChat.id,arguments:{
-                                      "ScaapeId":"${a[index]['ScaapeId']}",
-                                      "ScaapeName":"${a[index]['ScaapeName']}"
-                                    });
-                                  },
-                                  // selectedTileColor: ScaapeTheme.kSecondBlue,
-                                  focusColor: ScaapeTheme.kSecondBlue,
-                                  selectedTileColor: ScaapeTheme.kSecondBlue,
-                                  hoverColor: ScaapeTheme.kSecondBlue,
+                return SingleChildScrollView(
+                  child: Container(
+                    // color: ScaapeTheme.kBackColor,
+                    margin: EdgeInsets.fromLTRB(10, 15,10, 10),
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          return a[index]['Accepted']== 1 ? Column(
+                            children: [
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: ScaapeTheme.kSecondBlue,
+                                  backgroundImage: NetworkImage(a[index]['ScaapeImg']),
+                                  radius: 26,
                                 ),
-                                Divider(
-                                  endIndent: 34,
-                                  indent: 68,
+                                title: Text(a[index]['ScaapeName']),
+                                subtitle: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      size: 13,
+                                    ),
+                                    SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text(
+                                      '${a[index]['Location']}',
+                                      maxLines: 1,
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
                                 ),
-                              ],
-                            ):Text("");
-                          }),
-                    ],
-                  ),
-                ),
-              );
-            }
-            else{
-              return Container(
-                  color: ScaapeTheme.kBackColor,
-                  margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Icon(
-                                Icons.notification_important_outlined,
-                                color: Colors.white,
+                                onTap: () {
+                                  Navigator.pushNamed(context, UserChat.id,arguments:{
+                                    "ScaapeId":"${a[index]['ScaapeId']}",
+                                    "ScaapeName":"${a[index]['ScaapeName']}"
+                                  });
+                                },
+                                // selectedTileColor: ScaapeTheme.kSecondBlue,
+                                focusColor: ScaapeTheme.kSecondBlue,
+                                selectedTileColor: ScaapeTheme.kSecondBlue,
+                                hoverColor: ScaapeTheme.kSecondBlue,
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                'Social Messages',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 26,
-                                ),
+                              Divider(
+                                endIndent: 34,
+                                indent: 68,
                               ),
                             ],
-                          ),
-                        ),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                        OutsideChatShimmer(),
-                      ],
-                    ),
-                  )
-              );
-            }
-          },
+                          ):Container();
+                        }),
+                  ),
+                );
+              }
+              else{
+                return Container(
+                    color: ScaapeTheme.kBackColor,
+                    margin: EdgeInsets.fromLTRB(10, 15,10, 10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
 
-        ),
-      );
+                        children: [
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                          OutsideChatShimmer(),
+                        ],
+                      ),
+                    )
+                );
+              }
+            },
+
+          ),
+        );
   }
 }
 
