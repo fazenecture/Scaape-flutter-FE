@@ -47,9 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }catch(e){
       print("Hello $e");
     }
-
-
   }
+
+
 
   String stringmani(String? values) {
     String? value = values;

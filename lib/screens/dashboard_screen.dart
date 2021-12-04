@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:ui';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +15,7 @@ import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:scaape/screens/chat_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/location_class.dart';
@@ -23,6 +26,8 @@ import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:recase/recase.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+import 'addScaape_screen.dart';
 
 class   HomePageView extends StatefulWidget {
   static String id = 'homePage';
@@ -262,17 +267,17 @@ class _HomePageViewState extends State<HomePageView>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Lorem Ipum",
+                          "Scaape description",
                           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
                         ),
-                        Text("Lorem Ipsum Dolor sir", style: TextStyle(color: Colors.white),)
+                        Text("Join Scaapes that match your interest. This will help you find new people with similar interests as you easily.", style: TextStyle(color: Colors.white),)
                       ],
                     ),
                   )
               )
             ],
             shape: ShapeLightFocus.Circle,
-            radius: 5,
+            radius: 15,
           )
       );
 
@@ -372,7 +377,8 @@ class _HomePageViewState extends State<HomePageView>
     ),
   ];
 
-
+  PageController pageController = PageController(initialPage: 0);
+  int pageChanged = 0;
 
 
 
@@ -397,862 +403,947 @@ class _HomePageViewState extends State<HomePageView>
         );
       },
     );
-    return SafeArea(
-      child: CustomRefreshIndicator(
-        offsetToArmed: _offsetToArmed,
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 5, bottom: 5, left: 10),
-                      child: Row(
-                        children: [
-                          Image(
-                            image: AssetImage('images/logo.png'),
-                            height: 38,
-                            width: 38,
-                          ),
-                          SizedBox(
-                            width: medq.width * 0.009,
-                          ),
-                          Text(
-                            'Scaape',
-                            style: TextStyle(
-                              fontFamily: 'TheSecret',
-                              fontSize: medq.height * 0.045,
-                              color: const Color(0xffffffff),
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                    FutureBuilder(
-                        future: getCityNameFromLatLong(latitude, longitude),
-                        builder: (context, snap) {
-                          if (snap.connectionState == ConnectionState.waiting) {
-                            return Image(
-                              image:
-                                  AssetImage('animations/location-loader.gif'),
-                              height: 60,
-                              width: 60,
-                            );
-                          } else {
-                            if (snap.hasData) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 5, bottom: 5, right: 10),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF262930),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(22))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_pin,
-                                          size: 23,
-                                          color: ScaapeTheme.kPinkColor,
-                                        ),
-                                        Text(
-                                          '${snap.data}',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: medq.height * 0.0145,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                          // style: TextStyle(
-                                          //   fontSize: medq.height * 0.025,
-                                          //   color: const Color(0xffffffff),
-                                          //
-                                          // ),
-                                          textAlign: TextAlign.left,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Image(
-                                image: AssetImage(
-                                    'animations/location-loader.gif'),
-                                height: 60,
-                                width: 60,
-                              );
-                            }
-                          }
-                        })
-                  ],
-                ),
-                // SearchBoxContainer(medq: medq.height),
-                SizedBox(
-                  height: 10,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+    return ScrollConfiguration(
+      behavior: ScrollBehavior(),  
+      child: GlowingOverscrollIndicator(
+        color: ScaapeTheme.kBackColor.withOpacity(0.1),
+        axisDirection: AxisDirection.left,
+        child: PageView(
+          controller: pageController,
+          pageSnapping: true,
+          scrollDirection: Axis.horizontal,
+          physics: ClampingScrollPhysics(),
+          onPageChanged: (index){
+            setState(() {
+              pageChanged = index;
+              print(pageChanged);
+            });
+
+          },
+          children: [
+            Scaffold(
+              appBar: AppBar(
+                foregroundColor: Colors.transparent,
+                backgroundColor: ScaapeTheme.kBackColor,
+                shadowColor: Colors.transparent,
+                elevation: 0,
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 0, left: 0),
                   child: Row(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      GestureDetector(
-                          onTap: () {
-                            val = "Cycling";
-                            trending = false;
-                            recent = false;
-                            forYou = false;
-                            controller = AnimationController(
-                              vsync: this,
-                              duration: Duration(seconds: 3),
-                            );
-                            base = CurvedAnimation(
-                                parent: controller, curve: Curves.easeIn);
-                            reverse = Tween<double>(begin: 0.0, end: -1.0)
-                                .animate(base);
-                            gap = Tween<double>(begin: 4.0, end: 0.0)
-                                .animate(base)
-                              ..addListener(() {
-                                setState(() {});
-                              });
-                            controller.forward();
-
-                            setState(() {});
-                          },
-                          child: TopCircleCards(
-                            circleImg: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                              // backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                            text: 'Cycling',
-                            base: base,
-                            controller: controller,
-                            reverse: reverse,
-                            backgroundColor: controller.isAnimating
-                                ? ScaapeTheme.kPinkColor.withOpacity(0)
-                                : ScaapeTheme.kPinkColor.withOpacity(0.8),
-                            dashes: controller.isAnimating ? 25 : 0,
-                          )),
-                      GestureDetector(
-                          onTap: () {
-                            val = "Cafe";
-                            trending = false;
-                            recent = false;
-                            forYou = false;
-                            controllerCafe = AnimationController(
-                              vsync: this,
-                              duration: Duration(seconds: 3),
-                            );
-                            base = CurvedAnimation(
-                                parent: controllerCafe, curve: Curves.easeIn);
-                            reverse = Tween<double>(begin: 0.0, end: -1.0)
-                                .animate(base);
-                            gap = Tween<double>(begin: 4.0, end: 0.0)
-                                .animate(base)
-                              ..addListener(() {
-                                setState(() {});
-                              });
-                            controllerCafe.forward();
-
-                            setState(() {});
-                          },
-                          child: TopCircleCards(
-                            circleImg: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                              // backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                            text: 'Cafe',
-                            base: base,
-                            controller: controllerCafe,
-                            reverse: reverse,
-                            backgroundColor: controllerCafe.isAnimating
-                                ? ScaapeTheme.kPinkColor.withOpacity(0)
-                                : ScaapeTheme.kPinkColor.withOpacity(0.8),
-                            dashes: controllerCafe.isAnimating ? 25 : 0,
-                          )),
-                      GestureDetector(
-                          onTap: () {
-                            val = "Trekking";
-                            trending = false;
-                            recent = false;
-                            forYou = false;
-                            controllerTrek = AnimationController(
-                              vsync: this,
-                              duration: Duration(seconds: 3),
-                            );
-                            base = CurvedAnimation(
-                                parent: controllerTrek, curve: Curves.easeIn);
-                            reverse = Tween<double>(begin: 0.0, end: -1.0)
-                                .animate(base);
-                            gap = Tween<double>(begin: 4.0, end: 0.0)
-                                .animate(base)
-                              ..addListener(() {
-                                setState(() {});
-                              });
-                            controllerTrek.forward();
-
-                            setState(() {});
-                          },
-                          child: TopCircleCards(
-                            key: _key2,
-                            circleImg: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                              // backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                            text: 'Trekking',
-                            base: base,
-                            controller: controllerTrek,
-                            reverse: reverse,
-                            backgroundColor: controllerTrek.isAnimating
-                                ? ScaapeTheme.kPinkColor.withOpacity(0)
-                                : ScaapeTheme.kPinkColor.withOpacity(0.8),
-                            dashes: controllerTrek.isAnimating ? 25 : 0,
-                          )),
-                      GestureDetector(
-                          onTap: () {
-                            val = "Gym";
-                            trending = false;
-                            recent = false;
-                            forYou = false;
-                            controllerGym = AnimationController(
-                              vsync: this,
-                              duration: Duration(seconds: 3),
-                            );
-                            base = CurvedAnimation(
-                                parent: controllerGym, curve: Curves.easeIn);
-                            reverse = Tween<double>(begin: 0.0, end: -1.0)
-                                .animate(base);
-                            gap = Tween<double>(begin: 4.0, end: 0.0)
-                                .animate(base)
-                              ..addListener(() {
-                                setState(() {});
-                              });
-                            controllerGym.forward();
-
-                            setState(() {});
-                          },
-                          child: TopCircleCards(
-
-                            key: _key1,
-                            circleImg: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                              // backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                            text: 'Gym',
-                            base: base,
-                            controller: controllerGym,
-                            reverse: reverse,
-                            backgroundColor: controllerGym.isAnimating
-                                ? ScaapeTheme.kPinkColor.withOpacity(0)
-                                : ScaapeTheme.kPinkColor.withOpacity(0.8),
-                            dashes: controllerGym.isAnimating ? 25 : 0,
-                          )),
-                      GestureDetector(
-                          onTap: () {
-                            val = "Club";
-                            trending = false;
-                            recent = false;
-                            forYou = false;
-                            controllerClub = AnimationController(
-                              vsync: this,
-                              duration: Duration(seconds: 3),
-                            );
-                            base = CurvedAnimation(
-                                parent: controllerClub, curve: Curves.easeIn);
-                            reverse = Tween<double>(begin: 0.0, end: -1.0)
-                                .animate(base);
-                            gap = Tween<double>(begin: 4.0, end: 0.0)
-                                .animate(base)
-                              ..addListener(() {
-                                setState(() {});
-                              });
-                            controllerClub.forward();
-
-                            setState(() {});
-                          },
-                          child: TopCircleCards(
-                            circleImg: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1581968902132-d27ba6dd8b77?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNsdWJiaW5nfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                              // backgroundColor: Colors.transparent,
-                              radius: 31,
-                            ),
-                            text: 'Club',
-                            base: base,
-                            controller: controllerClub,
-                            reverse: reverse,
-                            backgroundColor: controllerClub.isAnimating
-                                ? ScaapeTheme.kPinkColor.withOpacity(0)
-                                : ScaapeTheme.kPinkColor.withOpacity(0.8),
-                            dashes: controllerClub.isAnimating ? 25 : 0,
-                          )),
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       val = "Cafe";
-                      //       trending = false;
-                      //       recent = false;
-                      //       forYou = false;
-                      //       controllerCafe = AnimationController(
-                      //         vsync: this,
-                      //         duration: Duration(seconds: 3),
-                      //       );
-                      //       base = CurvedAnimation(
-                      //           parent: controllerCafe, curve: Curves.easeIn);
-                      //       reverse = Tween<double>(begin: 0.0, end: -1.0)
-                      //           .animate(base);
-                      //       gap = Tween<double>(begin: 4.0, end: 0.0)
-                      //           .animate(base)
-                      //         ..addListener(() {
-                      //           setState(() {});
-                      //         });
-                      //       controllerCafe.forward();
-                      //
-                      //       setState(() {});
-                      //     },
-                      //     child: TopCircleCards(
-                      //       base: base,
-                      //       controller: controllerCafe,
-                      //       reverse: r everse,
-                      //       backgroundColor: controllerCafe.isAnimating
-                      //           ? ScaapeTheme.kPinkColor.withOpacity(0)
-                      //           : ScaapeTheme.kPinkColor.withOpacity(0.8),
-                      //       dashes: controllerCafe.isAnimating ? 25 : 0,
-                      //     )),
-
-                      //cricle conmment started
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     val = "Cafe";
-                      //     trending = false;
-                      //     recent = false;
-                      //     forYou = false;
-                      //     setState(() {
-                      //
-                      //     });
-                      //   },
-                      //   child: CircleCards(
-                      //     circleImg: CircleAvatar(
-                      //       backgroundImage: NetworkImage(
-                      //           'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      //       // backgroundColor: Colors.transparent,
-                      //       radius: 31,
-                      //     ),
-                      //     text: 'Cafe',
-                      //     base: base,
-                      //     reverse: reverse,
-                      //     gap: gap.value,
-                      //   ),
-                      // ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     val = "Trekking";
-                      //     trending = false;
-                      //     recent = false;
-                      //     forYou = false;
-                      //     setState(() {
-                      //
-                      //     });
-                      //   },
-                      //   child: CircleCards(
-                      //     circleImg: CircleAvatar(
-                      //       backgroundImage: NetworkImage(
-                      //           'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      //       // backgroundColor: Colors.transparent,
-                      //       radius: 31,
-                      //     ),
-                      //     text: 'Trekking',
-                      //     base: base,
-                      //     reverse: reverse,
-                      //     gap: gap.value,
-                      //   ),
-                      // ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     trending = false;
-                      //     recent = false;
-                      //     forYou = false;
-                      //     val = "Gym";
-                      //     setState(() {
-                      //
-                      //     });
-                      //   },
-                      //   child: CircleCards(
-                      //     circleImg: CircleAvatar(
-                      //       backgroundImage: NetworkImage(
-                      //           'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      //       // backgroundColor: Colors.transparent,
-                      //       radius: 31,
-                      //     ),
-                      //     text: 'Gym',
-                      //     base: base,
-                      //     reverse: reverse,
-                      //     gap: gap.value,
-                      //   ),
-                      // ),
-
-                      //commentn ends for now
-
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     trending=false;
-                      //     recent=false;
-                      //     forYou=false;
-                      //     val="Concert";
-                      //     setState(() {
-                      //
-                      //     });
-                      //   },
-                      //   child: CircleCards(
-                      //     circleImg: CircleAvatar(
-                      //       backgroundImage: NetworkImage(
-                      //           'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-                      //       // backgroundColor: Colors.transparent,
-                      //       radius: 31,
-                      //     ),
-                      //     text: 'Concert',
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 9,
-                ),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   physics: BouncingScrollPhysics(),
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //       children: [
-                //         HomeButtons(
-                //           medq: medq,
-                //           icon: FontAwesomeIcons.chartLine,
-                //           buttontext: 'Trending',
-                //         ),
-                //         SizedBox(
-                //           width: 10,
-                //         ),
-                //         HomeButtons(
-                //           medq: medq,
-                //           icon: FontAwesomeIcons.history,
-                //           buttontext: 'Recent',
-                //         ),
-                //         SizedBox(
-                //           width: 10,
-                //         ),
-                //         HomeButtons(
-                //           medq: medq,
-                //           icon: FontAwesomeIcons.thumbsUp,
-                //           buttontext: 'Recommended',
-                //         ),
-                //         SizedBox(
-                //           width: 10,
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6),
-                  child: Divider(
-                    thickness: 0.4,
-                    color: ScaapeTheme.kSecondTextCollor.withOpacity(0.1),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          recent = false;
-                          forYou = false;
-                          trending = !trending;
-                          val = '';
-                          setState(() {});
-                        },
-                        child: TopCards(
-                          border: (trending)
-                              ? Border.all(color: ScaapeTheme.kPinkColor)
-                              : Border.all(color: Colors.transparent),
-                          medq: medq,
-                          img: Image.asset(
-                            'images/trend.png',
-                            height: medq.height * 0.02,
-                            // width: medq.width * 0.03,
-                            fit: BoxFit.fill,
-                          ),
-                          text: 'Trending',
-                          color: trending
-                              ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                              : ScaapeTheme.kSecondBlue,
-                          textcolor: ScaapeTheme.kSecondTextCollor,
-                        ),
+                      Image(
+                        image: AssetImage('images/logo.png'),
+                        height: 32,
+                        width: 32,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          trending = false;
-                          recent = !recent;
-                          forYou = false;
-                          val = '';
-                          setState(() {});
-                        },
-                        child: TopCards(
-                          medq: medq,
-                          border: recent
-                              ? Border.all(color: ScaapeTheme.kPinkColor)
-                              : Border.all(color: Colors.transparent),
-                          img: Image.asset(
-                            'images/recent.png',
-                            height: medq.height * 0.017,
-                            // width: medq.width * 0.03,
-                            fit: BoxFit.fill,
-                          ),
-                          text: 'Recent',
-                          color: recent
-                              ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                              : ScaapeTheme.kSecondBlue,
-                          textcolor: ScaapeTheme.kSecondTextCollor,
-                        ),
+                      SizedBox(
+                        width: medq.width * 0.02,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          trending = false;
-                          recent = false;
-                          forYou = !forYou;
-                          val = '';
-                          setState(() {});
-                        },
-                        child: TopCards(
-                          medq: medq,
-                          border: forYou
-                              ? Border.all(color: ScaapeTheme.kPinkColor)
-                              : Border.all(color: Colors.transparent),
-                          img: Image.asset(
-                            'images/recommendation.png',
-                            height: medq.height * 0.02,
-                            // width: medq.width * 0.03,
-                            fit: BoxFit.fill,
-                          ),
-                          text: 'For you',
-                          color: forYou
-                              ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                              : ScaapeTheme.kSecondBlue,
-                          textcolor: ScaapeTheme.kSecondTextCollor,
+                      Text(
+                        'Scaape',
+                        style: TextStyle(
+                          fontFamily: 'TheSecret',
+                          fontSize: medq.height * 0.036,
+                          color: const Color(0xffffffff),
                         ),
+                        textAlign: TextAlign.left,
                       ),
                     ],
                   ),
                 ),
-                //TODO delete
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   physics: BouncingScrollPhysics(),
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: Row(
-                //       mainAxisSize: MainAxisSize.max,
-                //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //       children: <Widget>[
-                //         Container(
-                //           decoration: BoxDecoration(
-                //               borderRadius: BorderRadius.circular(14.0),
-                //               color: ScaapeTheme.kPinkColor.withOpacity(0.14)
-                //             // gradient: LinearGradient(
-                //             //   begin: Alignment(0.0, -1.0),
-                //             //   end: Alignment(0.0, 1.0),
-                //             //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-                //             //   stops: [0.0, 1.0],
-                //             // ),
-                //           ),
-                //           child: Padding(
-                //             padding: const EdgeInsets.symmetric(
-                //                 horizontal: 19, vertical: 9),
-                //             child: Row(
-                //               mainAxisSize: MainAxisSize.min,
-                //               children: [
-                //                 Padding(
-                //                   padding: const EdgeInsets.only(right: 3.0),
-                //                   // child: Icon(
-                //                   //   icon,
-                //                   //   size: 20,
-                //                   //   color: ScaapeTheme.kPinkColor,
-                //                   // ),
-                //                   child: Image.asset(
-                //                     'images/trending.png',
-                //                     height: 25,
-                //                     width: 25,
-                //                     fit: BoxFit.fill,
-                //                   ),
-                //                 ),
-                //                 Text(
-                //                   'Trending',
-                //                   style: GoogleFonts.lato(
-                //                     fontSize: 15,
-                //                     color: ScaapeTheme.kPinkColor,
-                //                   ),
-                //                   // style: TextStyle(
-                //                   //   fontFamily: 'Roboto',
-                //                   //   fontSize: 12,
-                //                   //   color: const ScaapeTheme.kPinkColor,
-                //                   // ),
-                //                   textAlign: TextAlign.left,
-                //                 )
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //         SizedBox(
-                //           width: medq.width * 0.03,
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                actions: [
+                  IconButton(onPressed: (){
 
-                // FutureBuilder(
-                //   future: dbRef.once(),
-                //   builder: (_, AsyncSnapshot snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return Center(
-                //         child: Padding(
-                //           padding: const EdgeInsets.all(10.0),
-                //           child: Container(
-                //             height: medq.height,
-                //             width: medq.width,
-                //             child: Column(
-                //               children: <Widget>[
-                //                 Expanded(
-                //                   child: Shimmer.fromColors(
-                //                     baseColor: Colors.white38,
-                //                     highlightColor: Colors.white70,
-                //                     enabled: _enabled,
-                //                     child: ListView.builder(
-                //                       itemBuilder: (_, __) => Padding(
-                //                         padding: const EdgeInsets.only(bottom: 8.0),
-                //                         child: Container(
-                //                           decoration: BoxDecoration(
-                //                               color: Color(0x5cffffff),
-                //                               borderRadius:
-                //                                   BorderRadius.circular(20)),
-                //                           width: medq.width * 0.94,
-                //                           height: medq.height * 0.3,
-                //                         ),
-                //                       ),
-                //                       itemCount: 6,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //       );
-                //     } else {
-                //       if (snapshot.data.value != null) {
-                //         List timeStampList = [];
-                //         List valueList = [];
-                //         var data = snapshot.data.value;
-                //         data.forEach((key, value) {
-                //           timeStampList.add(key);
-                //           valueList.add(value);
-                //         });
-                //         return Column(
-                //           children: valueList.map<Widget>((element) {
-                //             return GestureDetector(
-                //               onTap: _showBottomSheet,
-                //               child: TrendingCards(
-                //                   imageUrl: element["Image"],
-                //                   medq: medq,
-                //                   description: element["Desc"],
-                //                   title: element["Name"]),
-                //             );
-                //           }).toList(),
-                //         );
-                //
-                //         // return GestureDetector(
-                //         //   onTap: _showBottomSheet,
-                //         //   child: TrendingCards(
-                //         //     medq: medq,
-                //         //     title: 'Road Trip',
-                //         //     description:
-                //         //         'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut …..',
-                //         //     username: '@pasissontraveller',
-                //         //   ),
-                //         // );
-                //       } else {
-                //         return Text('Sorry We Encountered an Error');
-                //       }
-                //     }
-                //   },
-                // ),
-                SizedBox(
-                  height: 7,
-                ),
-                FutureBuilder(
+                    pageController.animateToPage(pageChanged+2, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
+                  }, icon: Icon(Icons.send_rounded, color: ScaapeTheme.kSecondTextCollor,))
+                ],
+              ),
+              body: CustomRefreshIndicator(
+                offsetToArmed: _offsetToArmed,
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    child: Column(
+                      children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //
+                        //     FutureBuilder(
+                        //         future: getCityNameFromLatLong(latitude, longitude),
+                        //         builder: (context, snap) {
+                        //           if (snap.connectionState == ConnectionState.waiting) {
+                        //             return Image(
+                        //               image:
+                        //                   AssetImage('animations/location-loader.gif'),
+                        //               height: 60,
+                        //               width: 60,
+                        //             );
+                        //           } else {
+                        //             if (snap.hasData) {
+                        //               return Padding(
+                        //                 padding: const EdgeInsets.only(
+                        //                     top: 5, bottom: 5, right: 10),
+                        //                 child: Container(
+                        //                   decoration: BoxDecoration(
+                        //                       color: Color(0xFF262930),
+                        //                       borderRadius: BorderRadius.all(
+                        //                           Radius.circular(22))),
+                        //                   child: Padding(
+                        //                     padding: const EdgeInsets.symmetric(
+                        //                         horizontal: 12, vertical: 6),
+                        //                     child: Row(
+                        //                       children: [
+                        //                         Icon(
+                        //                           Icons.location_pin,
+                        //                           size: 23,
+                        //                           color: ScaapeTheme.kPinkColor,
+                        //                         ),
+                        //                         Text(
+                        //                           '${snap.data}',
+                        //                           style: GoogleFonts.poppins(
+                        //                             fontSize: medq.height * 0.0145,
+                        //                             color: const Color(0xffffffff),
+                        //                           ),
+                        //                           // style: TextStyle(
+                        //                           //   fontSize: medq.height * 0.025,
+                        //                           //   color: const Color(0xffffffff),
+                        //                           //
+                        //                           // ),
+                        //                           textAlign: TextAlign.left,
+                        //                         )
+                        //                       ],
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               );
+                        //             } else {
+                        //               return Image(
+                        //                 image: AssetImage(
+                        //                     'animations/location-loader.gif'),
+                        //                 height: 60,
+                        //                 width: 60,
+                        //               );
+                        //             }
+                        //           }
+                        //         })
+                        //   ],
+                        // ),
+                        // SearchBoxContainer(medq: medq.height),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    val = "Cycling";
+                                    trending = false;
+                                    recent = false;
+                                    forYou = false;
+                                    controller = AnimationController(
+                                      vsync: this,
+                                      duration: Duration(seconds: 3),
+                                    );
+                                    base = CurvedAnimation(
+                                        parent: controller, curve: Curves.easeIn);
+                                    reverse = Tween<double>(begin: 0.0, end: -1.0)
+                                        .animate(base);
+                                    gap = Tween<double>(begin: 4.0, end: 0.0)
+                                        .animate(base)
+                                      ..addListener(() {
+                                        setState(() {});
+                                      });
+                                    controller.forward();
 
-                  future: getScapesByAuth(
-                      auther.currentUser!.uid, trending, recent, forYou, val),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    // print(auther.currentUser!.uid);
-                    if (snapshot.hasData) {
-                      var a = snapshot.data;
-                      // print(a);
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        //itemCount: 1,
-                        itemCount: snapshot.data.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return HomeCard(() {
-                            setState(() {});
-                          },
-                              medq,
-                              a[index]["ScaapeImg"],
-                              a[index]["ScaapeName"],
-                              a[index]["Description"],
-                              a[index]["Location"],
-                              a[index]['UserId'],
-                              a[index]["ScaapeId"],
-                              a[index]["ScaapePref"],
-                              a[index]["Admin"],
-                              a[index]["isPresent"],
-                              a[index]["ScaapeDate"],
-                              a[index]["AdminName"],
-                              a[index]["AdminEmail"],
-                              a[index]["AdminDP"],
-                              a[index]["AdminGender"],
-                              a[index]["ScaapeDate"],
-                              a[index]["count"]);
-                        },
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          ShimmerCard(medq: medq),
-                          ShimmerCard(medq: medq),
-                          ShimmerCard(medq: medq),
-                        ],
-                      );
-                    }
-                  },
-                ),
-
-                SizedBox(
-                  height: 50,
-                )
-              ],
-            ),
-          ),
-        ),
-        // onRefresh: () => Future.delayed(const Duration(seconds: 3)),
-        onRefresh: () =>
-            Future.delayed(const Duration(seconds: 2)).then((value) {
-          setState(() {});
-        }),
-        builder: (BuildContext context, Widget child,
-            IndicatorController controller) {
-          return AnimatedBuilder(
-            animation: controller,
-            child: child,
-            builder: (context, child) {
-              final currentState = controller.state;
-              if (_prevState == IndicatorState.armed &&
-                  currentState == IndicatorState.loading) {
-                _startCloudAnimation();
-                _startPlaneAnimation();
-              } else if (_prevState == IndicatorState.loading &&
-                  currentState == IndicatorState.hiding) {
-                _stopPlaneAnimation();
-              } else if (_prevState == IndicatorState.hiding &&
-                  currentState != _prevState) {
-                _stopCloudAnimation();
-              }
-
-              _prevState = currentState;
-
-              return Stack(
-                clipBehavior: Clip.hardEdge,
-                children: <Widget>[
-                  if (_prevState != IndicatorState.idle)
-                    Container(
-                      height: _offsetToArmed * controller.value,
-                      color: ScaapeTheme.kBackColor,
-                      width: double.infinity,
-                      child: AnimatedBuilder(
-                        animation: _clouds.first.controller!,
-                        builder: (BuildContext context, Widget? child) {
-                          return Stack(
-                            clipBehavior: Clip.hardEdge,
-                            children: <Widget>[
-                              for (final cloud in _clouds)
-                                Transform.translate(
-                                  offset: Offset(
-                                    ((screenWidth + cloud.width!) *
-                                            cloud.controller!.value) -
-                                        cloud.width!,
-                                    cloud.dy! * controller.value,
-                                  ),
-                                  child: OverflowBox(
-                                    minWidth: cloud.width,
-                                    minHeight: cloud.width,
-                                    maxHeight: cloud.width,
-                                    maxWidth: cloud.width,
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      child: Image(
-                                        color: cloud.color,
-                                        image: cloud.image!,
-                                        fit: BoxFit.contain,
-                                      ),
+                                    setState(() {});
+                                  },
+                                  child: TopCircleCards(
+                                    circleImg: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 31,
                                     ),
-                                  ),
-                                ),
+                                    text: 'Cycling',
+                                    base: base,
+                                    controller: controller,
+                                    reverse: reverse,
+                                    backgroundColor: controller.isAnimating
+                                        ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                        : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                    dashes: controller.isAnimating ? 25 : 0,
+                                  )),
+                              GestureDetector(
+                                  onTap: () {
+                                    val = "Cafe";
+                                    trending = false;
+                                    recent = false;
+                                    forYou = false;
+                                    controllerCafe = AnimationController(
+                                      vsync: this,
+                                      duration: Duration(seconds: 3),
+                                    );
+                                    base = CurvedAnimation(
+                                        parent: controllerCafe, curve: Curves.easeIn);
+                                    reverse = Tween<double>(begin: 0.0, end: -1.0)
+                                        .animate(base);
+                                    gap = Tween<double>(begin: 4.0, end: 0.0)
+                                        .animate(base)
+                                      ..addListener(() {
+                                        setState(() {});
+                                      });
+                                    controllerCafe.forward();
 
-                              /// plane
-                              Center(
-                                child: OverflowBox(
-                                  child: plane,
-                                  maxWidth: 172,
-                                  minWidth: 172,
-                                  maxHeight: 50,
-                                  minHeight: 50,
-                                  alignment: Alignment.center,
+                                    setState(() {});
+                                  },
+                                  child: TopCircleCards(
+                                    circleImg: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 31,
+                                    ),
+                                    text: 'Cafe',
+                                    base: base,
+                                    controller: controllerCafe,
+                                    reverse: reverse,
+                                    backgroundColor: controllerCafe.isAnimating
+                                        ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                        : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                    dashes: controllerCafe.isAnimating ? 25 : 0,
+                                  )),
+                              GestureDetector(
+                                  onTap: () {
+                                    val = "Trekking";
+                                    trending = false;
+                                    recent = false;
+                                    forYou = false;
+                                    controllerTrek = AnimationController(
+                                      vsync: this,
+                                      duration: Duration(seconds: 3),
+                                    );
+                                    base = CurvedAnimation(
+                                        parent: controllerTrek, curve: Curves.easeIn);
+                                    reverse = Tween<double>(begin: 0.0, end: -1.0)
+                                        .animate(base);
+                                    gap = Tween<double>(begin: 4.0, end: 0.0)
+                                        .animate(base)
+                                      ..addListener(() {
+                                        setState(() {});
+                                      });
+                                    controllerTrek.forward();
+
+                                    setState(() {});
+                                  },
+                                  child: TopCircleCards(
+                                    // key: _key2,
+                                    circleImg: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 31,
+                                    ),
+                                    text: 'Trekking',
+                                    base: base,
+                                    controller: controllerTrek,
+                                    reverse: reverse,
+                                    backgroundColor: controllerTrek.isAnimating
+                                        ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                        : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                    dashes: controllerTrek.isAnimating ? 25 : 0,
+                                  )),
+                              GestureDetector(
+                                  onTap: () {
+                                    val = "Gym";
+                                    trending = false;
+                                    recent = false;
+                                    forYou = false;
+                                    controllerGym = AnimationController(
+                                      vsync: this,
+                                      duration: Duration(seconds: 3),
+                                    );
+                                    base = CurvedAnimation(
+                                        parent: controllerGym, curve: Curves.easeIn);
+                                    reverse = Tween<double>(begin: 0.0, end: -1.0)
+                                        .animate(base);
+                                    gap = Tween<double>(begin: 4.0, end: 0.0)
+                                        .animate(base)
+                                      ..addListener(() {
+                                        setState(() {});
+                                      });
+                                    controllerGym.forward();
+
+                                    setState(() {});
+                                  },
+                                  child: TopCircleCards(
+
+                                    key: _key1,
+                                    circleImg: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 31,
+                                    ),
+                                    text: 'Gym',
+                                    base: base,
+                                    controller: controllerGym,
+                                    reverse: reverse,
+                                    backgroundColor: controllerGym.isAnimating
+                                        ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                        : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                    dashes: controllerGym.isAnimating ? 25 : 0,
+                                  )),
+                              GestureDetector(
+                                  onTap: () {
+                                    val = "Club";
+                                    trending = false;
+                                    recent = false;
+                                    forYou = false;
+                                    controllerClub = AnimationController(
+                                      vsync: this,
+                                      duration: Duration(seconds: 3),
+                                    );
+                                    base = CurvedAnimation(
+                                        parent: controllerClub, curve: Curves.easeIn);
+                                    reverse = Tween<double>(begin: 0.0, end: -1.0)
+                                        .animate(base);
+                                    gap = Tween<double>(begin: 4.0, end: 0.0)
+                                        .animate(base)
+                                      ..addListener(() {
+                                        setState(() {});
+                                      });
+                                    controllerClub.forward();
+
+                                    setState(() {});
+                                  },
+                                  child: TopCircleCards(
+                                    circleImg: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://images.unsplash.com/photo-1581968902132-d27ba6dd8b77?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNsdWJiaW5nfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 31,
+                                    ),
+                                    text: 'Club',
+                                    base: base,
+                                    controller: controllerClub,
+                                    reverse: reverse,
+                                    backgroundColor: controllerClub.isAnimating
+                                        ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                        : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                    dashes: controllerClub.isAnimating ? 25 : 0,
+                                  )),
+                              // GestureDetector(
+                              //     onTap: () {
+                              //       val = "Cafe";
+                              //       trending = false;
+                              //       recent = false;
+                              //       forYou = false;
+                              //       controllerCafe = AnimationController(
+                              //         vsync: this,
+                              //         duration: Duration(seconds: 3),
+                              //       );
+                              //       base = CurvedAnimation(
+                              //           parent: controllerCafe, curve: Curves.easeIn);
+                              //       reverse = Tween<double>(begin: 0.0, end: -1.0)
+                              //           .animate(base);
+                              //       gap = Tween<double>(begin: 4.0, end: 0.0)
+                              //           .animate(base)
+                              //         ..addListener(() {
+                              //           setState(() {});
+                              //         });
+                              //       controllerCafe.forward();
+                              //
+                              //       setState(() {});
+                              //     },
+                              //     child: TopCircleCards(
+                              //       base: base,
+                              //       controller: controllerCafe,
+                              //       reverse: r everse,
+                              //       backgroundColor: controllerCafe.isAnimating
+                              //           ? ScaapeTheme.kPinkColor.withOpacity(0)
+                              //           : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                              //       dashes: controllerCafe.isAnimating ? 25 : 0,
+                              //     )),
+
+                              //cricle conmment started
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     val = "Cafe";
+                              //     trending = false;
+                              //     recent = false;
+                              //     forYou = false;
+                              //     setState(() {
+                              //
+                              //     });
+                              //   },
+                              //   child: CircleCards(
+                              //     circleImg: CircleAvatar(
+                              //       backgroundImage: NetworkImage(
+                              //           'https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                              //       // backgroundColor: Colors.transparent,
+                              //       radius: 31,
+                              //     ),
+                              //     text: 'Cafe',
+                              //     base: base,
+                              //     reverse: reverse,
+                              //     gap: gap.value,
+                              //   ),
+                              // ),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     val = "Trekking";
+                              //     trending = false;
+                              //     recent = false;
+                              //     forYou = false;
+                              //     setState(() {
+                              //
+                              //     });
+                              //   },
+                              //   child: CircleCards(
+                              //     circleImg: CircleAvatar(
+                              //       backgroundImage: NetworkImage(
+                              //           'https://images.unsplash.com/photo-1568454537842-d933259bb258?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJla2tpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                              //       // backgroundColor: Colors.transparent,
+                              //       radius: 31,
+                              //     ),
+                              //     text: 'Trekking',
+                              //     base: base,
+                              //     reverse: reverse,
+                              //     gap: gap.value,
+                              //   ),
+                              // ),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     trending = false;
+                              //     recent = false;
+                              //     forYou = false;
+                              //     val = "Gym";
+                              //     setState(() {
+                              //
+                              //     });
+                              //   },
+                              //   child: CircleCards(
+                              //     circleImg: CircleAvatar(
+                              //       backgroundImage: NetworkImage(
+                              //           'https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                              //       // backgroundColor: Colors.transparent,
+                              //       radius: 31,
+                              //     ),
+                              //     text: 'Gym',
+                              //     base: base,
+                              //     reverse: reverse,
+                              //     gap: gap.value,
+                              //   ),
+                              // ),
+
+                              //commentn ends for now
+
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     trending=false;
+                              //     recent=false;
+                              //     forYou=false;
+                              //     val="Concert";
+                              //     setState(() {
+                              //
+                              //     });
+                              //   },
+                              //   child: CircleCards(
+                              //     circleImg: CircleAvatar(
+                              //       backgroundImage: NetworkImage(
+                              //           'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cGFydHl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                              //       // backgroundColor: Colors.transparent,
+                              //       radius: 31,
+                              //     ),
+                              //     text: 'Concert',
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        // SingleChildScrollView(
+                        //   scrollDirection: Axis.horizontal,
+                        //   physics: BouncingScrollPhysics(),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //       children: [
+                        //         HomeButtons(
+                        //           medq: medq,
+                        //           icon: FontAwesomeIcons.chartLine,
+                        //           buttontext: 'Trending',
+                        //         ),
+                        //         SizedBox(
+                        //           width: 10,
+                        //         ),
+                        //         HomeButtons(
+                        //           medq: medq,
+                        //           icon: FontAwesomeIcons.history,
+                        //           buttontext: 'Recent',
+                        //         ),
+                        //         SizedBox(
+                        //           width: 10,
+                        //         ),
+                        //         HomeButtons(
+                        //           medq: medq,
+                        //           icon: FontAwesomeIcons.thumbsUp,
+                        //           buttontext: 'Recommended',
+                        //         ),
+                        //         SizedBox(
+                        //           width: 10,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 6),
+                          child: Divider(
+                            thickness: 0.4,
+                            color: ScaapeTheme.kSecondTextCollor.withOpacity(0.1),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  recent = false;
+                                  forYou = false;
+                                  trending = !trending;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  border: (trending)
+                                      ? Border.all(color: ScaapeTheme.kPinkColor)
+                                      : Border.all(color: Colors.transparent),
+                                  medq: medq,
+                                  img: Image.asset(
+                                    'images/trend.png',
+                                    height: medq.height * 0.02,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'Trending',
+                                  color: trending
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor: ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  trending = false;
+                                  recent = !recent;
+                                  forYou = false;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  medq: medq,
+                                  border: recent
+                                      ? Border.all(color: ScaapeTheme.kPinkColor)
+                                      : Border.all(color: Colors.transparent),
+                                  img: Image.asset(
+                                    'images/recent.png',
+                                    height: medq.height * 0.017,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'Recent',
+                                  color: recent
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor: ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  trending = false;
+                                  recent = false;
+                                  forYou = !forYou;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  medq: medq,
+                                  border: forYou
+                                      ? Border.all(color: ScaapeTheme.kPinkColor)
+                                      : Border.all(color: Colors.transparent),
+                                  img: Image.asset(
+                                    'images/recommendation.png',
+                                    height: medq.height * 0.02,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'For you',
+                                  color: forYou
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor: ScaapeTheme.kSecondTextCollor,
                                 ),
                               ),
                             ],
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                        //TODO delete
+                        // SingleChildScrollView(
+                        //   scrollDirection: Axis.horizontal,
+                        //   physics: BouncingScrollPhysics(),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: Row(
+                        //       mainAxisSize: MainAxisSize.max,
+                        //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //       children: <Widget>[
+                        //         Container(
+                        //           decoration: BoxDecoration(
+                        //               borderRadius: BorderRadius.circular(14.0),
+                        //               color: ScaapeTheme.kPinkColor.withOpacity(0.14)
+                        //             // gradient: LinearGradient(
+                        //             //   begin: Alignment(0.0, -1.0),
+                        //             //   end: Alignment(0.0, 1.0),
+                        //             //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+                        //             //   stops: [0.0, 1.0],
+                        //             // ),
+                        //           ),
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 19, vertical: 9),
+                        //             child: Row(
+                        //               mainAxisSize: MainAxisSize.min,
+                        //               children: [
+                        //                 Padding(
+                        //                   padding: const EdgeInsets.only(right: 3.0),
+                        //                   // child: Icon(
+                        //                   //   icon,
+                        //                   //   size: 20,
+                        //                   //   color: ScaapeTheme.kPinkColor,
+                        //                   // ),
+                        //                   child: Image.asset(
+                        //                     'images/trending.png',
+                        //                     height: 25,
+                        //                     width: 25,
+                        //                     fit: BoxFit.fill,
+                        //                   ),
+                        //                 ),
+                        //                 Text(
+                        //                   'Trending',
+                        //                   style: GoogleFonts.lato(
+                        //                     fontSize: 15,
+                        //                     color: ScaapeTheme.kPinkColor,
+                        //                   ),
+                        //                   // style: TextStyle(
+                        //                   //   fontFamily: 'Roboto',
+                        //                   //   fontSize: 12,
+                        //                   //   color: const ScaapeTheme.kPinkColor,
+                        //                   // ),
+                        //                   textAlign: TextAlign.left,
+                        //                 )
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(
+                        //           width: medq.width * 0.03,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+
+                        // FutureBuilder(
+                        //   future: dbRef.once(),
+                        //   builder: (_, AsyncSnapshot snapshot) {
+                        //     if (snapshot.connectionState == ConnectionState.waiting) {
+                        //       return Center(
+                        //         child: Padding(
+                        //           padding: const EdgeInsets.all(10.0),
+                        //           child: Container(
+                        //             height: medq.height,
+                        //             width: medq.width,
+                        //             child: Column(
+                        //               children: <Widget>[
+                        //                 Expanded(
+                        //                   child: Shimmer.fromColors(
+                        //                     baseColor: Colors.white38,
+                        //                     highlightColor: Colors.white70,
+                        //                     enabled: _enabled,
+                        //                     child: ListView.builder(
+                        //                       itemBuilder: (_, __) => Padding(
+                        //                         padding: const EdgeInsets.only(bottom: 8.0),
+                        //                         child: Container(
+                        //                           decoration: BoxDecoration(
+                        //                               color: Color(0x5cffffff),
+                        //                               borderRadius:
+                        //                                   BorderRadius.circular(20)),
+                        //                           width: medq.width * 0.94,
+                        //                           height: medq.height * 0.3,
+                        //                         ),
+                        //                       ),
+                        //                       itemCount: 6,
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     } else {
+                        //       if (snapshot.data.value != null) {
+                        //         List timeStampList = [];
+                        //         List valueList = [];
+                        //         var data = snapshot.data.value;
+                        //         data.forEach((key, value) {
+                        //           timeStampList.add(key);
+                        //           valueList.add(value);
+                        //         });
+                        //         return Column(
+                        //           children: valueList.map<Widget>((element) {
+                        //             return GestureDetector(
+                        //               onTap: _showBottomSheet,
+                        //               child: TrendingCards(
+                        //                   imageUrl: element["Image"],
+                        //                   medq: medq,
+                        //                   description: element["Desc"],
+                        //                   title: element["Name"]),
+                        //             );
+                        //           }).toList(),
+                        //         );
+                        //
+                        //         // return GestureDetector(
+                        //         //   onTap: _showBottomSheet,
+                        //         //   child: TrendingCards(
+                        //         //     medq: medq,
+                        //         //     title: 'Road Trip',
+                        //         //     description:
+                        //         //         'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut …..',
+                        //         //     username: '@pasissontraveller',
+                        //         //   ),
+                        //         // );
+                        //       } else {
+                        //         return Text('Sorry We Encountered an Error');
+                        //       }
+                        //     }
+                        //   },
+                        // ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        FutureBuilder(
+
+                          future: getScapesByAuth(
+                              auther.currentUser!.uid, trending, recent, forYou, val),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            // print(auther.currentUser!.uid);
+                            if (snapshot.hasData) {
+                              var a = snapshot.data;
+                              // print(a);
+                              return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                //itemCount: 1,
+                                itemCount: snapshot.data.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return HomeCard(() {
+                                    setState(() {});
+                                  },
+                                      medq,
+                                      a[index]["ScaapeImg"],
+                                      a[index]["ScaapeName"],
+                                      a[index]["Description"],
+                                      a[index]["Location"],
+                                      a[index]['UserId'],
+                                      a[index]["ScaapeId"],
+                                      a[index]["ScaapePref"],
+                                      a[index]["Admin"],
+                                      a[index]["isPresent"],
+                                      a[index]["ScaapeDate"],
+                                      a[index]["AdminName"],
+                                      a[index]["AdminEmail"],
+                                      a[index]["AdminDP"],
+                                      a[index]["AdminGender"],
+                                      a[index]["ScaapeDate"],
+                                      a[index]["count"],
+                                    _key2
+                                  );
+                                },
+                              );
+                            } else {
+                              return Column(
+                                children: [
+                                  ShimmerCard(medq: medq),
+                                  ShimmerCard(medq: medq),
+                                  ShimmerCard(medq: medq),
+                                ],
+                              );
+                            }
+                          },
+                        ),
+
+                        SizedBox(
+                          height: 50,
+                        )
+                      ],
                     ),
-                  Transform.translate(
-                    offset: Offset(0.0, _offsetToArmed * controller.value),
-                    child: child,
                   ),
-                ],
-              );
-            },
-          );
-        },
+                ),
+                // onRefresh: () => Future.delayed(const Duration(seconds: 3)),
+                onRefresh: () =>
+                    Future.delayed(const Duration(seconds: 2)).then((value) {
+                  setState(() {});
+                }),
+                builder: (BuildContext context, Widget child,
+                    IndicatorController controller) {
+                  return AnimatedBuilder(
+                    animation: controller,
+                    child: child,
+                    builder: (context, child) {
+                      final currentState = controller.state;
+                      if (_prevState == IndicatorState.armed &&
+                          currentState == IndicatorState.loading) {
+                        _startCloudAnimation();
+                        _startPlaneAnimation();
+                      } else if (_prevState == IndicatorState.loading &&
+                          currentState == IndicatorState.hiding) {
+                        _stopPlaneAnimation();
+                      } else if (_prevState == IndicatorState.hiding &&
+                          currentState != _prevState) {
+                        _stopCloudAnimation();
+                      }
+
+                      _prevState = currentState;
+
+                      return Stack(
+                        clipBehavior: Clip.hardEdge,
+                        children: <Widget>[
+                          if (_prevState != IndicatorState.idle)
+                            Container(
+                              height: _offsetToArmed * controller.value,
+                              color: ScaapeTheme.kBackColor,
+                              width: double.infinity,
+                              child: AnimatedBuilder(
+                                animation: _clouds.first.controller!,
+                                builder: (BuildContext context, Widget? child) {
+                                  return Stack(
+                                    clipBehavior: Clip.hardEdge,
+                                    children: <Widget>[
+                                      for (final cloud in _clouds)
+                                        Transform.translate(
+                                          offset: Offset(
+                                            ((screenWidth + cloud.width!) *
+                                                    cloud.controller!.value) -
+                                                cloud.width!,
+                                            cloud.dy! * controller.value,
+                                          ),
+                                          child: OverflowBox(
+                                            minWidth: cloud.width,
+                                            minHeight: cloud.width,
+                                            maxHeight: cloud.width,
+                                            maxWidth: cloud.width,
+                                            alignment: Alignment.topLeft,
+                                            child: Container(
+                                              child: Image(
+                                                color: cloud.color,
+                                                image: cloud.image!,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                      /// plane
+                                      Center(
+                                        child: OverflowBox(
+                                          child: plane,
+                                          maxWidth: 172,
+                                          minWidth: 172,
+                                          maxHeight: 50,
+                                          minHeight: 50,
+                                          alignment: Alignment.center,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          Transform.translate(
+                            offset: Offset(0.0, _offsetToArmed * controller.value),
+                            child: child,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            Scaffold(
+              appBar: AppBar(
+                foregroundColor: Colors.transparent,
+                backgroundColor: ScaapeTheme.kBackColor,
+                shadowColor: Colors.transparent,
+                elevation: 0,
+                leading: IconButton(
+                  splashColor: Colors.transparent,
+                  splashRadius: 0.1,
+                  icon: Icon(
+                    CupertinoIcons.back,
+                    color: Colors.white,
+                  ), onPressed: () {
+                  pageController.animateToPage(pageChanged-2, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
+
+                },
+                ),
+                title: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Social Messages',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.pushReplacementNamed(context, AddScaape.id);
+                        },
+                        child: Icon(
+                          Icons.add_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              body: ScaapeChat(),
+            ),
+
+          ],
+        ),
       ),
     );
   }
@@ -1928,7 +2019,7 @@ class HomeCard extends StatelessWidget {
       this.adminDp,
       this.adminGender,
       this.adminInsta,
-      this.count);
+      this.count,this.tKey);
 
   Function fun;
   final Size medq;
@@ -1948,6 +2039,7 @@ class HomeCard extends StatelessWidget {
       adminGender,
       adminInsta;
   int count;
+  Key tKey;
 
   @override
   Widget build(BuildContext context) {
@@ -1977,6 +2069,7 @@ class HomeCard extends StatelessWidget {
                         Stack(
                           children: [
                             Container(
+                              key: tKey,
                               height: medq.height * 0.4,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(

@@ -38,31 +38,37 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   void initState(){
     scaapesLocator();
-
   }
 
-  List<dynamic> scaapeList = [];
+  Map<double,double> scaapeList ={};
 
-  Future<List<dynamic>> scaapesLocator() async{
+  Future<Map<double,double>> scaapesLocator() async{
     String url;
     url ='https://api.scaape.online/api/getScaapes';
     print(url);
     http.Response response = await http.get(Uri.parse(url));
     var data = json.decode(response.body);
     int len = data.length;
+    print("htis i lens");
     print(len);
-    for(int i = 0; i <= len ; i++){
+    for(int i = 0; i < len ; i++){
       double lat = data[i]['Lat'];
       double long = data[i]['Lng'];
-
-      scaapeList.add(data);
+      print("Hell o $lat");
+      // print(lat.toString);
+      scaapeList[lat] = long;
+      // print(scaapeList[lat]);
+      // scaapeList.add(data);
     }
-
-
+    // scaapeList[17.3850] = 78.4867;
+    print("this is ");
+    print(scaapeList);
 
 
     // print(data);
+    getmarkers();
     return scaapeList;
+
 
   }
 
@@ -105,6 +111,7 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height*0.8,
         child: Stack(
           children: [
             GoogleMap(
@@ -120,13 +127,13 @@ class _ExplorePageState extends State<ExplorePage> {
                 newGoogleMapController = controller;
                 locatePosition();
               },
-              markers: getmarkers(),
+              markers: markers.map((e) => e).toSet(),
             ),
             Center(
               child: MaterialButton(
                 color: Colors.black,
                 child: Text(
-                  'Press to Pres'
+                    'Press to Pres'
                 ),
                 onPressed: () async{
                   scaapesLocator().then((value){
@@ -147,21 +154,28 @@ class _ExplorePageState extends State<ExplorePage> {
 
     );
   }
-  Set<Marker> getmarkers() { //markers to place on map
+  void getmarkers() { //markers to place on map
+    int cnt = 0;
     setState(() {
-      markers.add(Marker( //add first marker
-        markerId: MarkerId(_kGooglePlex.toString()),
-        position: LatLng(28.594313, 77.315015), //position of marker
-        infoWindow: InfoWindow( //popup info
-          title: 'Marker Title First ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-      ));
+      scaapeList.forEach((key, value) {
+        cnt++;
+        print(cnt);
+        print("this is key $key");
+        print("this is value $value");
+        markers.add(Marker( //add first marker
+            markerId: MarkerId(cnt.toString()),
+            position: LatLng(key, value), //position of marker
+            infoWindow: InfoWindow( //popup info
+              title: '$key',
+              snippet: '$value',
+            ),
+            icon: BitmapDescriptor.defaultMarker //Icon for Marker
+        ));
+      });
       //add more markers here
     });
+    print("list of marker is $markers");
 
-    return markers;
   }
 }
 
@@ -188,5 +202,3 @@ class MapMarker extends Clusterable {
       markerId: markerId,
       childMarkerId: childMarkerId);
 }
-
-
