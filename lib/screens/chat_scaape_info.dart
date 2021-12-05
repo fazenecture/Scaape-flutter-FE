@@ -6,6 +6,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:http/http.dart';
+import 'package:recase/recase.dart';
 import 'package:scaape/screens/bottom_navigatin_bar.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/utils/constants.dart';
@@ -63,14 +64,17 @@ class _ChatDescState extends State<ChatDesc> {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      // color: Colors.red,
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.24,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage("${scaapeImage}"),
-                          fit: BoxFit.cover,
+                    Hero(
+                      tag: 'scaape_image',
+                      child: Container(
+                        // color: Colors.red,
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.24,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage("${scaapeImage}"),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -93,14 +97,14 @@ class _ChatDescState extends State<ChatDesc> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${scaapeName}',
+                              '${scaapeName.toString().sentenceCase}',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'Created By --, ${scaapeDate.toString().substring(0, 10)}',
+                              'Created on ${scaapeDate.toString().substring(0, 10)}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 13),
                             ),
@@ -117,7 +121,7 @@ class _ChatDescState extends State<ChatDesc> {
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.09),
                   child: Text(
-                    scaapeDesc,
+                    scaapeDesc.sentenceCase,
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -183,7 +187,7 @@ class _ChatDescState extends State<ChatDesc> {
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15),
                                   ): Text(
-                                    userName,
+                                    userName.toString().sentenceCase,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w400,

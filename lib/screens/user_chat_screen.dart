@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:recase/recase.dart';
 import 'package:scaape/screens/chat_scaape_info.dart';
 import 'package:scaape/utils/message_class.dart';
 import 'package:scaape/utils/constants.dart';
@@ -55,6 +56,7 @@ class _UserChatState extends State<UserChat> {
 
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.4,
           leading: Icon(
             CupertinoIcons.back,
             color: Colors.white,
@@ -77,8 +79,37 @@ class _UserChatState extends State<UserChat> {
               ),
             )
           ],
-          centerTitle: true,
-          title: Text('$ScaapeName'),
+          title: GestureDetector(
+            onTap: (){
+              Navigator.pushReplacementNamed(context, ChatDesc.id, arguments:{
+                "ScaapeId": ScaapeId,
+                "ScaapeName": ScaapeName,
+                "ScaapeImage": scaapeImage,
+                "ScaapeDate" :scaapeDate,
+                "ScaapeDesc" : scaapeDesc,
+                "ScaapeAdminId": scaapeAdminId,
+              });
+            },
+            child: Row(
+              children: [
+                Hero(
+                  tag: 'scaape_image',
+                  child: CircleAvatar(
+                    foregroundImage: NetworkImage(scaapeImage),
+                  ),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Text(ScaapeName.sentenceCase,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),)
+              ],
+            ),
+          ),
           // title: Text('sd'),
           backgroundColor: ScaapeTheme.kBackColor,
         ),
@@ -121,10 +152,11 @@ class _UserChatState extends State<UserChat> {
                   },
                 )),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 10),
                   child: Container(
+                    margin: EdgeInsets.only(bottom: 13),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(23.0),
+                      borderRadius: BorderRadius.circular(53.0),
                       color: const Color(0xff393e46),
                       boxShadow: [
                         BoxShadow(
@@ -156,7 +188,8 @@ class _UserChatState extends State<UserChat> {
                             ),
                             suffixIcon: IconButton(
                                 color: Theme.of(context).primaryColor,
-                                icon: Icon(Icons.send),
+                                icon: Icon(Icons.send,
+                                color: Colors.white,),
                                 onPressed: () {
                                   setState(() {
                                     _enteredMessage.trim().isEmpty

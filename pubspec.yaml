@@ -51,7 +51,7 @@ dependencies:
   dio: ^4.0.4
   intl: ^0.17.0
   flutter_typeahead: ^3.2.3
-
+  bubble: ^1.2.1
 
 
 
