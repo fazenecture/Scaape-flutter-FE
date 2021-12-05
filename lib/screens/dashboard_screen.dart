@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scaape/screens/chat_screen.dart';
+import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/location_class.dart';
@@ -425,8 +426,8 @@ class _HomePageViewState extends State<HomePageView>
               appBar: AppBar(
                 foregroundColor: Colors.transparent,
                 backgroundColor: ScaapeTheme.kBackColor,
-                shadowColor: Colors.transparent,
-                elevation: 0,
+                shadowColor: ScaapeTheme.kSecondBlue,
+                elevation: 1,
                 title: Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 0, left: 0),
                   child: Row(
@@ -1300,8 +1301,8 @@ class _HomePageViewState extends State<HomePageView>
               appBar: AppBar(
                 foregroundColor: Colors.transparent,
                 backgroundColor: ScaapeTheme.kBackColor,
-                shadowColor: Colors.transparent,
-                elevation: 0,
+                shadowColor: ScaapeTheme.kSecondBlue,
+                elevation: 1,
                 leading: IconButton(
                   splashColor: Colors.transparent,
                   splashRadius: 0.1,
@@ -1328,7 +1329,7 @@ class _HomePageViewState extends State<HomePageView>
                       ),
                       GestureDetector(
                         onTap: (){
-                          Navigator.pushReplacementNamed(context, AddScaape.id);
+                          Navigator.pushReplacementNamed(context, CreateScaape.id);
                         },
                         child: Icon(
                           Icons.add_rounded,
