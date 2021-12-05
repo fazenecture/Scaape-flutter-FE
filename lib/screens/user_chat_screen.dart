@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scaape/screens/chat_scaape_info.dart';
 import 'package:scaape/utils/message_class.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/messageBubble_widget.dart';
@@ -45,10 +47,36 @@ class _UserChatState extends State<UserChat> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String ScaapeId=chats['ScaapeId'];
     String ScaapeName=chats['ScaapeName'];
+    String scaapeImage = chats['ScaapeImage'];
+    String scaapeDesc = chats['ScaapeDesc'];
+    String scaapeDate = chats['ScaapeDate'];
+    String scaapeAdminId = chats['ScaapeAdminId'];
 
 
     return Scaffold(
         appBar: AppBar(
+          leading: Icon(
+            CupertinoIcons.back,
+            color: Colors.white,
+          ),
+          actions: [
+            IconButton(
+              onPressed: (){
+                Navigator.pushReplacementNamed(context, ChatDesc.id, arguments:{
+                  "ScaapeId": ScaapeId,
+                  "ScaapeName": ScaapeName,
+                  "ScaapeImage": scaapeImage,
+                  "ScaapeDate" :scaapeDate,
+                  "ScaapeDesc" : scaapeDesc,
+                  "ScaapeAdminId": scaapeAdminId,
+                });
+              },
+              icon: Icon(
+                Icons.info_outlined,
+
+              ),
+            )
+          ],
           centerTitle: true,
           title: Text('$ScaapeName'),
           // title: Text('sd'),

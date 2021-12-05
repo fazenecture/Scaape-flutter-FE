@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:scaape/screens/chat_scaape_info.dart';
 import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/explore_page.dart';
 import 'package:scaape/screens/onBoarding2_screen.dart';
@@ -112,6 +113,7 @@ class _MyAppState extends State<MyApp> {
         NotificationScreen.id: (context) => NotificationScreen(),
         ExplorePage.id: (context)=> ExplorePage(),
         CreateScaape.id: (context) => CreateScaape(),
+        ChatDesc.id: (context) => ChatDesc(),
       },
       // home: HomeScreen(),
     );

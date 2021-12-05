@@ -79,7 +79,12 @@ class _ScaapeChatState extends State<ScaapeChat> {
                                 onTap: () {
                                   Navigator.pushNamed(context, UserChat.id,arguments:{
                                     "ScaapeId":"${a[index]['ScaapeId']}",
-                                    "ScaapeName":"${a[index]['ScaapeName']}"
+                                    "ScaapeName":"${a[index]['ScaapeName']}",
+                                    "ScaapeImage":"${a[index]['ScaapeImg']}",
+                                    "ScaapeDate":"${a[index]['ScaapeDate']}",
+                                    "ScaapeDesc":"${a[index]['Description']}",
+                                    "ScaapeAdminId":"${a[index]['AdminUserId']}",
+
                                   });
                                 },
                                 // selectedTileColor: ScaapeTheme.kSecondBlue,
@@ -211,3 +216,4 @@ Future<List<dynamic>> getActiveScaapes(String id)async{
   print(json.decode(response.body));
   return json.decode(response.body);
 }
+
