@@ -80,6 +80,8 @@ class _CreateScaapeState extends State<CreateScaape> {
 
   var identifier = new Map();
 
+  var nearbyPlaces ;
+
   Future getNearby(String lat, String long) async {
     var _token = 'fsq3MPCrWAoSAAHkszVJzpf/ge+bsvu4MI+HptEWYMb+4BE=';
 
@@ -97,6 +99,8 @@ class _CreateScaapeState extends State<CreateScaape> {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       print(response.body);
+      nearbyPlaces = data;
+      // print("hey $nearbyPlaces");
       print(data['results'].length);
       setState(() {
 
@@ -703,13 +707,23 @@ class _CreateScaapeState extends State<CreateScaape> {
                                 print(imageUrl);
                                 if (imageUrl != '') {
                                   if (_formKey.currentState!.validate()) {
+                                    print(nearbyPlaces);
+                                    var myLat;
+                                    var myLong;
+                                    for(int j=0; j<nearbyPlaces['results'].length;j++){
+                                      if(nearbyPlaces['results'][j]['name'] == scaapeLocation.text){
+                                        myLat = nearbyPlaces['results'][j]['geocodes']['main']['latitude'];
+                                        myLong = nearbyPlaces['results'][j]['geocodes']['main']['longitude'];
+                                        break;
+                                      }
+                                    }
                                     String url =
                                         'https://api.scaape.online/api/createScaape';
                                     Map<String, String> headers = {
                                       "Content-type": "application/json"
                                     };
                                     String json =
-                                        '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${scaapeName.text}","Description": "${scaapeDesc.text}","Location": "${scaapeLocation.text}","City": "${scaapeLocation.text}","ScaapeImg": "${imageurl}","Status": "true","Activity":"${scaapeActivity.text}","ScaapeDate": "${scaapeDate.text}"}';
+                                        '{"ScaapeId": "${DateTime.now().millisecondsSinceEpoch}","UserId": "${auth.currentUser!.uid}","ScaapeName": "${scaapeName.text}","Description": "${scaapeDesc.text}","Location": "${scaapeLocation.text}","City": "${scaapeLocation.text}","ScaapeImg": "${imageurl}","Status": "true","Activity":"${scaapeActivity.text}","ScaapeDate": "${scaapeDate.text}","Lat":"$myLat","Lng":"$myLong"}'         ;
                                     http.Response response = await post(
                                         Uri.parse(url),
                                         headers: headers,
