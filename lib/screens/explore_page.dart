@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:http/http.dart' as http;
 import 'package:petitparser/context.dart';
@@ -9,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:fluster/fluster.dart';
 import 'package:fluster/src/base_cluster.dart';
 import 'package:fluster/src/clusterable.dart';
+import 'package:scaape/utils/scaapeData.dart';
 
 
 
@@ -40,9 +43,9 @@ class _ExplorePageState extends State<ExplorePage> {
     scaapesLocator();
   }
 
-  Map<double,double> scaapeList ={};
-
-  Future<Map<double,double>> scaapesLocator() async{
+  // Map<double,double> scaapeList ={};
+  List<Scaapedata> scaapeList = [];
+  Future<List<Scaapedata>> scaapesLocator() async{
     String url;
     url ='https://api.scaape.online/api/getScaapes';
     print(url);
@@ -51,18 +54,27 @@ class _ExplorePageState extends State<ExplorePage> {
     int len = data.length;
     print("htis i lens");
     print(len);
-    for(int i = 0; i < len ; i++){
-      double lat = data[i]['Lat'];
-      double long = data[i]['Lng'];
-      print("Hell o $lat");
-      // print(lat.toString);
-      scaapeList[lat] = long;
-      // print(scaapeList[lat]);
-      // scaapeList.add(data);
-    }
+    setState(() {
+      for(int i = 0; i < len ; i++){
+        double lat = data[i]['Lat'];
+        double long = data[i]['Lng'];
+        String img = data[i]['ScaapeImg'];
+        String scaapeName = data[i]['ScaapeName'];
+        String scaapeLocation = data[i]['Location'];
+        print(i);
+        // print(lat.toString);
+        // scaapeList[lat] = long;
+        scaapeList.add(Scaapedata(lat: lat, lon: long, imgURL:img, sLocation: scaapeLocation, sName: scaapeName ));
+
+        // print(scaapeList[lat]);
+        // scaapeList.add(data);
+      }
+    });
+
+
     // scaapeList[17.3850] = 78.4867;
-    print("this is ");
-    print(scaapeList);
+  print("this is ");
+  // print(scaapeList);
 
 
     // print(data);
@@ -71,6 +83,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
 
   }
+
 
 
 
@@ -97,21 +110,23 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
 
-
+  void setMap(String mapStyle) {
+  newGoogleMapController.setMapStyle(mapStyle);
+  }
+  void loadMap(){
+     getJsonFile('mapJson/nigh.json').then(setMap);
+  }
+  Future<String> getJsonFile(String path) async{
+    return await rootBundle.loadString(path);
+  }
   final Set<Marker> markers = new Set();
 
 
   static const currentZoom = 10;
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height*0.8,
         child: Stack(
           children: [
             GoogleMap(
@@ -125,23 +140,14 @@ class _ExplorePageState extends State<ExplorePage> {
               onMapCreated: (GoogleMapController controller) {
                 _controllerGoogleMap.complete(controller);
                 newGoogleMapController = controller;
+                loadMap();
                 locatePosition();
+              },
+              onLongPress: (value){
+                print(value);
               },
               markers: markers.map((e) => e).toSet(),
             ),
-            Center(
-              child: MaterialButton(
-                color: Colors.black,
-                child: Text(
-                    'Press to Pres'
-                ),
-                onPressed: () async{
-                  scaapesLocator().then((value){
-                    print(value);
-                  });
-                },
-              ),
-            )
 
 
 
@@ -154,27 +160,43 @@ class _ExplorePageState extends State<ExplorePage> {
 
     );
   }
-  void getmarkers() { //markers to place on map
+  // Future<Uint8List> getUint8List(var image) async {
+  //
+  //   // ByteData byteData = await image.;
+  //   // return byteData.buffer.asUint8List();
+  // }
+  Future<void> getmarkers() async { //markers to place on map
     int cnt = 0;
-    setState(() {
-      scaapeList.forEach((key, value) {
+
+    for(Scaapedata data in scaapeList){
+      final http.Response response = await http.get(Uri.parse(data.imgURL));
+
         cnt++;
-        print(cnt);
-        print("this is key $key");
-        print("this is value $value");
+        print('This is image URL${data.imgURL}');
+        // print("this is key $key");
+        // print("this is value $value");
         markers.add(Marker( //add first marker
             markerId: MarkerId(cnt.toString()),
-            position: LatLng(key, value), //position of marker
-            infoWindow: InfoWindow( //popup info
-              title: '$key',
-              snippet: '$value',
+            position: LatLng(data.lat, data.lon),
+            infoWindow: InfoWindow(
+              title: data.sName,
+              snippet: data.sLocation,
             ),
-            icon: BitmapDescriptor.defaultMarker //Icon for Marker
+
+            icon: BitmapDescriptor.fromBytes(response.bodyBytes)//Icon for Marker
         ));
-      });
-      //add more markers here
+
+
+    }
+    setState(() {
+      print("list of marker is $markers");
+
     });
-    print("list of marker is $markers");
+    // scaapeList.forEach((key, value) {
+    //
+    // });
+    //add more markers here
+
 
   }
 }
@@ -202,3 +224,5 @@ class MapMarker extends Clusterable {
       markerId: markerId,
       childMarkerId: childMarkerId);
 }
+
+
