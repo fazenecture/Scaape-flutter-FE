@@ -1,15 +1,9 @@
-
-
-
-
 class Scaapedata{
   double lat;
   double lon;
   String imgURL;
-  String sName;
-  String sLocation;
+  String title;
+  String subTitle;
 
-  Scaapedata({required this.lat,required this.lon,required this.imgURL, required this.sLocation, required this.sName});
-
-
+  Scaapedata({required this.lat,required this.lon,required this.imgURL,required this.title,required this.subTitle});
 }

@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:petitparser/context.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,7 +16,7 @@ import 'package:fluster/src/base_cluster.dart';
 import 'package:fluster/src/clusterable.dart';
 import 'package:scaape/utils/scaapeData.dart';
 
-
+import 'dart:ui' as ui;
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -54,27 +57,23 @@ class _ExplorePageState extends State<ExplorePage> {
     int len = data.length;
     print("htis i lens");
     print(len);
-    setState(() {
-      for(int i = 0; i < len ; i++){
-        double lat = data[i]['Lat'];
-        double long = data[i]['Lng'];
-        String img = data[i]['ScaapeImg'];
-        String scaapeName = data[i]['ScaapeName'];
-        String scaapeLocation = data[i]['Location'];
-        print(i);
-        // print(lat.toString);
-        // scaapeList[lat] = long;
-        scaapeList.add(Scaapedata(lat: lat, lon: long, imgURL:img, sLocation: scaapeLocation, sName: scaapeName ));
+    for(int i = 0; i < len ; i++){
+      double lat = data[i]['Lat'];
+      double long = data[i]['Lng'];
+      String img = data[i]['ScaapeImg'];
+      String title = data[i]['ScaapeName'];
+      String subTitle = data[i]["Location"];
+      print(i);
+      // print(lat.toString);
+      // scaapeList[lat] = long;
+      scaapeList.add(Scaapedata(lat: lat, lon: long, imgURL:img ,title:title,subTitle: subTitle ));
 
-        // print(scaapeList[lat]);
-        // scaapeList.add(data);
-      }
-    });
-
-
+      // print(scaapeList[lat]);
+      // scaapeList.add(data);
+    }
     // scaapeList[17.3850] = 78.4867;
-  print("this is ");
-  // print(scaapeList);
+    print("this is ");
+    // print(scaapeList);
 
 
     // print(data);
@@ -84,7 +83,105 @@ class _ExplorePageState extends State<ExplorePage> {
 
   }
 
+  Future<BitmapDescriptor> convertImageFileToCustomBitmapDescriptor(File imageFile,
+      {int size = 180,
+        bool addBorder = false,
+        Color borderColor = Colors.white,
+        double borderSize = 10,
+        String title = "NO title",
+        Color titleColor = Colors.black,
+        Color titleBackgroundColor = Colors.white}) async {
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color;
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+    final double radius = size / 2;
 
+    //make canvas clip path to prevent image drawing over the circle
+    final Path clipPath = Path();
+    clipPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        Radius.circular(100)));
+    clipPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
+        Radius.circular(500)));
+    canvas.clipPath(clipPath);
+
+    //paintImage
+    final Uint8List imageUint8List = await imageFile.readAsBytes();
+    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
+    final ui.FrameInfo imageFI = await codec.getNextFrame();
+    paintImage(
+        canvas: canvas,
+        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        image: imageFI.image,
+        fit: BoxFit.fill);
+
+    if (addBorder) {
+      //draw Border
+      paint..color = borderColor;
+      paint..style = PaintingStyle.stroke;
+      paint..strokeWidth = borderSize;
+      canvas.drawCircle(Offset(radius, radius), radius, paint);
+    }
+
+    if (title != null) {
+      if (title.length > 9) {
+        title = title.substring(0, 9);
+      }
+      //draw Title background
+      paint..color = titleBackgroundColor;
+      paint..style = PaintingStyle.fill;
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
+              Radius.circular(500)),
+          paint);
+
+      //draw Title
+      textPainter.text = TextSpan(
+          text: title,
+          style: TextStyle(
+            fontSize: radius / 2.5,
+            fontWeight: FontWeight.bold,
+            color: titleColor,
+          ));
+      textPainter.layout();
+      textPainter.paint(
+          canvas,
+          Offset(radius - textPainter.width / 2,
+              size * 9.5 / 10 - textPainter.height / 2));
+    }
+
+    //convert canvas as PNG bytes
+    final _image =
+    await pictureRecorder.endRecording().toImage(size, (size * 1.1).toInt());
+    final data = await _image.toByteData(format: ui.ImageByteFormat.png);
+
+    //convert PNG bytes as BitmapDescriptor
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+  }
+
+
+  Future<File> urlToFile(String imageUrl) async {
+// generate random number.
+    var rng = new Random();
+// get temporary directory of device.
+    Directory tempDir = await getTemporaryDirectory();
+// get temporary path from temporary directory.
+    String tempPath = tempDir.path;
+// create a new file in temporary path with random file name.
+    File file = new File('$tempPath'+ (rng.nextInt(100)).toString() +'.png');
+// call http.get method and pass imageUrl into it to get response.
+    http.Response response = await http.get(Uri.parse(imageUrl));
+// write bodyBytes received in response to file.
+    await file.writeAsBytes(response.bodyBytes);
+// now return the file which is created with random name in
+// temporary directory and image bytes from response is written to // that file.
+    return file;
+  }
 
 
   void locatePosition () async{
@@ -111,10 +208,10 @@ class _ExplorePageState extends State<ExplorePage> {
 
 
   void setMap(String mapStyle) {
-  newGoogleMapController.setMapStyle(mapStyle);
+    newGoogleMapController.setMapStyle(mapStyle);
   }
   void loadMap(){
-     getJsonFile('mapJson/nigh.json').then(setMap);
+    getJsonFile('mapJson/nigh.json').then(setMap);
   }
   Future<String> getJsonFile(String path) async{
     return await rootBundle.loadString(path);
@@ -148,6 +245,19 @@ class _ExplorePageState extends State<ExplorePage> {
               },
               markers: markers.map((e) => e).toSet(),
             ),
+            Center(
+              child: MaterialButton(
+                color: Colors.black,
+                child: Text(
+                    'Press to Pres'
+                ),
+                onPressed: () async{
+                  scaapesLocator().then((value){
+                    print(value);
+                  });
+                },
+              ),
+            )
 
 
 
@@ -169,22 +279,24 @@ class _ExplorePageState extends State<ExplorePage> {
     int cnt = 0;
 
     for(Scaapedata data in scaapeList){
-      final http.Response response = await http.get(Uri.parse(data.imgURL));
+      // final http.Response response = await http.get(Uri.parse(data.imgURL));
+      File im = await urlToFile(data.imgURL);
 
-        cnt++;
-        print('This is image URL${data.imgURL}');
-        // print("this is key $key");
-        // print("this is value $value");
-        markers.add(Marker( //add first marker
-            markerId: MarkerId(cnt.toString()),
-            position: LatLng(data.lat, data.lon),
-            infoWindow: InfoWindow(
-              title: data.sName,
-              snippet: data.sLocation,
-            ),
+      BitmapDescriptor v = await convertImageFileToCustomBitmapDescriptor(im,title: data.title);
+      cnt++;
+      print('This is image URL${data.imgURL}');
+      // print("this is key $key");
+      // print("this is value $value");
+      markers.add(Marker( //add first marker
+          markerId: MarkerId(cnt.toString()),
+          position: LatLng(data.lat, data.lon), //position of marker
+          infoWindow: InfoWindow( //popup info
+            title: data.title,
+            snippet: data.subTitle,
+          ),
 
-            icon: BitmapDescriptor.fromBytes(response.bodyBytes)//Icon for Marker
-        ));
+          icon: v//Icon for Marker
+      ));
 
 
     }
