@@ -15,17 +15,17 @@ class Scaapedata {
   String admin;
   Scaapedata(
       {required this.lat,
-      required this.lon,
-      required this.scaapeName,
-      required this.location,
-      required this.scaapeImg,
-      required this.clickCount,
-      required this.profileDP,
-      required this.name,
-      required this.InstaID,
-      required this.Description,
-      required this.scaapeId,
-      required this.UID,
-      required this.isPresent,
-      required this.admin});
+        required this.lon,
+        required this.scaapeName,
+        required this.location,
+        required this.scaapeImg,
+        required this.clickCount,
+        required this.profileDP,
+        required this.name,
+        required this.InstaID,
+        required this.Description,
+        required this.scaapeId,
+        required this.UID,
+        required this.isPresent,
+        required this.admin});
 }
