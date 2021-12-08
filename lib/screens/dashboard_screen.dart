@@ -406,7 +406,7 @@ class _HomePageViewState extends State<HomePageView>
       },
     );
     return ScrollConfiguration(
-      behavior: ScrollBehavior(),  
+      behavior: ScrollBehavior(),
       child: GlowingOverscrollIndicator(
         color: ScaapeTheme.kBackColor.withOpacity(0.1),
         axisDirection: AxisDirection.left,
@@ -468,52 +468,84 @@ class _HomePageViewState extends State<HomePageView>
                   physics: BouncingScrollPhysics(),
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 19),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        TextFormField(
-                          onChanged: (value) {},
-                          controller: searchScaape,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Scaape Name';
-                            }
-                            return null;
-                          },
-                          cursorColor: ScaapeTheme.kPinkColor,
-                          maxLines: 1,
-                          decoration: InputDecoration(
-                            errorStyle: TextStyle(
-                              color: ScaapeTheme.kPinkColor,
-                              fontSize: 0,
-                            ),
-                            fillColor: ScaapeTheme.kTextFieldBlue,
-                            filled: true,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(7.0),
-                                borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(7.0),
-                                borderSide: const BorderSide(
-                                    width: 1, color: ScaapeTheme.kPinkColor)),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(7.0),
-                                borderSide: const BorderSide(
-                                    width: 0, color: Colors.transparent)),
-                            border: InputBorder.none,
-                            hintText: "Let's be creative while scaaping...",
-                            hintStyle: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize:
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.018,
-                              color: const Color(0x5cffffff),
-                              fontWeight: FontWeight.w400,
-                            ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 65,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                child: TextFormField(
+                                  onChanged: (value) {},
+                                  controller: searchScaape,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Scaape Name';
+                                    }
+                                    return null;
+                                  },
+                                  cursorColor: ScaapeTheme.kPinkColor,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                    errorStyle: TextStyle(
+                                      color: ScaapeTheme.kPinkColor,
+                                      fontSize: 0,
+                                    ),
+                                    fillColor: ScaapeTheme.kTextFieldBlue,
+                                    filled: true,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 20.0),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderSide: const BorderSide(
+                                            width: 1, color: ScaapeTheme.kPinkColor)),
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderSide: const BorderSide(
+                                            width: 0, color: Colors.transparent)),
+                                    border: InputBorder.none,
+                                    hintText: "Search for Scaapes...",
+                                    hintStyle: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize:
+                                      MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height * 0.018,
+                                      color: const Color(0x5cffffff),
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 14,
+                              ),
+                              Flexible(
+                                  flex: 1,
+                                  child: MaterialButton(
+                                onPressed: (){
+
+                                },
+                                    color: ScaapeTheme.kPinkColor,
+                                    height: 45,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+
+                                child: Icon(
+                                    Icons.filter_list
+                                ),
+                              ))
+                            ],
                           ),
                         ),
                         // Row(
