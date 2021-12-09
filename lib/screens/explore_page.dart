@@ -63,7 +63,7 @@ class _ExplorePageState extends State<ExplorePage> {
     String url;
     String uid = FirebaseAuth.instance.currentUser!.uid;
     url =
-        'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${uid}';
+    'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${uid}';
     print(url);
     http.Response response = await http.get(Uri.parse(url));
     var data = json.decode(response.body);
@@ -120,12 +120,12 @@ class _ExplorePageState extends State<ExplorePage> {
   Future<BitmapDescriptor> convertImageFileToCustomBitmapDescriptor(
       File imageFile,
       {int size = 180,
-      bool addBorder = false,
-      Color borderColor = Colors.white,
-      double borderSize = 10,
-      String title = "NO title",
-      Color titleColor = Colors.black,
-      Color titleBackgroundColor = Colors.white}) async {
+        bool addBorder = false,
+        Color borderColor = Colors.white,
+        double borderSize = 10,
+        String title = "NO title",
+        Color titleColor = Colors.black,
+        Color titleBackgroundColor = Colors.white}) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color;
@@ -228,7 +228,7 @@ class _ExplorePageState extends State<ExplorePage> {
       LatLng latLaPosition = LatLng(position.latitude, position.longitude);
 
       CameraPosition cameraPosition =
-          new CameraPosition(target: latLaPosition, zoom: 14);
+      new CameraPosition(target: latLaPosition, zoom: 14);
       newGoogleMapController
           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
@@ -388,7 +388,7 @@ class _ExplorePageState extends State<ExplorePage> {
       // print("this is key $key");
       // print("this is value $value");
       markers.add(Marker(
-          //add first marker
+        //add first marker
           markerId: MarkerId(cnt.toString()),
           position: LatLng(data.lat, data.lon), //position of marker
           infoWindow: InfoWindow(
@@ -406,381 +406,381 @@ class _ExplorePageState extends State<ExplorePage> {
                         topRight: Radius.circular(16),
                         topLeft: Radius.circular(16))),
                 builder: (context) => Container(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                // key: tKey,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.4,
+                          Container(
+                            // key: tKey,
+                            height:
+                            MediaQuery.of(context).size.height * 0.4,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(16),
+                                  topLeft: Radius.circular(16)),
+                              color: Colors.white,
+                              image: DecorationImage(
+                                image: NetworkImage(data.scaapeImg),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height:
+                            MediaQuery.of(context).size.height * 0.4,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(16),
+                                    topLeft: Radius.circular(16)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      ScaapeTheme.kBackColor
+                                          .withOpacity(0.2),
+                                      ScaapeTheme.kBackColor
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter)),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                height: 5.5,
+                                width: MediaQuery.of(context).size.width *
+                                    0.13,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(16),
-                                      topLeft: Radius.circular(16)),
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                    image: NetworkImage(data.scaapeImg),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(34))),
                               ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.4,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(16),
-                                        topLeft: Radius.circular(16)),
-                                    gradient: LinearGradient(
-                                        colors: [
-                                          ScaapeTheme.kBackColor
-                                              .withOpacity(0.2),
-                                          ScaapeTheme.kBackColor
-                                        ],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter)),
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    height: 5.5,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.13,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(34))),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.56,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 23, vertical: 18),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
+                            ),
+                          ),
+                          Container(
+                            height:
+                            MediaQuery.of(context).size.height * 0.56,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 23, vertical: 18),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                                0.6,
+                                            child: Text(
+                                              '${data.scaapeName}',
+                                              style: GoogleFonts.lato(
+                                                  fontSize: 24,
+                                                  fontWeight:
+                                                  FontWeight.w500),
+                                              maxLines: 2,
+                                              softWrap: true,
+                                              overflow: TextOverflow.clip,
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.group_outlined),
+                                                Text(
+                                                  data.clickCount
+                                                      .toString(),
+                                                  style: GoogleFonts.lato(
+                                                      fontSize: 21,
+                                                      fontWeight:
+                                                      FontWeight.w500),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height *
+                                            0.014,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          String auth = FirebaseAuth
+                                              .instance.currentUser!.uid;
+                                          auth != data.UID
+                                              ? Navigator.pushNamed(context,
+                                              UserProfileScreen.id,
+                                              arguments: {
+                                                "UserId":
+                                                "${data.UID}"
+                                              })
+                                              : null;
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                              0.56,
+                                          child: Row(
                                             children: [
                                               Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.6,
-                                                child: Text(
-                                                  '${data.scaapeName}',
-                                                  style: GoogleFonts.lato(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                  maxLines: 2,
-                                                  softWrap: true,
-                                                  overflow: TextOverflow.clip,
+                                                decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                        colors: [
+                                                          Color(0xFFFF416C),
+                                                          Color(0xFFFF4B2B)
+                                                        ],
+                                                        begin: Alignment
+                                                            .topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter),
+                                                    shape: BoxShape.circle),
+                                                height: 42,
+                                                width: 42,
+                                                child: CircleAvatar(
+                                                  // radius: 33,
+                                                  backgroundColor:
+                                                  Color(0xFFFF4B2B)
+                                                      .withOpacity(0),
+                                                  child: CircleAvatar(
+                                                    backgroundImage:
+                                                    NetworkImage(
+                                                        data.profileDP),
+                                                    backgroundColor:
+                                                    Colors.transparent,
+                                                    // radius: 34,
+                                                  ),
                                                 ),
                                               ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.group_outlined),
-                                                    Text(
-                                                      data.clickCount
-                                                          .toString(),
-                                                      style: GoogleFonts.lato(
-                                                          fontSize: 21,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.014,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              String auth = FirebaseAuth
-                                                  .instance.currentUser!.uid;
-                                              auth != data.UID
-                                                  ? Navigator.pushNamed(context,
-                                                      UserProfileScreen.id,
-                                                      arguments: {
-                                                          "UserId":
-                                                              "${data.UID}"
-                                                        })
-                                                  : null;
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8)),
+                                              SizedBox(
+                                                width: 8,
                                               ),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.56,
-                                              child: Row(
+                                              Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment
+                                                    .start,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .center,
                                                 children: [
                                                   Container(
-                                                    decoration: BoxDecoration(
-                                                        gradient: LinearGradient(
-                                                            colors: [
-                                                              Color(0xFFFF416C),
-                                                              Color(0xFFFF4B2B)
-                                                            ],
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter),
-                                                        shape: BoxShape.circle),
-                                                    height: 42,
-                                                    width: 42,
-                                                    child: CircleAvatar(
-                                                      // radius: 33,
-                                                      backgroundColor:
-                                                          Color(0xFFFF4B2B)
-                                                              .withOpacity(0),
-                                                      child: CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                data.profileDP),
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        // radius: 34,
+                                                    width: MediaQuery.of(
+                                                        context)
+                                                        .size
+                                                        .width *
+                                                        0.24,
+                                                    child: Text(
+                                                      '${data.name}',
+                                                      maxLines: 1,
+                                                      softWrap: true,
+                                                      overflow:
+                                                      TextOverflow.clip,
+                                                      style: GoogleFonts
+                                                          .poppins(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                        FontWeight.w500,
                                                       ),
+                                                      textAlign:
+                                                      TextAlign.left,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.24,
-                                                        child: Text(
-                                                          '${data.name}',
-                                                          maxLines: 1,
-                                                          softWrap: true,
-                                                          overflow:
-                                                              TextOverflow.clip,
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        '@${data.InstaID}',
-                                                        maxLines: 1,
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                      ),
-                                                    ],
+                                                  Text(
+                                                    '@${data.InstaID}',
+                                                    maxLines: 1,
+                                                    style:
+                                                    GoogleFonts.poppins(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.02,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                            ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.75,
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Text(
-                                                '${data.Description.length > 80 ? data.Description.substring(0, 80) : data.Description}',
-                                                maxLines: 4,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                                style: GoogleFonts.nunitoSans(
-                                                  fontSize: 17,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.006,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.location_on_outlined,
-                                                size: 12,
-                                              ),
-                                              Text(
-                                                '${data.location}',
-                                                maxLines: 1,
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
                                             ],
                                           ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height *
+                                            0.02,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8)),
+                                        ),
+                                        width: MediaQuery.of(context)
+                                            .size
+                                            .width *
+                                            0.75,
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Text(
+                                            '${data.Description.length > 80 ? data.Description.substring(0, 80) : data.Description}',
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
+                                            style: GoogleFonts.nunitoSans(
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height *
+                                            0.006,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.location_on_outlined,
+                                            size: 12,
+                                          ),
+                                          Text(
+                                            '${data.location}',
+                                            maxLines: 1,
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                FontWeight.w400),
+                                          )
                                         ],
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height:
+                            MediaQuery.of(context).size.height * 0.67,
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 19),
+                                  child: (data.isPresent == "True" ||
+                                      data.isPresent == "true" ||
+                                      data.admin == "True" ||
+                                      data.admin == "true")
+                                      ? MaterialButton(
+                                    onPressed: null,
+                                    elevation: 0,
+                                    textColor: Colors.white,
+                                    splashColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7)),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.67,
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 12, horizontal: 19),
-                                      child: (data.isPresent == "True" ||
-                                              data.isPresent == "true" ||
-                                              data.admin == "True" ||
-                                              data.admin == "true")
-                                          ? MaterialButton(
-                                              onPressed: null,
-                                              elevation: 0,
-                                              textColor: Colors.white,
-                                              splashColor: Colors.transparent,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(7)),
-                                              ),
-                                              disabledColor: ScaapeTheme
-                                                  .kPinkColor
-                                                  .withOpacity(0.15),
-                                              disabledTextColor:
-                                                  ScaapeTheme.kPinkColor,
-                                              color: ScaapeTheme.kPinkColor
-                                                  .withOpacity(0.2),
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.065,
-                                              minWidth: double.infinity,
-                                              child: Text(
-                                                'YOU HAVE ALREADY JOINED',
-                                                style: GoogleFonts.roboto(
-                                                    color:
-                                                        ScaapeTheme.kPinkColor,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            )
-                                          : MaterialButton(
-                                              onPressed: () async {
-                                                final FirebaseAuth auth =
-                                                    FirebaseAuth.instance;
-                                                String url =
-                                                    'https://api.scaape.online/api/createParticipant';
-                                                Map<String, String> headers = {
-                                                  "Content-type":
-                                                      "application/json"
-                                                };
-                                                String json =
-                                                    '{"ScaapeId": "${data.scaapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
-                                                http.Response response =
-                                                    await post(Uri.parse(url),
-                                                        headers: headers,
-                                                        body: json);
-                                                //print(user.displayName);
-                                                int statusCode =
-                                                    response.statusCode;
-                                                // print(statusCode);
-                                                // print(response.body);
-                                                Fluttertoast.showToast(
-                                                  msg: "Succesfully joined",
-                                                );
-                                                  // fun();
-                                              },
-                                              elevation: 0,
-                                              textColor: Colors.white,
-                                              splashColor:
-                                                  ScaapeTheme.kPinkColor,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(7)),
-                                              ),
-                                              color: ScaapeTheme.kPinkColor,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.065,
-                                              minWidth: double.infinity,
-                                              child: Text(
-                                                'JOIN THIS SCAAPE',
-                                                style: GoogleFonts.roboto(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            )),
-                                ),
-                              )
-                            ],
+                                    disabledColor: ScaapeTheme
+                                        .kPinkColor
+                                        .withOpacity(0.15),
+                                    disabledTextColor:
+                                    ScaapeTheme.kPinkColor,
+                                    color: ScaapeTheme.kPinkColor
+                                        .withOpacity(0.2),
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.065,
+                                    minWidth: double.infinity,
+                                    child: Text(
+                                      'YOU HAVE ALREADY JOINED',
+                                      style: GoogleFonts.roboto(
+                                          color:
+                                          ScaapeTheme.kPinkColor,
+                                          fontSize: 17,
+                                          fontWeight:
+                                          FontWeight.w500),
+                                    ),
+                                  )
+                                      : MaterialButton(
+                                    onPressed: () async {
+                                      final FirebaseAuth auth =
+                                          FirebaseAuth.instance;
+                                      String url =
+                                          'https://api.scaape.online/api/createParticipant';
+                                      Map<String, String> headers = {
+                                        "Content-type":
+                                        "application/json"
+                                      };
+                                      String json =
+                                          '{"ScaapeId": "${data.scaapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
+                                      http.Response response =
+                                      await post(Uri.parse(url),
+                                          headers: headers,
+                                          body: json);
+                                      //print(user.displayName);
+                                      int statusCode =
+                                          response.statusCode;
+                                      // print(statusCode);
+                                      // print(response.body);
+                                      Fluttertoast.showToast(
+                                        msg: "Succesfully joined",
+                                      );
+                                      // fun();
+                                    },
+                                    elevation: 0,
+                                    textColor: Colors.white,
+                                    splashColor:
+                                    ScaapeTheme.kPinkColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7)),
+                                    ),
+                                    color: ScaapeTheme.kPinkColor,
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.065,
+                                    minWidth: double.infinity,
+                                    child: Text(
+                                      'JOIN THIS SCAAPE',
+                                      style: GoogleFonts.roboto(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight:
+                                          FontWeight.w500),
+                                    ),
+                                  )),
+                            ),
                           )
                         ],
-                      ),
-                    ));
+                      )
+                    ],
+                  ),
+                ));
           },
           icon: v //Icon for Marker
-          ));
+      ));
     }
     setState(() {
       print("list of marker is $markers");
@@ -798,22 +798,22 @@ class MapMarker extends Clusterable {
 
   MapMarker(
       {this.locationName,
-      latitude,
-      longitude,
-      this.thumbnailSrc,
-      isCluster = false,
-      clusterId,
-      pointsSize,
-      markerId,
-      childMarkerId})
+        latitude,
+        longitude,
+        this.thumbnailSrc,
+        isCluster = false,
+        clusterId,
+        pointsSize,
+        markerId,
+        childMarkerId})
       : super(
-            latitude: latitude,
-            longitude: longitude,
-            isCluster: isCluster,
-            clusterId: clusterId,
-            pointsSize: pointsSize,
-            markerId: markerId,
-            childMarkerId: childMarkerId);
+  latitude: latitude,
+  longitude: longitude,
+  isCluster: isCluster,
+  clusterId: clusterId,
+  pointsSize: pointsSize,
+  markerId: markerId,
+  childMarkerId: childMarkerId);
 }
 
 
@@ -1437,3 +1437,6 @@ void onClick(String ScapeId) async {
     // print(e);
   }
 }
+
+
+
