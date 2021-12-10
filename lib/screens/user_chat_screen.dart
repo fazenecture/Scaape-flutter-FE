@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 import 'package:scaape/screens/chat_scaape_info.dart';
+import 'package:scaape/screens/chat_screen.dart';
 import 'package:scaape/utils/message_class.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/messageBubble_widget.dart';
@@ -57,9 +58,14 @@ class _UserChatState extends State<UserChat> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0.4,
-          leading: Icon(
-            CupertinoIcons.back,
-            color: Colors.white,
+          leading: IconButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            icon : Icon(
+              CupertinoIcons.back,
+              color: Colors.white,
+            ),
           ),
           actions: [
             IconButton(

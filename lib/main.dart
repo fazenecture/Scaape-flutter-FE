@@ -9,6 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:scaape/screens/chat_scaape_info.dart';
 import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/explore_page.dart';
+import 'package:scaape/screens/live_streaming.dart';
 import 'package:scaape/screens/onBoarding2_screen.dart';
 import 'package:scaape/screens/search_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';

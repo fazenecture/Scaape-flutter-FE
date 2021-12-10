@@ -472,7 +472,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 );
                               } else {
                                 return Container(
-                                  // color: Colors.white,
                                   height: MediaQuery.of(context).size.height*0.4,
                                   child:Center(
                                     child: Text(
@@ -480,7 +479,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       style: GoogleFonts.roboto(
                                           fontSize: 15,
                                           color: ScaapeTheme.kSecondTextCollor.withOpacity(0.7)
-
                                       ),
                                     ),
                                   ),

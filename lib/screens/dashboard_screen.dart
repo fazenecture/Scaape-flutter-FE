@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,9 @@ import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:progressive_image/progressive_image.dart';
 import 'package:scaape/screens/chat_screen.dart';
 import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/search_screen.dart';
@@ -31,7 +34,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'addScaape_screen.dart';
 
-class   HomePageView extends StatefulWidget {
+class HomePageView extends StatefulWidget {
   static String id = 'homePage';
 
   @override
@@ -72,11 +75,6 @@ class _HomePageViewState extends State<HomePageView>
   GlobalKey _key2 = GlobalKey();
   GlobalKey _key3 = GlobalKey();
 
-
-
-
-
-
   getCurrentLocation() async {
     Position position = await _location.getCurrentLocation();
     setState(() {
@@ -86,11 +84,11 @@ class _HomePageViewState extends State<HomePageView>
     // print(latitude);
   }
 
-
-  Future<int> getUserDetails()async{
-    String url='https://api.scaape.online/api/getUserDetails/${auther.currentUser!.uid}';
+  Future<int> getUserDetails() async {
+    String url =
+        'https://api.scaape.online/api/getUserDetails/${auther.currentUser!.uid}';
     // print(url);
-    http.Response response=await get(Uri.parse(url));
+    http.Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     print("hello");
     var data = json.decode(response.body);
@@ -105,8 +103,6 @@ class _HomePageViewState extends State<HomePageView>
     // }
     return tStatus;
   }
-
-
 
   getCityNameFromLatLong(String lat, String long) async {
     http.Response response = await http.get(Uri.parse(
@@ -147,30 +143,24 @@ class _HomePageViewState extends State<HomePageView>
 
     _setupCloudsAnimationControllers();
 
-    getUserDetails().then((value){
+    getUserDetails().then((value) {
       print(value);
-      if(value == 1){
+      if (value == 1) {
         print("HOgaa");
         setState(() {
           initTargets();
           WidgetsBinding.instance!.addPostFrameCallback(_layout);
-
         });
       }
     });
-
 
     super.initState();
     getCurrentLocation();
   }
 
-
-
-
   //tutorial coach initTarget Function
 
-
-  void _layout(_){
+  void _layout(_) {
     Future.delayed(Duration(milliseconds: 100));
     showTutorial();
   }
@@ -183,39 +173,29 @@ class _HomePageViewState extends State<HomePageView>
       textSkip: "SKIP",
       paddingFocus: 10,
       opacityShadow: 0.8,
-      onFinish: () async{
-
-        String url =  'https://api.scaape.online/api/UpdateTutorial';
-        Map<String, String> headers = {
-          "Content-type": "application/json"
-        };
-        String json = '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
-        http.Response response = await post(
-          Uri.parse(url),
-          headers: headers,
-          body: json
-        );
+      onFinish: () async {
+        String url = 'https://api.scaape.online/api/UpdateTutorial';
+        Map<String, String> headers = {"Content-type": "application/json"};
+        String json =
+            '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
+        http.Response response =
+            await post(Uri.parse(url), headers: headers, body: json);
         int statuscode = response.statusCode;
         print(statuscode);
         print(response.body);
-
 
         print("finish");
       },
       onClickTarget: (target) {
         print('onClickTarget: $target');
       },
-      onSkip: () async{
-        String url =  'https://api.scaape.online/api/UpdateTutorial';
-        Map<String, String> headers = {
-          "Content-type": "application/json"
-        };
-        String json = '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
-        http.Response response = await post(
-            Uri.parse(url),
-            headers: headers,
-            body: json
-        );
+      onSkip: () async {
+        String url = 'https://api.scaape.online/api/UpdateTutorial';
+        Map<String, String> headers = {"Content-type": "application/json"};
+        String json =
+            '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
+        http.Response response =
+            await post(Uri.parse(url), headers: headers, body: json);
         int statuscode = response.statusCode;
         print(statuscode);
         print(response.body);
@@ -227,75 +207,38 @@ class _HomePageViewState extends State<HomePageView>
     )..show();
   }
 
-  void initTargets(){
-
-      targets.add(
-          TargetFocus(
-            identify: "Target 0",
-            keyTarget: _key1,
-            color: ScaapeTheme.kSecondBlue,
-            contents: [
-              TargetContent(
-                  align: ContentAlign.bottom,
-                  child: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Lorem Ipum",
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
-                        ),
-                        Text("Lorem Ipsum Dolor sir", style: TextStyle(color: Colors.white),)
-                      ],
-                    ),
+  void initTargets() {
+    targets.add(TargetFocus(
+      identify: "Target 0",
+      keyTarget: _key1,
+      color: ScaapeTheme.kSecondBlue,
+      contents: [
+        TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Click Here!!",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20.0),
+                  ),
+                  Text(
+                    "To get started with your scaape",
+                    style: TextStyle(color: Colors.white),
                   )
-              )
-            ],
-            shape: ShapeLightFocus.Circle,
-            radius: 5,
-          )
-      );
-      targets.add(
-          TargetFocus(
-            identify: "Target 1",
-            keyTarget: _key2,
-            color: ScaapeTheme.kSecondBlue,
-            contents: [
-              TargetContent(
-                  align: ContentAlign.bottom,
-                  child: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Scaape description",
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
-                        ),
-                        Text("Join Scaapes that match your interest. This will help you find new people with similar interests as you easily.", style: TextStyle(color: Colors.white),)
-                      ],
-                    ),
-                  )
-              )
-            ],
-            shape: ShapeLightFocus.Circle,
-            radius: 15,
-          )
-      );
-
-
+                ],
+              ),
+            ))
+      ],
+      shape: ShapeLightFocus.Circle,
+      radius: 5,
+    ));
   }
-
-
-
-
-
-
-
-
-
-
 
   void _setupCloudsAnimationControllers() {
     for (final cloud in _clouds)
@@ -384,11 +327,11 @@ class _HomePageViewState extends State<HomePageView>
   int pageChanged = 0;
 
   TextEditingController searchScaape = TextEditingController();
-
-
+  var uid;
 
   @override
   Widget build(BuildContext context) {
+    uid = auth.currentUser!.uid;
     final screenWidth = MediaQuery.of(context).size.width;
     Size medq = MediaQuery.of(context).size;
     final plane = AnimatedBuilder(
@@ -417,11 +360,10 @@ class _HomePageViewState extends State<HomePageView>
           pageSnapping: true,
           scrollDirection: Axis.horizontal,
           physics: ClampingScrollPhysics(),
-          onPageChanged: (index){
-            setState(() {
+          onPageChanged: (index) {
+
               pageChanged = index;
               print(pageChanged);
-            });
 
           },
           children: [
@@ -459,18 +401,27 @@ class _HomePageViewState extends State<HomePageView>
                   ),
                 ),
                 actions: [
-                  IconButton(onPressed: (){
-                    pageController.animateToPage(pageChanged+2, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
-                  }, icon: Icon(Icons.send_rounded, color: ScaapeTheme.kSecondTextCollor,))
+                  IconButton(
+                      onPressed: () {
+                        pageController.animateToPage(pageChanged + 2,
+                            duration: Duration(milliseconds: 250),
+                            curve: Curves.bounceInOut);
+                      },
+                      icon: Icon(
+                        Icons.send_rounded,
+                        color: ScaapeTheme.kSecondTextCollor,
+                      ))
                 ],
               ),
               body: CustomRefreshIndicator(
                 offsetToArmed: _offsetToArmed,
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 19),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 19),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -482,11 +433,9 @@ class _HomePageViewState extends State<HomePageView>
                               Flexible(
                                 flex: 5,
                                 child: TextFormField(
-                                  onTap: (){
-
+                                  onTap: () {
                                     Navigator.pushNamed(context, SearchPage.id);
-
-                                    },
+                                  },
                                   onChanged: (value) {},
                                   controller: searchScaape,
                                   validator: (value) {
@@ -509,25 +458,28 @@ class _HomePageViewState extends State<HomePageView>
                                     contentPadding: const EdgeInsets.symmetric(
                                         vertical: 10.0, horizontal: 20.0),
                                     enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderRadius:
+                                            BorderRadius.circular(7.0),
                                         borderSide: BorderSide.none),
                                     focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderRadius:
+                                            BorderRadius.circular(7.0),
                                         borderSide: const BorderSide(
-                                            width: 1, color: ScaapeTheme.kPinkColor)),
+                                            width: 1,
+                                            color: ScaapeTheme.kPinkColor)),
                                     errorBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderRadius:
+                                            BorderRadius.circular(7.0),
                                         borderSide: const BorderSide(
-                                            width: 0, color: Colors.transparent)),
+                                            width: 0,
+                                            color: Colors.transparent)),
                                     border: InputBorder.none,
                                     hintText: "Search for Scaapes...",
                                     hintStyle: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize:
-                                      MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height * 0.018,
+                                          MediaQuery.of(context).size.height *
+                                              0.018,
                                       color: const Color(0x5cffffff),
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -540,116 +492,129 @@ class _HomePageViewState extends State<HomePageView>
                               Flexible(
                                   flex: 1,
                                   child: MaterialButton(
-                                onPressed: (){
-                                  setState(() {
-                                    if(showFilter == true){
-                                      showFilter = false;
-                                    }else{
-                                      showFilter = true;
-                                    }
-                                  });
-                                },
+                                    onPressed: () {
+                                      setState(() {
+                                        if (showFilter == true) {
+                                          showFilter = false;
+                                        } else {
+                                          showFilter = true;
+                                        }
+                                      });
+                                    },
                                     color: ScaapeTheme.kPinkColor,
                                     height: 45,
                                     elevation: 0,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7),
                                     ),
-
-                                child: Icon(
-                                    Icons.filter_list
-                                ),
-                              ))
+                                    child: Icon(Icons.filter_list),
+                                  ))
                             ],
                           ),
                         ),
                         // Filter Buttons
-                        showFilter ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  recent = false;
-                                  forYou = false;
-                                  trending = !trending;
-                                  val = '';
-                                  setState(() {});
-                                },
-                                child: TopCards(
-                                  border: (trending)
-                                      ? Border.all(color: ScaapeTheme.kPinkColor)
-                                      : Border.all(color: Colors.transparent),
-                                  medq: medq,
-                                  img: Image.asset(
-                                    'images/trend.png',
-                                    height: medq.height * 0.02,
-                                    // width: medq.width * 0.03,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  text: 'Trending',
-                                  color: trending
-                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                                      : ScaapeTheme.kSecondBlue,
-                                  textcolor: ScaapeTheme.kSecondTextCollor,
+                        showFilter
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        recent = false;
+                                        forYou = false;
+                                        trending = !trending;
+                                        val = '';
+                                        setState(() {});
+                                      },
+                                      child: TopCards(
+                                        border: (trending)
+                                            ? Border.all(
+                                                color: ScaapeTheme.kPinkColor)
+                                            : Border.all(
+                                                color: Colors.transparent),
+                                        medq: medq,
+                                        img: Image.asset(
+                                          'images/trend.png',
+                                          height: medq.height * 0.02,
+                                          // width: medq.width * 0.03,
+                                          fit: BoxFit.fill,
+                                        ),
+                                        text: 'Trending',
+                                        color: trending
+                                            ? ScaapeTheme.kPinkColor
+                                                .withOpacity(0.2)
+                                            : ScaapeTheme.kSecondBlue,
+                                        textcolor:
+                                            ScaapeTheme.kSecondTextCollor,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        trending = false;
+                                        recent = !recent;
+                                        forYou = false;
+                                        val = '';
+                                        setState(() {});
+                                      },
+                                      child: TopCards(
+                                        medq: medq,
+                                        border: recent
+                                            ? Border.all(
+                                                color: ScaapeTheme.kPinkColor)
+                                            : Border.all(
+                                                color: Colors.transparent),
+                                        img: Image.asset(
+                                          'images/recent.png',
+                                          height: medq.height * 0.017,
+                                          // width: medq.width * 0.03,
+                                          fit: BoxFit.fill,
+                                        ),
+                                        text: 'Recent',
+                                        color: recent
+                                            ? ScaapeTheme.kPinkColor
+                                                .withOpacity(0.2)
+                                            : ScaapeTheme.kSecondBlue,
+                                        textcolor:
+                                            ScaapeTheme.kSecondTextCollor,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        trending = false;
+                                        recent = false;
+                                        forYou = !forYou;
+                                        val = '';
+                                        setState(() {});
+                                      },
+                                      child: TopCards(
+                                        medq: medq,
+                                        border: forYou
+                                            ? Border.all(
+                                                color: ScaapeTheme.kPinkColor)
+                                            : Border.all(
+                                                color: Colors.transparent),
+                                        img: Image.asset(
+                                          'images/recommendation.png',
+                                          height: medq.height * 0.02,
+                                          // width: medq.width * 0.03,
+                                          fit: BoxFit.fill,
+                                        ),
+                                        text: 'For you',
+                                        color: forYou
+                                            ? ScaapeTheme.kPinkColor
+                                                .withOpacity(0.2)
+                                            : ScaapeTheme.kSecondBlue,
+                                        textcolor:
+                                            ScaapeTheme.kSecondTextCollor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  trending = false;
-                                  recent = !recent;
-                                  forYou = false;
-                                  val = '';
-                                  setState(() {});
-                                },
-                                child: TopCards(
-                                  medq: medq,
-                                  border: recent
-                                      ? Border.all(color: ScaapeTheme.kPinkColor)
-                                      : Border.all(color: Colors.transparent),
-                                  img: Image.asset(
-                                    'images/recent.png',
-                                    height: medq.height * 0.017,
-                                    // width: medq.width * 0.03,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  text: 'Recent',
-                                  color: recent
-                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                                      : ScaapeTheme.kSecondBlue,
-                                  textcolor: ScaapeTheme.kSecondTextCollor,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  trending = false;
-                                  recent = false;
-                                  forYou = !forYou;
-                                  val = '';
-                                  setState(() {});
-                                },
-                                child: TopCards(
-                                  medq: medq,
-                                  border: forYou
-                                      ? Border.all(color: ScaapeTheme.kPinkColor)
-                                      : Border.all(color: Colors.transparent),
-                                  img: Image.asset(
-                                    'images/recommendation.png',
-                                    height: medq.height * 0.02,
-                                    // width: medq.width * 0.03,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  text: 'For you',
-                                  color: forYou
-                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                                      : ScaapeTheme.kSecondBlue,
-                                  textcolor: ScaapeTheme.kSecondTextCollor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ) : Container(),
+                              )
+                            : Container(),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: [
@@ -719,19 +684,29 @@ class _HomePageViewState extends State<HomePageView>
                           height: 16,
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
+                            Navigator.pushNamed(context, CreateScaape.id);
                           },
                           child: Container(
-                            height: MediaQuery.of(context).size.height*0.182,
+                            key: _key1,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "https://scaape.online/scaape-banner.png",
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            height: MediaQuery.of(context).size.height * 0.182,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: ScaapeTheme.kPinkColor,
                               borderRadius: BorderRadius.circular(16),
-                              image: DecorationImage(
-                                image: NetworkImage('https://scaape.online/scaape-banner.png'),
-                                fit: BoxFit.contain,
-
-                              )
+                              // image: DecorationImage(
+                              //   image: NetworkImage(
+                              //       'https://scaape.online/scaape-banner.png'),
+                              //   fit: BoxFit.contain,
+                              // )
                             ),
                           ),
                         ),
@@ -1108,8 +1083,6 @@ class _HomePageViewState extends State<HomePageView>
                         //   ),
                         // ),
 
-
-
                         //TODO delete
                         // SingleChildScrollView(
                         //   scrollDirection: Axis.horizontal,
@@ -1256,13 +1229,14 @@ class _HomePageViewState extends State<HomePageView>
                           height: 7,
                         ),
                         FutureBuilder(
-
-                          future: getScapesByAuth(
-                              auther.currentUser!.uid, trending, recent, forYou, val),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          future: getScapesByAuth(auther.currentUser!.uid,
+                              trending, recent, forYou, val),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
                             // print(auther.currentUser!.uid);
                             if (snapshot.hasData) {
                               var a = snapshot.data;
+
                               // print(a);
                               return ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -1270,28 +1244,482 @@ class _HomePageViewState extends State<HomePageView>
                                 itemCount: snapshot.data.length,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  return HomeCard(() {
-                                    setState(() {});
-                                  },
-                                      medq,
-                                      a[index]["ScaapeImg"],
-                                      a[index]["ScaapeName"],
-                                      a[index]["Description"],
-                                      a[index]["Location"],
-                                      a[index]['UserId'],
-                                      a[index]["ScaapeId"],
-                                      a[index]["ScaapePref"],
-                                      a[index]["Admin"],
-                                      a[index]["isPresent"],
-                                      a[index]["ScaapeDate"],
-                                      a[index]["AdminName"],
-                                      a[index]["AdminEmail"],
-                                      a[index]["AdminDP"],
-                                      a[index]["AdminGender"],
-                                      a[index]["ScaapeDate"],
-                                      a[index]["count"],
-                                    _key2
-                                  );
+                                  var test = snapshot.data[index]['Scaape'];
+
+                                  return test == 'Trending'
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  'Trending Scaapes',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
+                                                Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
+                                                  width: double.infinity,
+                                                  child: FutureBuilder(
+                                                    future: getTrendingScaapes(
+                                                        auther
+                                                            .currentUser!.uid),
+                                                    builder:
+                                                        (BuildContext context,
+                                                            AsyncSnapshot
+                                                                snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        var tData =
+                                                            snapshot.data;
+                                                        return ListView.builder(
+                                                            itemCount: snapshot
+                                                                .data.length,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              var tScaapeName =
+                                                                  tData[index][
+                                                                      'ScaapeName'];
+                                                              var tScaapeImage =
+                                                                  tData[index][
+                                                                      'ScaapeImg'];
+                                                              var tScaapeLocation =
+                                                                  tData[index][
+                                                                          'Location']
+                                                                      .toString();
+                                                              var tScaapeId =
+                                                                  tData[index][
+                                                                      'ScaapeId'];
+                                                              var tScaapeDesc =
+                                                                  tData[index][
+                                                                          'Description']
+                                                                      .toString();
+                                                              var tSAdminName =
+                                                                  tData[index][
+                                                                          'AdminName']
+                                                                      .toString();
+                                                              var tScaapeCount =
+                                                                  tData[index][
+                                                                          'count']
+                                                                      .toString();
+                                                              var tSAdminImg = tData[
+                                                                          index]
+                                                                      [
+                                                                      'AdminDP']
+                                                                  .toString();
+                                                              var tSAdminInsta =
+                                                                  tData[index][
+                                                                          'AdminInsta']
+                                                                      .toString();
+                                                              var tScaapeDate =
+                                                                  tData[index][
+                                                                          'ScaapeDate']
+                                                                      .toString();
+                                                              var present = tData[
+                                                                      index]
+                                                                  ['isPresent'];
+                                                              var admin =
+                                                                  tData[index]
+                                                                      ['Admin'];
+
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    showModalBottomSheet<
+                                                                            dynamic>(
+                                                                        isScrollControlled:
+                                                                            true,
+                                                                        backgroundColor:
+                                                                            ScaapeTheme
+                                                                                .kBackColor,
+                                                                        elevation:
+                                                                            13,
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.only(
+                                                                                topRight: Radius.circular(
+                                                                                    16),
+                                                                                topLeft: Radius.circular(
+                                                                                    16))),
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          return StatefulBuilder(
+                                                                            builder:
+                                                                                (BuildContext context, StateSetter setState) {
+                                                                              return Container(
+                                                                                height: MediaQuery.of(context).size.height * 0.7,
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Stack(
+                                                                                      children: [
+                                                                                        Container(
+                                                                                          height: MediaQuery.of(context).size.height * 0.4,
+                                                                                          decoration: BoxDecoration(
+                                                                                            borderRadius: BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16)),
+                                                                                            color: Colors.white,
+                                                                                            image: DecorationImage(
+                                                                                              image: NetworkImage(tScaapeImage),
+                                                                                              fit: BoxFit.cover,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          height: MediaQuery.of(context).size.height * 0.4,
+                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16)), gradient: LinearGradient(colors: [ScaapeTheme.kBackColor.withOpacity(0.2), ScaapeTheme.kBackColor], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                                                                                        ),
+                                                                                        Align(
+                                                                                          alignment: Alignment.topCenter,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.all(10.0),
+                                                                                            child: Container(
+                                                                                              height: 5.5,
+                                                                                              width: MediaQuery.of(context).size.width * 0.13,
+                                                                                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(34))),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          height: MediaQuery.of(context).size.height * 0.56,
+                                                                                          child: Column(
+                                                                                            mainAxisAlignment: MainAxisAlignment.end,
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            children: [
+                                                                                              Padding(
+                                                                                                padding: EdgeInsets.symmetric(horizontal: 23, vertical: 18),
+                                                                                                child: Column(
+                                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    Row(
+                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                                      children: [
+                                                                                                        Container(
+                                                                                                          width: MediaQuery.of(context).size.width * 0.6,
+                                                                                                          child: Text(
+                                                                                                            '${tScaapeName.toString().sentenceCase}',
+                                                                                                            style: GoogleFonts.lato(fontSize: 24, fontWeight: FontWeight.w500),
+                                                                                                            maxLines: 2,
+                                                                                                            softWrap: true,
+                                                                                                            overflow: TextOverflow.clip,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        Container(
+                                                                                                          child: Row(
+                                                                                                            children: [
+                                                                                                              Icon(Icons.group_outlined),
+                                                                                                              Text(
+                                                                                                                tScaapeCount.toString(),
+                                                                                                                style: GoogleFonts.lato(fontSize: 21, fontWeight: FontWeight.w500),
+                                                                                                              )
+                                                                                                            ],
+                                                                                                          ),
+                                                                                                        )
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: MediaQuery.of(context).size.height * 0.014,
+                                                                                                    ),
+                                                                                                    GestureDetector(
+                                                                                                      onTap: () {
+                                                                                                        String auth = FirebaseAuth.instance.currentUser!.uid;
+                                                                                                        auth != uid ? Navigator.pushNamed(context, UserProfileScreen.id, arguments: {"UserId": "${uid}"}) : null;
+                                                                                                      },
+                                                                                                      child: Container(
+                                                                                                        decoration: BoxDecoration(
+                                                                                                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                                        ),
+                                                                                                        width: MediaQuery.of(context).size.width * 0.56,
+                                                                                                        child: Row(
+                                                                                                          children: [
+                                                                                                            Container(
+                                                                                                              decoration: BoxDecoration(gradient: LinearGradient(colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)], begin: Alignment.topCenter, end: Alignment.bottomCenter), shape: BoxShape.circle),
+                                                                                                              height: 42,
+                                                                                                              width: 42,
+                                                                                                              child: CircleAvatar(
+                                                                                                                // radius: 33,
+                                                                                                                backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
+                                                                                                                child: CircleAvatar(
+                                                                                                                  backgroundImage: NetworkImage('${tSAdminImg}'),
+                                                                                                                  backgroundColor: Colors.transparent,
+                                                                                                                  // radius: 34,
+                                                                                                                ),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                            SizedBox(
+                                                                                                              width: 8,
+                                                                                                            ),
+                                                                                                            Column(
+                                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                              children: [
+                                                                                                                Container(
+                                                                                                                  width: MediaQuery.of(context).size.width * 0.24,
+                                                                                                                  child: Text(
+                                                                                                                    '${tSAdminName.titleCase}',
+                                                                                                                    maxLines: 1,
+                                                                                                                    softWrap: true,
+                                                                                                                    overflow: TextOverflow.clip,
+                                                                                                                    style: GoogleFonts.poppins(
+                                                                                                                      fontSize: 13,
+                                                                                                                      fontWeight: FontWeight.w500,
+                                                                                                                    ),
+                                                                                                                    textAlign: TextAlign.left,
+                                                                                                                  ),
+                                                                                                                ),
+                                                                                                                Text(
+                                                                                                                  '${tScaapeDate.toString().substring(0, 10)}',
+                                                                                                                  maxLines: 1,
+                                                                                                                  style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w400),
+                                                                                                                ),
+                                                                                                              ],
+                                                                                                            ),
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: MediaQuery.of(context).size.height * 0.02,
+                                                                                                    ),
+                                                                                                    Container(
+                                                                                                      decoration: BoxDecoration(
+                                                                                                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                                      ),
+                                                                                                      width: MediaQuery.of(context).size.width * 0.75,
+                                                                                                      child: SingleChildScrollView(
+                                                                                                        scrollDirection: Axis.vertical,
+                                                                                                        child: Text(
+                                                                                                          '${tScaapeDesc.length > 80 ? tScaapeDesc.substring(0, 80) : tScaapeDesc.sentenceCase}',
+                                                                                                          maxLines: 4,
+                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                          softWrap: true,
+                                                                                                          style: GoogleFonts.nunitoSans(
+                                                                                                            fontSize: 17,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: MediaQuery.of(context).size.height * 0.006,
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          Icons.location_on_outlined,
+                                                                                                          size: 12,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          '${tScaapeLocation.sentenceCase}',
+                                                                                                          maxLines: 1,
+                                                                                                          style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w400),
+                                                                                                        )
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          height: MediaQuery.of(context).size.height * 0.67,
+                                                                                          child: Align(
+                                                                                            alignment: Alignment.bottomCenter,
+                                                                                            child: Padding(
+                                                                                                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 19),
+                                                                                                child: (present == "True" || present == "true" || admin == "True" || admin == "true")
+                                                                                                    ? MaterialButton(
+                                                                                                        onPressed: null,
+                                                                                                        elevation: 0,
+                                                                                                        textColor: Colors.white,
+                                                                                                        splashColor: Colors.transparent,
+                                                                                                        shape: RoundedRectangleBorder(
+                                                                                                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                                                                                                        ),
+                                                                                                        disabledColor: ScaapeTheme.kPinkColor.withOpacity(0.15),
+                                                                                                        disabledTextColor: ScaapeTheme.kPinkColor,
+                                                                                                        color: ScaapeTheme.kPinkColor.withOpacity(0.2),
+                                                                                                        height: MediaQuery.of(context).size.height * 0.065,
+                                                                                                        minWidth: double.infinity,
+                                                                                                        child: Text(
+                                                                                                          'YOU HAVE ALREADY JOINED',
+                                                                                                          style: GoogleFonts.roboto(color: ScaapeTheme.kPinkColor, fontSize: 17, fontWeight: FontWeight.w500),
+                                                                                                        ),
+                                                                                                      )
+                                                                                                    : MaterialButton(
+                                                                                                        onPressed: () async {
+                                                                                                          final FirebaseAuth auth = FirebaseAuth.instance;
+                                                                                                          String url = 'https://api.scaape.online/api/createParticipant';
+                                                                                                          Map<String, String> headers = {
+                                                                                                            "Content-type": "application/json"
+                                                                                                          };
+                                                                                                          String json = '{"ScaapeId": "${tScaapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
+                                                                                                          http.Response response = await post(Uri.parse(url), headers: headers, body: json);
+                                                                                                          //print(user.displayName);
+                                                                                                          int statusCode = response.statusCode;
+                                                                                                          // print(statusCode);
+                                                                                                          // print(response.body);
+                                                                                                          Fluttertoast.showToast(
+                                                                                                            msg: "Succesfully joined",
+                                                                                                          );
+                                                                                                          // fun();
+                                                                                                        },
+                                                                                                        elevation: 0,
+                                                                                                        textColor: Colors.white,
+                                                                                                        splashColor: ScaapeTheme.kPinkColor,
+                                                                                                        shape: RoundedRectangleBorder(
+                                                                                                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                                                                                                        ),
+                                                                                                        color: ScaapeTheme.kPinkColor,
+                                                                                                        height: MediaQuery.of(context).size.height * 0.065,
+                                                                                                        minWidth: double.infinity,
+                                                                                                        child: Text(
+                                                                                                          'JOIN THIS SCAAPE',
+                                                                                                          style: GoogleFonts.roboto(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
+                                                                                                        ),
+                                                                                                      )),
+                                                                                          ),
+                                                                                        )
+                                                                                      ],
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        });
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(12),
+                                                                        image: DecorationImage(image: NetworkImage(tScaapeImage), fit: BoxFit.cover),
+                                                                        gradient: LinearGradient(colors: [
+                                                                          ScaapeTheme
+                                                                              .kShimmerColor
+                                                                              .withOpacity(0.5),
+                                                                          ScaapeTheme
+                                                                              .kShimmerColor
+                                                                              .withOpacity(1),
+                                                                        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.39,
+                                                                    child:
+                                                                        Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          decoration:
+                                                                              BoxDecoration(color: ScaapeTheme.kBackColor.withOpacity(0.4)),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(8.0),
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.end,
+                                                                            children: [
+                                                                              Text(
+                                                                                tScaapeName.toString().sentenceCase,
+                                                                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Icon(
+                                                                                    Icons.location_on_outlined,
+                                                                                    color: Colors.white,
+                                                                                    size: 13,
+                                                                                  ),
+                                                                                  tScaapeLocation.length > 13
+                                                                                      ? Text(
+                                                                                          '${tScaapeLocation.substring(0, 13)}...',
+                                                                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                          softWrap: true,
+                                                                                          maxLines: 1,
+                                                                                        )
+                                                                                      : Text(
+                                                                                          '${tScaapeLocation.sentenceCase}',
+                                                                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                        ),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                      } else {
+                                                        return Container();
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.34,
+                                            width: double.infinity,
+                                          ),
+                                        )
+                                      : HomeCard(() {
+                                          setState(() {});
+                                        },
+                                          medq,
+                                          a[index]["ScaapeImg"],
+                                          a[index]["ScaapeName"],
+                                          a[index]["Description"],
+                                          a[index]["Location"],
+                                          a[index]['UserId'],
+                                          a[index]["ScaapeId"],
+                                          a[index]["ScaapePref"],
+                                          a[index]["Admin"],
+                                          a[index]["isPresent"],
+                                          a[index]["ScaapeDate"],
+                                          a[index]["AdminName"],
+                                          a[index]["AdminEmail"],
+                                          a[index]["AdminDP"],
+                                          a[index]["AdminGender"],
+                                          a[index]["ScaapeDate"],
+                                          a[index]["count"],
+                                          _key2);
                                 },
                               );
                             } else {
@@ -1394,7 +1822,8 @@ class _HomePageViewState extends State<HomePageView>
                               ),
                             ),
                           Transform.translate(
-                            offset: Offset(0.0, _offsetToArmed * controller.value),
+                            offset:
+                                Offset(0.0, _offsetToArmed * controller.value),
                             child: child,
                           ),
                         ],
@@ -1404,6 +1833,8 @@ class _HomePageViewState extends State<HomePageView>
                 },
               ),
             ),
+
+            // Scaape Chat
             Scaffold(
               appBar: AppBar(
                 foregroundColor: Colors.transparent,
@@ -1416,10 +1847,12 @@ class _HomePageViewState extends State<HomePageView>
                   icon: Icon(
                     CupertinoIcons.back,
                     color: Colors.white,
-                  ), onPressed: () {
-                  pageController.animateToPage(pageChanged-2, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
-
-                },
+                  ),
+                  onPressed: () {
+                    pageController.animateToPage(pageChanged - 2,
+                        duration: Duration(milliseconds: 250),
+                        curve: Curves.bounceInOut);
+                  },
                 ),
                 title: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -1435,8 +1868,9 @@ class _HomePageViewState extends State<HomePageView>
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          Navigator.pushReplacementNamed(context, CreateScaape.id);
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, CreateScaape.id);
                         },
                         child: Icon(
                           Icons.add_rounded,
@@ -1449,7 +1883,6 @@ class _HomePageViewState extends State<HomePageView>
               ),
               body: ScaapeChat(),
             ),
-
           ],
         ),
       ),
@@ -1461,7 +1894,8 @@ class _HomePageViewState extends State<HomePageView>
     String url;
     // print("enter");
     // print(val.isEmpty);
-    url = 'https://api.scaape.online/api/getScaapesWithAuth/UserId=${id}';
+    url =
+        'https://api.scaape.online/api/getScaapesWithAuthAndScaape/UserId=${id}';
     if (val.isNotEmpty) {
       url =
           'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
@@ -1478,6 +1912,21 @@ class _HomePageViewState extends State<HomePageView>
         // print("recent clicked");
       }
     }
+    // print(url);
+    var response = await get(Uri.parse(url));
+    int statusCode = response.statusCode;
+    // print(statusCode);
+    //print(json.decode(response.body));
+    return json.decode(response.body);
+  }
+
+  Future<List<dynamic>> getTrendingScaapes(String id) async {
+    String url;
+    // print("enter");
+    // print(val.isEmpty);
+    url =
+        'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
+    // print("trend clicked");
     // print(url);
     var response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
@@ -2127,7 +2576,8 @@ class HomeCard extends StatelessWidget {
       this.adminDp,
       this.adminGender,
       this.adminInsta,
-      this.count,this.tKey);
+      this.count,
+      this.tKey);
 
   Function fun;
   final Size medq;
@@ -2511,6 +2961,19 @@ class HomeCard extends StatelessWidget {
           ),
           child: Stack(
             children: [
+             ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+
+                child: ProgressiveImage(
+
+                  thumbnail: NetworkImage(ScapeImage),
+                  image: NetworkImage(ScapeImage),
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: null,
+                  height: medq.height * 0.3,
+                ),
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -2518,6 +2981,82 @@ class HomeCard extends StatelessWidget {
                     Color(0xFF1C1C1C).withOpacity(0.3),
                     Color(0xFF141414).withOpacity(0.87)
                   ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                ),
+              ),
+              Positioned(
+                right: 12,
+                top: 12,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
+                          text: '${date.toString().substring(0, 2)}',
+                          style: TextStyle(
+                              fontSize: 23,
+                              color: ScaapeTheme.kPinkColor,
+                              fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(
+                              text: date.toString().substring(3, 5) == '12'
+                                  ? '\nDec'
+                                  : date.toString().substring(3, 5) == '11'
+                                      ? '\nNov'
+                                      : date.toString().substring(3, 5) == '10'
+                                          ? '\nOct'
+                                          : date.toString().substring(3, 5) ==
+                                                  '09'
+                                              ? '\nSep'
+                                              : date
+                                                          .toString()
+                                                          .substring(3, 5) ==
+                                                      '08'
+                                                  ? '\nAug'
+                                                  : date.toString().substring(
+                                                              3, 5) ==
+                                                          '07'
+                                                      ? '\nJul'
+                                                      : date
+                                                                  .toString()
+                                                                  .substring(
+                                                                      3, 5) ==
+                                                              '06'
+                                                          ? '\nJun'
+                                                          : date
+                                                                      .toString()
+                                                                      .substring(
+                                                                          3,
+                                                                          5) ==
+                                                                  '05'
+                                                              ? '\nMay'
+                                                              : date.toString().substring(
+                                                                          3,
+                                                                          5) ==
+                                                                      '04'
+                                                                  ? '\nApr'
+                                                                  : date.toString().substring(
+                                                                              3,
+                                                                              5) ==
+                                                                          '03'
+                                                                      ? '\nMar'
+                                                                      : date.toString().substring(3, 5) == '02'
+                                                                          ? '\nFeb'
+                                                                          : date.toString().substring(3, 5) == '01'
+                                                                              ? '\nJan'
+                                                                              : '',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: ScaapeTheme.kBackColor,
+                                  fontWeight: FontWeight.w400),
+                            )
+                          ]),
+                    ),
+                  ),
                 ),
               ),
               Column(
