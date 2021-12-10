@@ -105,11 +105,11 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: ScaapeTheme.kBackColor,
         shadowColor: ScaapeTheme.kSecondBlue,
         elevation: 1,
-        leading: GestureDetector(
-          onTap: (){
+        leading: IconButton(
+          onPressed: (){
             Navigator.pop(context);
           },
-          child: Icon(
+          icon: Icon(
             CupertinoIcons.back,
             color: Colors.white,
           ),
