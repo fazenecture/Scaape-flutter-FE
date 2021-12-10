@@ -17,6 +17,7 @@ import 'package:http/http.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scaape/screens/chat_screen.dart';
 import 'package:scaape/screens/create_scaape.dart';
+import 'package:scaape/screens/search_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/location_class.dart';
@@ -54,6 +55,7 @@ class _HomePageViewState extends State<HomePageView>
   bool trending = false;
   bool recent = false;
   bool forYou = false;
+  bool showFilter = false;
   late Animation gap;
   late Animation<double> base;
   late Animation<double> reverse;
@@ -480,6 +482,11 @@ class _HomePageViewState extends State<HomePageView>
                               Flexible(
                                 flex: 5,
                                 child: TextFormField(
+                                  onTap: (){
+
+                                    Navigator.pushNamed(context, SearchPage.id);
+
+                                    },
                                   onChanged: (value) {},
                                   controller: searchScaape,
                                   validator: (value) {
@@ -488,6 +495,8 @@ class _HomePageViewState extends State<HomePageView>
                                     }
                                     return null;
                                   },
+                                  autofocus: false,
+                                  readOnly: true,
                                   cursorColor: ScaapeTheme.kPinkColor,
                                   maxLines: 1,
                                   decoration: InputDecoration(
@@ -532,7 +541,13 @@ class _HomePageViewState extends State<HomePageView>
                                   flex: 1,
                                   child: MaterialButton(
                                 onPressed: (){
-
+                                  setState(() {
+                                    if(showFilter == true){
+                                      showFilter = false;
+                                    }else{
+                                      showFilter = true;
+                                    }
+                                  });
                                 },
                                     color: ScaapeTheme.kPinkColor,
                                     height: 45,
@@ -548,6 +563,93 @@ class _HomePageViewState extends State<HomePageView>
                             ],
                           ),
                         ),
+                        // Filter Buttons
+                        showFilter ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  recent = false;
+                                  forYou = false;
+                                  trending = !trending;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  border: (trending)
+                                      ? Border.all(color: ScaapeTheme.kPinkColor)
+                                      : Border.all(color: Colors.transparent),
+                                  medq: medq,
+                                  img: Image.asset(
+                                    'images/trend.png',
+                                    height: medq.height * 0.02,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'Trending',
+                                  color: trending
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor: ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  trending = false;
+                                  recent = !recent;
+                                  forYou = false;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  medq: medq,
+                                  border: recent
+                                      ? Border.all(color: ScaapeTheme.kPinkColor)
+                                      : Border.all(color: Colors.transparent),
+                                  img: Image.asset(
+                                    'images/recent.png',
+                                    height: medq.height * 0.017,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'Recent',
+                                  color: recent
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor: ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  trending = false;
+                                  recent = false;
+                                  forYou = !forYou;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  medq: medq,
+                                  border: forYou
+                                      ? Border.all(color: ScaapeTheme.kPinkColor)
+                                      : Border.all(color: Colors.transparent),
+                                  img: Image.asset(
+                                    'images/recommendation.png',
+                                    height: medq.height * 0.02,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'For you',
+                                  color: forYou
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor: ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ) : Container(),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: [
@@ -614,7 +716,24 @@ class _HomePageViewState extends State<HomePageView>
                         // ),
                         // SearchBoxContainer(medq: medq.height),
                         SizedBox(
-                          height: 10,
+                          height: 16,
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.height*0.182,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: ScaapeTheme.kPinkColor,
+                              borderRadius: BorderRadius.circular(16),
+                              image: DecorationImage(
+                                image: NetworkImage('https://scaape.online/scaape-banner.png'),
+                                fit: BoxFit.contain,
+
+                              )
+                            ),
+                          ),
                         ),
 
                         // Trending Scaapes
@@ -989,101 +1108,8 @@ class _HomePageViewState extends State<HomePageView>
                         //   ),
                         // ),
 
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 6),
-                          child: Divider(
-                            thickness: 0.4,
-                            color: ScaapeTheme.kSecondTextCollor.withOpacity(0.1),
-                          ),
-                        ),
 
-                        // Filter Buttons
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(horizontal: 5),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //     children: [
-                        //       GestureDetector(
-                        //         onTap: () {
-                        //           recent = false;
-                        //           forYou = false;
-                        //           trending = !trending;
-                        //           val = '';
-                        //           setState(() {});
-                        //         },
-                        //         child: TopCards(
-                        //           border: (trending)
-                        //               ? Border.all(color: ScaapeTheme.kPinkColor)
-                        //               : Border.all(color: Colors.transparent),
-                        //           medq: medq,
-                        //           img: Image.asset(
-                        //             'images/trend.png',
-                        //             height: medq.height * 0.02,
-                        //             // width: medq.width * 0.03,
-                        //             fit: BoxFit.fill,
-                        //           ),
-                        //           text: 'Trending',
-                        //           color: trending
-                        //               ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                        //               : ScaapeTheme.kSecondBlue,
-                        //           textcolor: ScaapeTheme.kSecondTextCollor,
-                        //         ),
-                        //       ),
-                        //       GestureDetector(
-                        //         onTap: () {
-                        //           trending = false;
-                        //           recent = !recent;
-                        //           forYou = false;
-                        //           val = '';
-                        //           setState(() {});
-                        //         },
-                        //         child: TopCards(
-                        //           medq: medq,
-                        //           border: recent
-                        //               ? Border.all(color: ScaapeTheme.kPinkColor)
-                        //               : Border.all(color: Colors.transparent),
-                        //           img: Image.asset(
-                        //             'images/recent.png',
-                        //             height: medq.height * 0.017,
-                        //             // width: medq.width * 0.03,
-                        //             fit: BoxFit.fill,
-                        //           ),
-                        //           text: 'Recent',
-                        //           color: recent
-                        //               ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                        //               : ScaapeTheme.kSecondBlue,
-                        //           textcolor: ScaapeTheme.kSecondTextCollor,
-                        //         ),
-                        //       ),
-                        //       GestureDetector(
-                        //         onTap: () {
-                        //           trending = false;
-                        //           recent = false;
-                        //           forYou = !forYou;
-                        //           val = '';
-                        //           setState(() {});
-                        //         },
-                        //         child: TopCards(
-                        //           medq: medq,
-                        //           border: forYou
-                        //               ? Border.all(color: ScaapeTheme.kPinkColor)
-                        //               : Border.all(color: Colors.transparent),
-                        //           img: Image.asset(
-                        //             'images/recommendation.png',
-                        //             height: medq.height * 0.02,
-                        //             // width: medq.width * 0.03,
-                        //             fit: BoxFit.fill,
-                        //           ),
-                        //           text: 'For you',
-                        //           color: forYou
-                        //               ? ScaapeTheme.kPinkColor.withOpacity(0.2)
-                        //               : ScaapeTheme.kSecondBlue,
-                        //           textcolor: ScaapeTheme.kSecondTextCollor,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
+
                         //TODO delete
                         // SingleChildScrollView(
                         //   scrollDirection: Axis.horizontal,
@@ -2321,7 +2347,7 @@ class HomeCard extends StatelessWidget {
                                                       ),
                                                     ),
                                                     Text(
-                                                      '@${adminInsta.substring(0, 10)}',
+                                                      '${adminInsta.substring(0, 10)}',
                                                       maxLines: 1,
                                                       style:
                                                           GoogleFonts.poppins(
