@@ -148,13 +148,6 @@ class _SearchPageState extends State<SearchPage> {
 
             var data = snapshot.data;
             // print(data);
-            if(ConnectionState.waiting == snapshot.connectionState){
-              return Center(
-                child: CircularProgressIndicator(
-                  color: ScaapeTheme.kPinkColor,
-                ),
-              );
-            }else{
               if(snapshot.hasData){
                 return Container(
                   color: ScaapeTheme.kBackColor,
@@ -275,7 +268,6 @@ class _SearchPageState extends State<SearchPage> {
                                               Stack(
                                                 children: [
                                                   Container(
-
                                                     height: MediaQuery.of(context).size.height * 0.4,
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.only(
@@ -610,11 +602,9 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 );
               }else{
-                return Text(
-                  "Looks There Some Issue"
-                );
+                return Center(child: CircularProgressIndicator(color: ScaapeTheme.kPinkColor,));
               }
-            }
+
           },
         ),
       ),
