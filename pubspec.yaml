@@ -53,6 +53,7 @@ dependencies:
   flutter_typeahead: ^3.2.3
   bubble: ^1.2.1
   path_provider: ^2.0.7
+  flappy_search_bar_ns: ^2.0.2
 
 
 dev_dependencies:

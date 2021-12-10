@@ -10,6 +10,7 @@ import 'package:scaape/screens/chat_scaape_info.dart';
 import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/explore_page.dart';
 import 'package:scaape/screens/onBoarding2_screen.dart';
+import 'package:scaape/screens/search_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/screens/allNotification_screen.dart';
 import 'package:scaape/screens/chat_screen.dart';
@@ -18,7 +19,6 @@ import 'package:scaape/screens/dashboard_screen.dart';
 import 'package:scaape/screens/bottom_navigatin_bar.dart';
 import 'package:scaape/screens/notification_screen.dart';
 import 'package:scaape/screens/profile_screen.dart';
-import 'package:scaape/screens/dashboard_screen.dart';
 import 'package:scaape/screens/signIn_screen.dart';
 import 'package:scaape/screens/onBoarding0_screen.dart';
 import 'package:scaape/screens/addScaape_screen.dart';
@@ -114,6 +114,7 @@ class _MyAppState extends State<MyApp> {
         ExplorePage.id: (context)=> ExplorePage(),
         CreateScaape.id: (context) => CreateScaape(),
         ChatDesc.id: (context) => ChatDesc(),
+        SearchPage.id: (context) => SearchPage(),
       },
       // home: HomeScreen(),
     );
