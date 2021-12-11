@@ -287,7 +287,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
     return Container(
       child: GoogleMap(
-        zoomControlsEnabled: true,
+        zoomControlsEnabled: false,
         zoomGesturesEnabled: true,
         initialCameraPosition: _kGooglePlex,
         mapType: MapType.normal,
@@ -317,12 +317,20 @@ class _ExplorePageState extends State<ExplorePage> {
                       FirebaseAuth.instance.currentUser!.uid, value.latitude,value.longitude),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     // print(auther.currentUser!.uid);
+
                     if (snapshot.hasData) {
                       var a = snapshot.data;
                       // print(a);
                       print("theis is length${snapshot.data.length}");
                       if(snapshot.data.length == 0){
-                        return Center(child: Container(child: Text('No nearby Scaapes', style: TextStyle(fontSize: 20),),));
+                        return Center(child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: ScaapeTheme.kPinkColor),
+                            borderRadius: BorderRadius.circular(8)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('No Nearbuy Scaapes', style: TextStyle(fontSize: 20, color: ScaapeTheme.kPinkColor),),
+                          ),));
                       }else{
                         return ListView.builder(
                           // physics: NeverScrollableScrollPhysics(),
@@ -357,14 +365,11 @@ class _ExplorePageState extends State<ExplorePage> {
                       }
 
                     } else {
-                      return Container();
+                      return CircularProgressIndicator(color: ScaapeTheme.kPinkColor);
                     }
                   },
                 ),
               ));
-        },
-        onTap: (value) {
-
         },
         markers: markers.map((e) => e).toSet(),
       ),
