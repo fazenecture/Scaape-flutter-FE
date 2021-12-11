@@ -101,11 +101,23 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               MaterialButton(
                 onPressed: () async {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: ScaapeTheme.kPinkColor,
+                        ),
+                      );
+                    },
+                  );
                   User? user =
                       await Authentication.signInWithGoogle(context: context);
                   print(user);
                   print('user');
                   if (user != null) {
+
                     var data=await getUserDetails(user.uid);
                     if(data.length==0){
                       try{
