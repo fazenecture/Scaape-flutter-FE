@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,8 +44,6 @@ class HomePageView extends StatefulWidget {
 
 class _HomePageViewState extends State<HomePageView>
     with TickerProviderStateMixin {
-  static final _planeTween = CurveTween(curve: Curves.easeInOut);
-  late AnimationController _planeController;
   final FirebaseAuth auth = FirebaseAuth.instance;
   IndicatorState? _prevState;
   Location _location = Location();
@@ -136,12 +135,8 @@ class _HomePageViewState extends State<HomePageView>
         setState(() {});
       });
     // controller.forward();
-    _planeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
 
-    _setupCloudsAnimationControllers();
+
 
     getUserDetails().then((value) {
       print(value);
@@ -238,90 +233,47 @@ class _HomePageViewState extends State<HomePageView>
       shape: ShapeLightFocus.Circle,
       radius: 5,
     ));
+    targets.add(TargetFocus(
+      identify: "Target 1",
+      keyTarget: _key2,
+      color: ScaapeTheme.kSecondBlue,
+      contents: [
+        TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Search your way",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20.0),
+                  ),
+                  Text(
+                    "Search for your fav Scaape",
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              ),
+            ))
+      ],
+      shape: ShapeLightFocus.Circle,
+      radius: 5,
+    ));
   }
 
-  void _setupCloudsAnimationControllers() {
-    for (final cloud in _clouds)
-      cloud.controller = AnimationController(
-        vsync: this,
-        duration: cloud.duration,
-        value: cloud.initialValue,
-      );
-  }
-
-  void _startPlaneAnimation() {
-    _planeController.repeat(reverse: true);
-  }
-
-  void _stopPlaneAnimation() {
-    _planeController
-      ..stop()
-      ..animateTo(0.0, duration: Duration(milliseconds: 100));
-  }
-
-  void _stopCloudAnimation() {
-    for (final cloud in _clouds) cloud.controller!.stop();
-  }
-
-  void _startCloudAnimation() {
-    for (final cloud in _clouds) cloud.controller!.repeat();
-  }
-
-  void _disposeCloudsControllers() {
-    for (final cloud in _clouds) cloud.controller!.dispose();
-  }
 
   @override
   void dispose() {
-    _planeController.dispose();
-    _disposeCloudsControllers();
     controller.dispose();
     super.dispose();
   }
 
   static const _offsetToArmed = 150.0;
-  static final _clouds = [
-    _Cloud(
-      color: _Cloud._dark,
-      initialValue: 0.6,
-      dy: 10.0,
-      image: AssetImage(_Cloud._assets[1]),
-      width: 100,
-      duration: Duration(milliseconds: 1600),
-    ),
-    _Cloud(
-      color: _Cloud._light,
-      initialValue: 0.15,
-      dy: 25.0,
-      image: AssetImage(_Cloud._assets[3]),
-      width: 40,
-      duration: Duration(milliseconds: 1600),
-    ),
-    _Cloud(
-      color: _Cloud._light,
-      initialValue: 0.3,
-      dy: 65.0,
-      image: AssetImage(_Cloud._assets[2]),
-      width: 60,
-      duration: Duration(milliseconds: 1600),
-    ),
-    _Cloud(
-      color: _Cloud._dark,
-      initialValue: 0.8,
-      dy: 70.0,
-      image: AssetImage(_Cloud._assets[3]),
-      width: 100,
-      duration: Duration(milliseconds: 1600),
-    ),
-    _Cloud(
-      color: _Cloud._normal,
-      initialValue: 0.0,
-      dy: 10,
-      image: AssetImage(_Cloud._assets[0]),
-      width: 80,
-      duration: Duration(milliseconds: 1600),
-    ),
-  ];
+
 
   PageController pageController = PageController(initialPage: 0);
   int pageChanged = 0;
@@ -329,31 +281,21 @@ class _HomePageViewState extends State<HomePageView>
   TextEditingController searchScaape = TextEditingController();
   var uid;
 
+
+  bool _renderCompleteState = false;
+  static const _indicatorSize = 150.0;
+  final _helper = IndicatorStateHelper();
+  ScrollDirection prevScrollDirection = ScrollDirection.idle;
+
   @override
   Widget build(BuildContext context) {
     uid = auth.currentUser!.uid;
     final screenWidth = MediaQuery.of(context).size.width;
     Size medq = MediaQuery.of(context).size;
-    final plane = AnimatedBuilder(
-      animation: _planeController,
-      child: Image.asset(
-        "images/plane.png",
-        width: 172,
-        height: 50,
-        fit: BoxFit.contain,
-      ),
-      builder: (BuildContext context, Widget? child) {
-        return Transform.translate(
-          offset: Offset(
-              0.0, 10 * (0.5 - _planeTween.transform(_planeController.value))),
-          child: child,
-        );
-      },
-    );
     return ScrollConfiguration(
       behavior: ScrollBehavior(),
       child: GlowingOverscrollIndicator(
-        color: ScaapeTheme.kBackColor.withOpacity(0.1),
+        color: ScaapeTheme.kBackColor.withOpacity(0.001),
         axisDirection: AxisDirection.left,
         child: PageView(
           controller: pageController,
@@ -361,10 +303,8 @@ class _HomePageViewState extends State<HomePageView>
           scrollDirection: Axis.horizontal,
           physics: ClampingScrollPhysics(),
           onPageChanged: (index) {
-
               pageChanged = index;
               print(pageChanged);
-
           },
           children: [
             Scaffold(
@@ -414,7 +354,7 @@ class _HomePageViewState extends State<HomePageView>
                 ],
               ),
               body: CustomRefreshIndicator(
-                offsetToArmed: _offsetToArmed,
+                offsetToArmed: _indicatorSize,
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   keyboardDismissBehavior:
@@ -433,6 +373,7 @@ class _HomePageViewState extends State<HomePageView>
                               Flexible(
                                 flex: 5,
                                 child: TextFormField(
+                                  key: _key2,
                                   onTap: () {
                                     Navigator.pushNamed(context, SearchPage.id);
                                   },
@@ -1744,91 +1685,91 @@ class _HomePageViewState extends State<HomePageView>
                 // onRefresh: () => Future.delayed(const Duration(seconds: 3)),
                 onRefresh: () =>
                     Future.delayed(const Duration(seconds: 2)).then((value) {
-                  setState(() {});
-                }),
-                builder: (BuildContext context, Widget child,
-                    IndicatorController controller) {
-                  return AnimatedBuilder(
-                    animation: controller,
-                    child: child,
-                    builder: (context, child) {
-                      final currentState = controller.state;
-                      if (_prevState == IndicatorState.armed &&
-                          currentState == IndicatorState.loading) {
-                        _startCloudAnimation();
-                        _startPlaneAnimation();
-                      } else if (_prevState == IndicatorState.loading &&
-                          currentState == IndicatorState.hiding) {
-                        _stopPlaneAnimation();
-                      } else if (_prevState == IndicatorState.hiding &&
-                          currentState != _prevState) {
-                        _stopCloudAnimation();
-                      }
+                      setState(() {});
+                    }),
+                completeStateDuration: const Duration(seconds: 1),
+                builder: (
+                    BuildContext context,
+                    Widget child,
+                    IndicatorController controller,
+                    ) {
+                  return Stack(
+                    children: <Widget>[
+                      AnimatedBuilder(
+                        animation: controller,
+                        builder: (BuildContext context, Widget? _) {
+                          _helper.update(controller.state);
+                          print(controller.state);
+                          if (controller.scrollingDirection == ScrollDirection.reverse &&
+                              prevScrollDirection == ScrollDirection.forward) {
+                            controller.stopDrag();
+                          }
 
-                      _prevState = currentState;
 
-                      return Stack(
-                        clipBehavior: Clip.hardEdge,
-                        children: <Widget>[
-                          if (_prevState != IndicatorState.idle)
-                            Container(
-                              height: _offsetToArmed * controller.value,
-                              color: ScaapeTheme.kBackColor,
-                              width: double.infinity,
-                              child: AnimatedBuilder(
-                                animation: _clouds.first.controller!,
-                                builder: (BuildContext context, Widget? child) {
-                                  return Stack(
-                                    clipBehavior: Clip.hardEdge,
-                                    children: <Widget>[
-                                      for (final cloud in _clouds)
-                                        Transform.translate(
-                                          offset: Offset(
-                                            ((screenWidth + cloud.width!) *
-                                                    cloud.controller!.value) -
-                                                cloud.width!,
-                                            cloud.dy! * controller.value,
-                                          ),
-                                          child: OverflowBox(
-                                            minWidth: cloud.width,
-                                            minHeight: cloud.width,
-                                            maxHeight: cloud.width,
-                                            maxWidth: cloud.width,
-                                            alignment: Alignment.topLeft,
-                                            child: Container(
-                                              child: Image(
-                                                color: cloud.color,
-                                                image: cloud.image!,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                          prevScrollDirection = controller.scrollingDirection;
 
-                                      /// plane
-                                      Center(
-                                        child: OverflowBox(
-                                          child: plane,
-                                          maxWidth: 172,
-                                          minWidth: 172,
-                                          maxHeight: 50,
-                                          minHeight: 50,
-                                          alignment: Alignment.center,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
+
+                          /// set [_renderCompleteState] to true when controller.state become completed
+                          if (_helper.didStateChange(to: IndicatorState.complete)) {
+                            _renderCompleteState = true;
+
+                            /// set [_renderCompleteState] to false when controller.state become idle
+                          } else if (_helper.didStateChange(to: IndicatorState.idle)) {
+                            _renderCompleteState = false;
+                          }
+                          final containerHeight = controller.value * _indicatorSize;
+
+                          return controller.state != IndicatorState.idle ? Container(
+                            alignment: Alignment.center,
+                            height: containerHeight,
+                            child: OverflowBox(
+                              maxHeight: 40,
+                              minHeight: 40,
+                              maxWidth: 40,
+                              minWidth: 40,
+                              alignment: Alignment.center,
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 150),
+                                alignment: Alignment.center,
+                                child: _renderCompleteState
+                                    ? const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                )
+                                    : SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor:
+                                    AlwaysStoppedAnimation(ScaapeTheme.kPinkColor),
+                                    value:
+                                    controller.isDragging || controller.isArmed
+                                        ? controller.value.clamp(0.0, 1.0)
+                                        : null,
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: _renderCompleteState
+                                      ? ScaapeTheme.kPinkColor
+                                      : ScaapeTheme.kShimmerColor,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
                             ),
-                          Transform.translate(
-                            offset:
-                                Offset(0.0, _offsetToArmed * controller.value),
+                          ) : Container();
+                        },
+                      ),
+                      AnimatedBuilder(
+                        builder: (context, _) {
+                          return Transform.translate(
+                            offset: Offset(0.0, controller.value * _indicatorSize),
                             child: child,
-                          ),
-                        ],
-                      );
-                    },
+                          );
+                        },
+                        animation: controller,
+                      ),
+                    ],
                   );
                 },
               ),
@@ -3177,12 +3118,16 @@ class HomeCard extends StatelessWidget {
                                               Icons.location_on_outlined,
                                               size: 12,
                                             ),
-                                            Text(
-                                              '${Location.sentenceCase}',
-                                              maxLines: 1,
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
+                                            Container(
+                                              width: medq.width * 0.35,
+                                              child: Text(
+                                                '${Location.sentenceCase}',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
                                             )
                                           ],
                                         ),
