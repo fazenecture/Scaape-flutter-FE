@@ -41,6 +41,12 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
     return 'NotSelected' ;
   }
 
+  String stringmani(String? values) {
+    String? value = values ;
+    String? newString = value!.substring(0, value.indexOf('=') + 1) + 's700-c' ;
+    return newString;
+  }
+
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -396,6 +402,9 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
 
                             try {
                               String url = 'https://api.scaape.online/testUpload';
+
+
+
                               // var stream = new http.ByteStream(
                               //     DelegatingStream.typed(_image!.openRead()));
                               // var length = await _image!.length();
@@ -425,7 +434,7 @@ class _GenderSelectionPageState extends State<GenderSelectionPage> {
                               print(signInData['ProfileImage']);
                               // print(FirebaseAuth.);
                               String json =
-                                  '{"UserId": "${signInData['UUID']}","EmailId": "${signInData['Email']}","BirthDate": "","Gender": "${getGender()}","Name": "${signInData['Name']}","ProfileImg": "${signInData['ProfileImage']}","InstaId": "${Instagram}","Vaccine": "true","Bio":"${Bio}"}';
+                                  '{"UserId": "${signInData['UUID']}","EmailId": "${signInData['Email']}","BirthDate": "","Gender": "${getGender()}","Name": "${signInData['Name']}","ProfileImg": "${stringmani(signInData['ProfileImage'])}","InstaId": "${Instagram}","Vaccine": "true","Bio":"${Bio}"}';
                               http.Response response = await post(
                                   Uri.parse(urls),
                                   headers: headers,

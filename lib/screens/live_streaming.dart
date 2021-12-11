@@ -1,447 +1,399 @@
-// import 'dart:async';
+// // Copyright 2017 The Chromium Authors. All rights reserved.
+// // Use of this source code is governed by a BSD-style license that can be
+// // found in the LICENSE file.
 //
+// // ignore_for_file: public_member_api_docs
+//
+// /// An example of using the plugin, controlling lifecycle and playback of the
+// /// video.
+//
+// import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:video_player/video_player.dart';
-// import 'package:video_stream/camera.dart';
-// import 'package:wakelock/wakelock.dart';
 //
-// class CameraExampleHome extends StatefulWidget {
-//   const CameraExampleHome({Key? key}) : super(key: key);
-//
-//   @override
-//   _CameraExampleHomeState createState() {
-//     return _CameraExampleHomeState();
-//   }
+// void main() {
+//   runApp(
+//     MaterialApp(
+//       home: _App(),
+//     ),
+//   );
 // }
 //
-// /// Returns a suitable camera icon for [direction].
-// IconData getCameraLensIcon(CameraLensDirection direction) {
-//   switch (direction) {
-//     case CameraLensDirection.back:
-//       return Icons.camera_rear;
-//     case CameraLensDirection.front:
-//       return Icons.camera_front;
-//     case CameraLensDirection.external:
-//       return Icons.camera;
-//   }
-// }
-//
-// void logError(String code, String message) =>
-//     print('Error: $code\nError Message: $message');
-//
-// class _CameraExampleHomeState extends State<CameraExampleHome>
-//     with WidgetsBindingObserver, TickerProviderStateMixin {
-//   CameraController? controller =
-//   CameraController(cameras[1], ResolutionPreset.high);
-//   String? imagePath;
-//   String? videoPath;
-//   String? url;
-//   VideoPlayerController? videoController;
-//   late VoidCallback videoPlayerListener;
-//   bool enableAudio = true;
-//   bool useOpenGL = true;
-//   String streamURL = "rtmp://stream.scaape.online:1935/live";
-//   bool streaming = false;
-//   String? cameraDirection;
-//
-//   Timer? _timer;
-//
-//   @override
-//   void initState() {
-//     _initialize();
-//     super.initState();
-//     WidgetsBinding.instance!.addObserver(this);
-//   }
-//
-//   @override
-//   void dispose() {
-//     WidgetsBinding.instance!.removeObserver(this);
-//     super.dispose();
-//   }
-//
-//   Future<void> _initialize() async {
-//     streaming = false;
-//     cameraDirection = 'front';
-//     // controller = CameraController(cameras[1], Resolution.high);
-//     await controller!.initialize();
-//     if (!mounted) {
-//       return;
-//     }
-//     setState(() {});
-//   }
-//
-//   @override
-//   void didChangeAppLifecycleState(AppLifecycleState state) {
-//     // App state changed before we got the chance to initialize.
-//     if (controller == null || !controller!.value.isInitialized) {
-//       return;
-//     }
-//     if (state == AppLifecycleState.inactive) {
-//       controller?.dispose();
-//       if (_timer != null) {
-//         _timer!.cancel();
-//         _timer = null;
-//       }
-//     } else if (state == AppLifecycleState.resumed) {
-//       if (controller != null) {
-//         onNewCameraSelected(controller!.description!);
-//       }
-//     }
-//   }
-//
-//   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-//
-//   toggleCameraDirection() async {
-//     if (cameraDirection == 'front') {
-//       if (controller != null) {
-//         await controller?.dispose();
-//       }
-//       controller = CameraController(
-//         cameras[0],
-//         ResolutionPreset.high,
-//         enableAudio: enableAudio,
-//         androidUseOpenGL: useOpenGL,
-//       );
-//
-//       // If the controller is updated then update the UI.
-//       controller!.addListener(() {
-//         if (mounted) setState(() {});
-//         if (controller!.value.hasError) {
-//           showInSnackBar('Camera error ${controller!.value.errorDescription}');
-//           if (_timer != null) {
-//             _timer!.cancel();
-//             _timer = null;
-//           }
-//           Wakelock.disable();
-//         }
-//       });
-//
-//       try {
-//         await controller!.initialize();
-//       } on CameraException catch (e) {
-//         _showCameraException(e);
-//       }
-//
-//       if (mounted) {
-//         setState(() {});
-//       }
-//       cameraDirection = 'back';
-//     } else {
-//       if (controller != null) {
-//         await controller!.dispose();
-//       }
-//       controller = CameraController(
-//         cameras[1],
-//         ResolutionPreset.high,
-//         enableAudio: enableAudio,
-//         androidUseOpenGL: useOpenGL,
-//       );
-//
-//       // If the controller is updated then update the UI.
-//       controller!.addListener(() {
-//         if (mounted) setState(() {});
-//         if (controller!.value.hasError) {
-//           showInSnackBar('Camera error ${controller!.value.errorDescription}');
-//           if (_timer != null) {
-//             _timer!.cancel();
-//             _timer = null;
-//           }
-//           Wakelock.disable();
-//         }
-//       });
-//
-//       try {
-//         await controller!.initialize();
-//       } on CameraException catch (e) {
-//         _showCameraException(e);
-//       }
-//
-//       if (mounted) {
-//         setState(() {});
-//       }
-//       cameraDirection = 'front';
-//     }
-//   }
-//
+// class _App extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
-//       extendBodyBehindAppBar: true,
-//       resizeToAvoidBottomInset: true,
-//       key: _scaffoldKey,
-//       body: SingleChildScrollView(
-//         child: SizedBox(
-//           height: MediaQuery.of(context).size.height,
-//           child: Stack(
-//             children: <Widget>[
-//               Container(
-//                 color: Colors.black,
-//                 child: Center(
-//                   child: _cameraPreviewWidget(),
-//                 ),
-//               ),
-//               Positioned(
-//                 top: 0.0,
-//                 left: 0.0,
-//                 right: 0.0,
-//                 child: AppBar(
-//                   backgroundColor: Colors.transparent,
-//                   elevation: 0.0,
-//                   title: streaming
-//                       ? ElevatedButton(
-//                     onPressed: () => onStopButtonPressed(),
-//                     style: ButtonStyle(
-//                         backgroundColor:
-//                         MaterialStateProperty.all<Color>(Colors.red)),
-//                     child: Row(
-//                       mainAxisSize: MainAxisSize.min,
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: const [
-//                         Icon(Icons.videocam_off),
-//                         SizedBox(width: 10),
-//                         Text(
-//                           'End Stream',
-//                           style: TextStyle(
-//                             fontSize: 20.0,
-//                             fontWeight: FontWeight.bold,
-//                             decoration: TextDecoration.underline,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   )
-//                       : ElevatedButton(
-//                     onPressed: () => onVideoStreamingButtonPressed(),
-//                     style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
-//                     child: Row(
-//                       mainAxisSize: MainAxisSize.min,
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: const [
-//                         Icon(Icons.videocam),
-//                         SizedBox(width: 10),
-//                         Text(
-//                           'Start Stream',
-//                           style: TextStyle(
-//                             fontSize: 20.0,
-//                             fontWeight: FontWeight.bold,
-//                             decoration: TextDecoration.underline,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
+//     return DefaultTabController(
+//       length: 3,
+//       child: Scaffold(
+//         key: const ValueKey<String>('home_page'),
+//         appBar: AppBar(
+//           title: const Text('Video player example'),
+//           actions: <Widget>[
+//             IconButton(
+//               key: const ValueKey<String>('push_tab'),
+//               icon: const Icon(Icons.navigation),
+//               onPressed: () {
+//                 Navigator.push<_PlayerVideoAndPopPage>(
+//                   context,
+//                   MaterialPageRoute<_PlayerVideoAndPopPage>(
+//                     builder: (BuildContext context) => _PlayerVideoAndPopPage(),
 //                   ),
-//                   actions: [
-//                     Padding(
-//                       padding: const EdgeInsets.all(10.0),
-//                       child: IconButton(
-//                         color: Theme.of(context).primaryColor,
-//                         icon: const Icon(Icons.switch_video),
-//                         tooltip: 'Switch Camera',
-//                         onPressed: () {
-//                           toggleCameraDirection();
-//                         },
-//                       ),
-//                     ),
-//                   ],
-//                 ),
+//                 );
+//               },
+//             )
+//           ],
+//           bottom: const TabBar(
+//             isScrollable: true,
+//             tabs: <Widget>[
+//               Tab(
+//                 icon: Icon(Icons.cloud),
+//                 text: "Remote",
 //               ),
+//               Tab(icon: Icon(Icons.insert_drive_file), text: "Asset"),
+//               Tab(icon: Icon(Icons.list), text: "List example"),
 //             ],
 //           ),
+//         ),
+//         body: TabBarView(
+//           children: <Widget>[
+//             _BumbleBeeRemoteVideo(),
+//             _ButterFlyAssetVideo(),
+//             _ButterFlyAssetVideoInList(),
+//           ],
 //         ),
 //       ),
 //     );
 //   }
+// }
 //
-//   /// Display the preview from the camera (or a message if the preview is not available).
-//   Widget _cameraPreviewWidget() {
-//     if (controller == null || !controller!.value.isInitialized) {
-//       return const Text(
-//         'Tap a camera',
-//         style: TextStyle(
-//           color: Colors.white,
-//           fontSize: 24.0,
-//           fontWeight: FontWeight.w900,
-//         ),
-//       );
-//     } else {
-//       return AspectRatio(
-//         aspectRatio: controller!.value.aspectRatio,
-//         child: CameraPreview(controller!),
-//       );
-//     }
-//   }
-//
-//   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
-//
-//   void showInSnackBar(String message) {
-//     ScaffoldMessenger.of(context)
-//         .showSnackBar(SnackBar(content: Text(message)));
-//   }
-//
-//   void onNewCameraSelected(CameraDescription? cameraDescription) async {
-//     if (controller != null) {
-//       await controller!.dispose();
-//     }
-//     if (cameraDescription == null) {
-//       print('cameraDescription is null');
-//     }
-//     controller = CameraController(
-//       cameraDescription,
-//       ResolutionPreset.medium,
-//       enableAudio: enableAudio,
-//       androidUseOpenGL: useOpenGL,
+// class _ButterFlyAssetVideoInList extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView(
+//       children: <Widget>[
+//         _ExampleCard(title: "Item a"),
+//         _ExampleCard(title: "Item b"),
+//         _ExampleCard(title: "Item c"),
+//         _ExampleCard(title: "Item d"),
+//         _ExampleCard(title: "Item e"),
+//         _ExampleCard(title: "Item f"),
+//         _ExampleCard(title: "Item g"),
+//         Card(
+//             child: Column(children: <Widget>[
+//               Column(
+//                 children: <Widget>[
+//                   const ListTile(
+//                     leading: Icon(Icons.cake),
+//                     title: Text("Video video"),
+//                   ),
+//                   Stack(
+//                       alignment: FractionalOffset.bottomRight +
+//                           const FractionalOffset(-0.1, -0.1),
+//                       children: <Widget>[
+//                         _ButterFlyAssetVideo(),
+//                         Image.asset('assets/flutter-mark-square-64.png'),
+//                       ]),
+//                 ],
+//               ),
+//             ])),
+//         _ExampleCard(title: "Item h"),
+//         _ExampleCard(title: "Item i"),
+//         _ExampleCard(title: "Item j"),
+//         _ExampleCard(title: "Item k"),
+//         _ExampleCard(title: "Item l"),
+//       ],
 //     );
-//
-//     // If the controller is updated then update the UI.
-//     controller!.addListener(() {
-//       if (mounted) setState(() {});
-//       if (controller!.value.hasError) {
-//         showInSnackBar('Camera error ${controller!.value.errorDescription}');
-//         if (_timer != null) {
-//           _timer!.cancel();
-//           _timer = null;
-//         }
-//         Wakelock.disable();
-//       }
-//     });
-//
-//     try {
-//       await controller!.initialize();
-//     } on CameraException catch (e) {
-//       _showCameraException(e);
-//     }
-//
-//     if (mounted) {
-//       setState(() {});
-//     }
-//   }
-//
-//   void onVideoStreamingButtonPressed() {
-//     startVideoStreaming().then((url) {
-//       if (mounted) {
-//         setState(() {
-//           streaming = true;
-//         });
-//       }
-//       if (url!.isNotEmpty) showInSnackBar('Streaming video to $url');
-//       Wakelock.enable();
-//     });
-//   }
-//
-//   void onStopButtonPressed() {
-//     stopVideoStreaming().then((_) {
-//       if (mounted) {
-//         setState(() {
-//           streaming = false;
-//         });
-//       }
-//       showInSnackBar('Streaming to: $url');
-//     });
-//     Wakelock.disable();
-//   }
-//
-//   void onPauseStreamingButtonPressed() {
-//     pauseVideoStreaming().then((_) {
-//       if (mounted) setState(() {});
-//       showInSnackBar('Streaming paused');
-//     });
-//   }
-//
-//   void onResumeStreamingButtonPressed() {
-//     resumeVideoStreaming().then((_) {
-//       if (mounted) setState(() {});
-//       showInSnackBar('Streaming resumed');
-//     });
-//   }
-//
-//   Future<String?> startVideoStreaming() async {
-//     if (!controller!.value.isInitialized) {
-//       showInSnackBar('Error: select a camera first.');
-//       return null;
-//     }
-//
-//     // Open up a dialog for the url
-//     String myUrl = streamURL;
-//
-//     try {
-//       if (_timer != null) {
-//         _timer!.cancel();
-//         _timer = null;
-//       }
-//       url = myUrl;
-//       await controller!.startVideoStreaming(url!, androidUseOpenGL: false);
-//       // _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
-//       //   var stats = await controller!.getStreamStatistics();
-//       //   print(stats);
-//       // });
-//     } on CameraException catch (e) {
-//       _showCameraException(e);
-//       return null;
-//     }
-//     return url;
-//   }
-//
-//   Future<void> stopVideoStreaming() async {
-//     try {
-//       await controller!.stopVideoStreaming();
-//       if (_timer != null) {
-//         _timer!.cancel();
-//         _timer = null;
-//       }
-//     } on CameraException catch (e) {
-//       _showCameraException(e);
-//       return;
-//     }
-//   }
-//
-//   Future<void> pauseVideoStreaming() async {
-//     if (!controller!.value.isStreamingVideoRtmp) {
-//       return;
-//     }
-//
-//     try {
-//       await controller!.pauseVideoStreaming();
-//     } on CameraException catch (e) {
-//       _showCameraException(e);
-//       rethrow;
-//     }
-//   }
-//
-//   Future<void> resumeVideoStreaming() async {
-//     try {
-//       await controller!.resumeVideoStreaming();
-//     } on CameraException catch (e) {
-//       _showCameraException(e);
-//       rethrow;
-//     }
-//   }
-//
-//   void _showCameraException(CameraException e) {
-//     logError(e.code, e.description);
-//     showInSnackBar('Error: ${e.code}\n${e.description}');
 //   }
 // }
 //
-// class CameraApp extends StatelessWidget {
-//   const CameraApp({Key? key}) : super(key: key);
+// /// A filler card to show the video in a list of scrolling contents.
+// class _ExampleCard extends StatelessWidget {
+//   const _ExampleCard({Key? key, required this.title}) : super(key: key);
+//
+//   final String title;
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       home: CameraExampleHome(),
+//     return Card(
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: <Widget>[
+//           ListTile(
+//             leading: const Icon(Icons.airline_seat_flat_angled),
+//             title: Text(title),
+//           ),
+//           ButtonBar(
+//             children: <Widget>[
+//               FlatButton(
+//                 child: const Text('BUY TICKETS'),
+//                 onPressed: () {
+//                   /* ... */
+//                 },
+//               ),
+//               FlatButton(
+//                 child: const Text('SELL TICKETS'),
+//                 onPressed: () {
+//                   /* ... */
+//                 },
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
 //     );
 //   }
 // }
 //
-// List<CameraDescription> cameras = [];
+// class _ButterFlyAssetVideo extends StatefulWidget {
+//   @override
+//   _ButterFlyAssetVideoState createState() => _ButterFlyAssetVideoState();
+// }
 //
-// Future<void> main() async {
-//   // Fetch the available cameras before initializing the app.
-//   try {
-//     WidgetsFlutterBinding.ensureInitialized();
-//     cameras = await availableCameras();
-//   } on CameraException catch (e) {
-//     logError(e.code, e.description);
+// class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
+//   late VideoPlayerController _controller;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = VideoPlayerController.asset('assets/Butterfly-209.mp4');
+//
+//     _controller.addListener(() {
+//       setState(() {});
+//     });
+//     _controller.setLooping(true);
+//     _controller.initialize().then((_) => setState(() {}));
+//     _controller.play();
 //   }
-//   runApp(const CameraApp());
+//
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       child: Column(
+//         children: <Widget>[
+//           Container(
+//             padding: const EdgeInsets.only(top: 20.0),
+//           ),
+//           const Text('With assets mp4'),
+//           Container(
+//             padding: const EdgeInsets.all(20),
+//             child: AspectRatio(
+//               aspectRatio: _controller.value.aspectRatio,
+//               child: Stack(
+//                 alignment: Alignment.bottomCenter,
+//                 children: <Widget>[
+//                   VideoPlayer(_controller),
+//                   _ControlsOverlay(controller: _controller),
+//                   VideoProgressIndicator(_controller, allowScrubbing: true),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//
+// class _BumbleBeeRemoteVideo extends StatefulWidget {
+//   @override
+//   _BumbleBeeRemoteVideoState createState() => _BumbleBeeRemoteVideoState();
+// }
+//
+// class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
+//   late VideoPlayerController _controller;
+//
+//   Future<ClosedCaptionFile> _loadCaptions() async {
+//     final String fileContents = await DefaultAssetBundle.of(context)
+//         .loadString('assets/bumble_bee_captions.srt');
+//     return SubRipCaptionFile(fileContents);
+//   }
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = VideoPlayerController.network(
+//       'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+//       closedCaptionFile: _loadCaptions(),
+//       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+//     );
+//
+//     _controller.addListener(() {
+//       setState(() {});
+//     });
+//     _controller.setLooping(true);
+//     _controller.initialize();
+//   }
+//
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       child: Column(
+//         children: <Widget>[
+//           Container(padding: const EdgeInsets.only(top: 20.0)),
+//           const Text('With remote mp4'),
+//           Container(
+//             padding: const EdgeInsets.all(20),
+//             child: AspectRatio(
+//               aspectRatio: _controller.value.aspectRatio,
+//               child: Stack(
+//                 alignment: Alignment.bottomCenter,
+//                 children: <Widget>[
+//                   VideoPlayer(_controller),
+//                   ClosedCaption(text: _controller.value.caption.text),
+//                   _ControlsOverlay(controller: _controller),
+//                   VideoProgressIndicator(_controller, allowScrubbing: true),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//
+// class _ControlsOverlay extends StatelessWidget {
+//   const _ControlsOverlay({Key? key, required this.controller})
+//       : super(key: key);
+//
+//   static const _examplePlaybackRates = [
+//     0.25,
+//     0.5,
+//     1.0,
+//     1.5,
+//     2.0,
+//     3.0,
+//     5.0,
+//     10.0,
+//   ];
+//
+//   final VideoPlayerController controller;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: <Widget>[
+//         AnimatedSwitcher(
+//           duration: Duration(milliseconds: 50),
+//           reverseDuration: Duration(milliseconds: 200),
+//           child: controller.value.isPlaying
+//               ? SizedBox.shrink()
+//               : Container(
+//             color: Colors.black26,
+//             child: Center(
+//               child: Icon(
+//                 Icons.play_arrow,
+//                 color: Colors.white,
+//                 size: 100.0,
+//               ),
+//             ),
+//           ),
+//         ),
+//         GestureDetector(
+//           onTap: () {
+//             controller.value.isPlaying ? controller.pause() : controller.play();
+//           },
+//         ),
+//         Align(
+//           alignment: Alignment.topRight,
+//           child: PopupMenuButton<double>(
+//             initialValue: controller.value.playbackSpeed,
+//             tooltip: 'Playback speed',
+//             onSelected: (speed) {
+//               controller.setPlaybackSpeed(speed);
+//             },
+//             itemBuilder: (context) {
+//               return [
+//                 for (final speed in _examplePlaybackRates)
+//                   PopupMenuItem(
+//                     value: speed,
+//                     child: Text('${speed}x'),
+//                   )
+//               ];
+//             },
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(
+//                 // Using less vertical padding as the text is also longer
+//                 // horizontally, so it feels like it would need more spacing
+//                 // horizontally (matching the aspect ratio of the video).
+//                 vertical: 12,
+//                 horizontal: 16,
+//               ),
+//               child: Text('${controller.value.playbackSpeed}x'),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+//
+// class _PlayerVideoAndPopPage extends StatefulWidget {
+//   @override
+//   _PlayerVideoAndPopPageState createState() => _PlayerVideoAndPopPageState();
+// }
+//
+// class _PlayerVideoAndPopPageState extends State<_PlayerVideoAndPopPage> {
+//   late VideoPlayerController _videoPlayerController;
+//   bool startedPlaying = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//     _videoPlayerController =
+//         VideoPlayerController.asset('assets/Butterfly-209.mp4');
+//     _videoPlayerController.addListener(() {
+//       if (startedPlaying && !_videoPlayerController.value.isPlaying) {
+//         Navigator.pop(context);
+//       }
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     _videoPlayerController.dispose();
+//     super.dispose();
+//   }
+//
+//   Future<bool> started() async {
+//     await _videoPlayerController.initialize();
+//     await _videoPlayerController.play();
+//     startedPlaying = true;
+//     return true;
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Material(
+//       elevation: 0,
+//       child: Center(
+//         child: FutureBuilder<bool>(
+//           future: started(),
+//           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+//             if (snapshot.data == true) {
+//               return AspectRatio(
+//                 aspectRatio: _videoPlayerController.value.aspectRatio,
+//                 child: VideoPlayer(_videoPlayerController),
+//               );
+//             } else {
+//               return const Text('waiting for video to load');
+//             }
+//           },
+//         ),
+//       ),
+//     );
+//   }
 // }

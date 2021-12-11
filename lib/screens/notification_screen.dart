@@ -44,8 +44,49 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     String authId = auth.currentUser!.uid;
     Size medq = MediaQuery.of(context).size;
-    return SafeArea(
-        child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        foregroundColor: Colors.transparent,
+        backgroundColor: ScaapeTheme.kBackColor,
+        shadowColor: ScaapeTheme.kSecondBlue,
+        elevation: 1,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pushReplacementNamed(context, HomeScreen.id);
+
+          },
+          icon: Icon(
+            CupertinoIcons.back,
+            color: Colors.white,
+          ),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Notification Center',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22,
+                ),
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushReplacementNamed(context, CreateScaape.id);
+                },
+                child: Icon(
+                  Icons.add_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(
           child: Container(
             height: MediaQuery.of(context).size.height,
             child: FutureBuilder(
@@ -60,34 +101,33 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   //print(a);
                   return Container(
                     color: ScaapeTheme.kBackColor,
-                    margin: EdgeInsets.fromLTRB(15, 58, 15, 10),
-                    child: ListView(
-                      physics: NeverScrollableScrollPhysics(),
+                    margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                    child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Icon(
-                                Icons.notification_important_outlined,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                'Notification Center',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 26,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(vertical: 10),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     children: <Widget>[
+                        //       Icon(
+                        //         Icons.notification_important_outlined,
+                        //         color: Colors.white,
+                        //       ),
+                        //       SizedBox(
+                        //         width: 8,
+                        //       ),
+                        //       Text(
+                        //         'Notification Center',
+                        //         style: TextStyle(
+                        //           color: Colors.white,
+                        //           fontWeight: FontWeight.w600,
+                        //           fontSize: 26,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Row(
@@ -451,24 +491,31 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 var a = snapshot.data;
                                 print("last");
                                 print(a);
-                                return ListView.builder(
-                                  itemCount: snapshot.data.length,
-                                  shrinkWrap: true,
-                                  // scrollDirection: Axis.vertical,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return a[index]['UserId'] == authId
-                                        ? Text("")
-                                        : RecentRequestCard(() {
-                                      setState(() {});
-                                    },
-                                        a[index]['ScaapeId'],
-                                        a[index]['UserId'],
-                                        a[index]['Name'],
-                                        a[index]['Location'],
-                                        a[index]['DP'],
-                                        a[index]['Accepted']);
-                                  },
+                                return Expanded(
+                                  child: Padding(
+                                    padding:  EdgeInsets.only(bottom: 40),
+                                    child: ListView.builder(
+                                      primary: false,
+
+                                      itemCount: snapshot.data.length,
+                                      shrinkWrap: true,
+                                      // physics: NeverScrollableScrollPhysics(),
+                                      // scrollDirection: Axis.vertical,
+                                      itemBuilder: (context, index) {
+                                        return a[index]['UserId'] == authId
+                                            ? Container()
+                                            : RecentRequestCard(() {
+                                          setState(() {});
+                                        },
+                                            a[index]['ScaapeId'],
+                                            a[index]['UserId'],
+                                            a[index]['Name'],
+                                            a[index]['Location'],
+                                            a[index]['DP'],
+                                            a[index]['Accepted']);
+                                      },
+                                    ),
+                                  ),
                                 );
                               } else {
                                 return Container(
@@ -502,7 +549,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               );
                             }
                           },
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -608,7 +655,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
         ),
-      );
+    );
   }
 }
 
@@ -838,16 +885,22 @@ class RecentRequestCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width*0.37,
-                        child: Text(
-                          '${Name.titleCase}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                          overflow: TextOverflow.ellipsis,
+                      Name.length > 13 ? Text(
+                        '${Name.substring(0,13).titleCase}...',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
+                        overflow: TextOverflow.ellipsis,
+
+                      ): Text(
+                        '${Name.titleCase}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+
                       ),
                       SizedBox(
                         height: 2,
@@ -855,12 +908,19 @@ class RecentRequestCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment:
                         MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.location_on_outlined,
                             size: 12,
                           ),
-                          Text(
+                          location.length > 21 ? Text(
+                            '${location.substring(0,21).sentenceCase}...',
+                            maxLines: 1,
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
+                          ): Text(
                             '${location.sentenceCase}',
                             maxLines: 1,
                             style: GoogleFonts.roboto(

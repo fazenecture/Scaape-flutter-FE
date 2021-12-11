@@ -5,6 +5,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +22,8 @@ import 'package:fluster/fluster.dart';
 import 'package:fluster/src/base_cluster.dart';
 import 'package:fluster/src/clusterable.dart';
 import 'package:recase/recase.dart';
+import 'package:scaape/screens/bottom_navigatin_bar.dart';
+import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/dashboard_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/utils/constants.dart';
@@ -285,93 +288,148 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     Size medq = MediaQuery.of(context).size;
 
-    return Container(
-      child: GoogleMap(
-        zoomControlsEnabled: false,
-        zoomGesturesEnabled: true,
-        initialCameraPosition: _kGooglePlex,
-        mapType: MapType.normal,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.5),
-        onMapCreated: (GoogleMapController controller) {
-          _controllerGoogleMap.complete(controller);
-          newGoogleMapController = controller;
-          loadMap();
-          locatePosition();
-        },
-        onLongPress: (value) {
-          print(value);
-          showMaterialModalBottomSheet(
-              backgroundColor: ScaapeTheme.kBackColor,
-              context: context,
-              elevation: 13,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(16),
-                      topLeft: Radius.circular(16))),
-              builder: (context) => Container(
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: FutureBuilder(
-                  future: getGeoScaapes(
-                      FirebaseAuth.instance.currentUser!.uid, value.latitude,value.longitude),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    // print(auther.currentUser!.uid);
+    return Scaffold(
+      appBar:  AppBar(
+        foregroundColor: Colors.transparent,
+        backgroundColor: ScaapeTheme.kBackColor,
+        shadowColor: ScaapeTheme.kSecondBlue,
+        elevation: 1,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pushReplacementNamed(context, HomeScreen.id);
+          },
+          icon: Icon(
+            CupertinoIcons.back,
+            color: Colors.white,
+          ),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            'Explore Scaape',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 22,
+            ),
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
 
-                    if (snapshot.hasData) {
-                      var a = snapshot.data;
-                      // print(a);
-                      print("theis is length${snapshot.data.length}");
-                      if(snapshot.data.length == 0){
-                        return Center(child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: ScaapeTheme.kPinkColor),
-                            borderRadius: BorderRadius.circular(8)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('No Nearbuy Scaapes', style: TextStyle(fontSize: 20, color: ScaapeTheme.kPinkColor),),
-                          ),));
-                      }else{
-                        return ListView.builder(
-                          // physics: NeverScrollableScrollPhysics(),
-                          //itemCount: 1,
-                          itemCount: snapshot.data.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return HomeCard(() {
-                              setState(() {});
-                            },
-                                medq,
-                                a[index]["ScaapeImg"],
-                                a[index]["ScaapeName"],
-                                a[index]["Description"],
-                                a[index]["Location"],
-                                a[index]['UserId'],
-                                a[index]["ScaapeId"],
-                                a[index]["ScaapePref"],   ///
-                                a[index]["Admin"],
-                                a[index]["isPresent"],
-                                a[index]["ScaapeDate"],
-                                a[index]["AdminName"],
-                                a[index]["AdminEmail"],
-                                a[index]["AdminDP"],
-                                a[index]["AdminGender"],
-                                a[index]["ScaapeDate"],
-                                a[index]["count"],
-                                _key2
-                            );
-                          },
-                        );
-                      }
+          Container(
+            child: GoogleMap(
+              zoomControlsEnabled: false,
+              zoomGesturesEnabled: true,
+              initialCameraPosition: _kGooglePlex,
+              mapType: MapType.normal,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.5),
+              onMapCreated: (GoogleMapController controller) {
+                _controllerGoogleMap.complete(controller);
+                newGoogleMapController = controller;
+                loadMap();
+                locatePosition();
+              },
+              onLongPress: (value) {
+                print(value);
+                showMaterialModalBottomSheet(
+                    backgroundColor: ScaapeTheme.kBackColor,
+                    context: context,
+                    elevation: 13,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(16),
+                            topLeft: Radius.circular(16))),
+                    builder: (context) => Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: FutureBuilder(
+                        future: getGeoScaapes(
+                            FirebaseAuth.instance.currentUser!.uid, value.latitude,value.longitude),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          // print(auther.currentUser!.uid);
 
-                    } else {
-                      return CircularProgressIndicator(color: ScaapeTheme.kPinkColor);
-                    }
-                  },
-                ),
-              ));
-        },
-        markers: markers.map((e) => e).toSet(),
+                          if (snapshot.hasData) {
+                            var a = snapshot.data;
+                            // print(a);
+                            print("theis is length${snapshot.data.length}");
+                            if(snapshot.data.length == 0){
+                              return Center(child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: ScaapeTheme.kPinkColor),
+                                  borderRadius: BorderRadius.circular(8)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text('No Nearbuy Scaapes', style: TextStyle(fontSize: 20, color: ScaapeTheme.kPinkColor),),
+                                ),));
+                            }else{
+                              return ListView.builder(
+                                // physics: NeverScrollableScrollPhysics(),
+                                //itemCount: 1,
+                                itemCount: snapshot.data.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return HomeCard(() {
+                                    setState(() {});
+                                  },
+                                      medq,
+                                      a[index]["ScaapeImg"],
+                                      a[index]["ScaapeName"],
+                                      a[index]["Description"],
+                                      a[index]["Location"],
+                                      a[index]['UserId'],
+                                      a[index]["ScaapeId"],
+                                      a[index]["ScaapePref"],   ///
+                                      a[index]["Admin"],
+                                      a[index]["isPresent"],
+                                      a[index]["ScaapeDate"],
+                                      a[index]["AdminName"],
+                                      a[index]["AdminEmail"],
+                                      a[index]["AdminDP"],
+                                      a[index]["AdminGender"],
+                                      a[index]["ScaapeDate"],
+                                      a[index]["count"],
+                                      _key2
+                                  );
+                                },
+                              );
+                            }
+
+                          } else {
+                            return CircularProgressIndicator(color: ScaapeTheme.kPinkColor);
+                          }
+                        },
+                      ),
+                    ));
+              },
+              markers: markers.map((e) => e).toSet(),
+            ),
+          ),
+          Container(
+
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: ScaapeTheme.kBackColor.withOpacity(0.3)
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      'Long Press to Get Nearby Scaapes',
+                    style: TextStyle(
+                      fontSize: 12
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
