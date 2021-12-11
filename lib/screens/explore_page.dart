@@ -345,62 +345,98 @@ class _ExplorePageState extends State<ExplorePage> {
                             topLeft: Radius.circular(16))),
                     builder: (context) => Container(
                       height: MediaQuery.of(context).size.height * 0.7,
-                      child: FutureBuilder(
-                        future: getGeoScaapes(
-                            FirebaseAuth.instance.currentUser!.uid, value.latitude,value.longitude),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          // print(auther.currentUser!.uid);
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  height: 5.5,
+                                  width: medq.width * 0.13,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(34))),
+                                ),
+                              ),
+                            ),
+                            Text('Nearby Scaapes',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),),
+                            FutureBuilder(
+                              future: getGeoScaapes(
+                                  FirebaseAuth.instance.currentUser!.uid, value.latitude,value.longitude),
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                // print(auther.currentUser!.uid);
 
-                          if (snapshot.hasData) {
-                            var a = snapshot.data;
-                            // print(a);
-                            print("theis is length${snapshot.data.length}");
-                            if(snapshot.data.length == 0){
-                              return Center(child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: ScaapeTheme.kPinkColor),
-                                  borderRadius: BorderRadius.circular(8)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('No Nearbuy Scaapes', style: TextStyle(fontSize: 20, color: ScaapeTheme.kPinkColor),),
-                                ),));
-                            }else{
-                              return ListView.builder(
-                                // physics: NeverScrollableScrollPhysics(),
-                                //itemCount: 1,
-                                itemCount: snapshot.data.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return HomeCard(() {
-                                    setState(() {});
-                                  },
-                                      medq,
-                                      a[index]["ScaapeImg"],
-                                      a[index]["ScaapeName"],
-                                      a[index]["Description"],
-                                      a[index]["Location"],
-                                      a[index]['UserId'],
-                                      a[index]["ScaapeId"],
-                                      a[index]["ScaapePref"],   ///
-                                      a[index]["Admin"],
-                                      a[index]["isPresent"],
-                                      a[index]["ScaapeDate"],
-                                      a[index]["AdminName"],
-                                      a[index]["AdminEmail"],
-                                      a[index]["AdminDP"],
-                                      a[index]["AdminGender"],
-                                      a[index]["ScaapeDate"],
-                                      a[index]["count"],
-                                      _key2
+                                if (snapshot.hasData) {
+                                  var a = snapshot.data;
+                                  // print(a);
+                                  print("theis is length${snapshot.data.length}");
+                                  if(snapshot.data.length == 0){
+                                    return Center(child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: ScaapeTheme.kPinkColor),
+                                        borderRadius: BorderRadius.circular(8)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text('No Nearbuy Scaapes', style: TextStyle(fontSize: 20, color: ScaapeTheme.kPinkColor),),
+                                      ),));
+                                  }else{
+                                    return ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      //itemCount: 1,
+                                      itemCount: snapshot.data.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return HomeCard(() {
+                                          setState(() {});
+                                        },
+                                            medq,
+                                            a[index]["ScaapeImg"],
+                                            a[index]["ScaapeName"],
+                                            a[index]["Description"],
+                                            a[index]["Location"],
+                                            a[index]['UserId'],
+                                            a[index]["ScaapeId"],
+                                            a[index]["ScaapePref"],   ///
+                                            a[index]["Admin"],
+                                            a[index]["isPresent"],
+                                            a[index]["ScaapeDate"],
+                                            a[index]["AdminName"],
+                                            a[index]["AdminEmail"],
+                                            a[index]["AdminDP"],
+                                            a[index]["AdminGender"],
+                                            a[index]["ScaapeDate"],
+                                            a[index]["count"],
+                                            _key2
+                                        );
+                                      },
+                                    );
+                                  }
+
+                                } else {
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        ShimmerCard(medq: medq),
+                                        ShimmerCard(medq: medq),
+                                        ShimmerCard(medq: medq),
+                                      ],
+                                    ),
                                   );
-                                },
-                              );
-                            }
-
-                          } else {
-                            return CircularProgressIndicator(color: ScaapeTheme.kPinkColor);
-                          }
-                        },
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ));
               },
