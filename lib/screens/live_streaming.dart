@@ -7,7 +7,7 @@ import 'package:wakelock/wakelock.dart';
 
 class CameraExampleHome extends StatefulWidget {
   const CameraExampleHome({Key? key}) : super(key: key);
-  static String id = 'live';
+
 
   @override
   _CameraExampleHomeState createState() {
@@ -425,13 +425,12 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
 class CameraApp extends StatefulWidget {
   const CameraApp({Key? key}) : super(key: key);
-
+  static String id = 'live';
   @override
   State<CameraApp> createState() => _CameraAppState();
 }
 
 class _CameraAppState extends State<CameraApp> {
-  static String id = 'live';
 
   @override
   void initState() {
@@ -450,6 +449,8 @@ class _CameraAppState extends State<CameraApp> {
 List<CameraDescription> cameras = [];
 
 Future<void> getCam() async {
+
+
 
   // Fetch the available cameras before initializing the app.
   try {
