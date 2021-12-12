@@ -115,6 +115,7 @@ class _MyAppState extends State<MyApp> {
         CreateScaape.id: (context) => CreateScaape(),
         ChatDesc.id: (context) => ChatDesc(),
         SearchPage.id: (context) => SearchPage(),
+        CameraApp.id : (context) => CameraApp(),
       },
       // home: HomeScreen(),
     );

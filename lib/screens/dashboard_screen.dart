@@ -34,6 +34,7 @@ import 'package:recase/recase.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'addScaape_screen.dart';
+import 'live_streaming.dart';
 
 class HomePageView extends StatefulWidget {
   static String id = 'homePage';
@@ -85,7 +86,8 @@ class _HomePageViewState extends State<HomePageView>
 
   Future<int> getUserDetails() async {
     String url =
-        'https://api.scaape.online/api/getUserDetails/${auther.currentUser!.uid}';
+        'https://api.scaape.online/api/getUserDetails/${auther.currentUser!
+        .uid}';
     // print(url);
     http.Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
@@ -137,7 +139,6 @@ class _HomePageViewState extends State<HomePageView>
     // controller.forward();
 
 
-
     getUserDetails().then((value) {
       print(value);
       if (value == 1) {
@@ -174,7 +175,7 @@ class _HomePageViewState extends State<HomePageView>
         String json =
             '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
         http.Response response =
-            await post(Uri.parse(url), headers: headers, body: json);
+        await post(Uri.parse(url), headers: headers, body: json);
         int statuscode = response.statusCode;
         print(statuscode);
         print(response.body);
@@ -190,7 +191,7 @@ class _HomePageViewState extends State<HomePageView>
         String json =
             '{"showTutorial": 0, "UserId" : "${auther.currentUser!.uid}" }';
         http.Response response =
-            await post(Uri.parse(url), headers: headers, body: json);
+        await post(Uri.parse(url), headers: headers, body: json);
         int statuscode = response.statusCode;
         print(statuscode);
         print(response.body);
@@ -199,7 +200,8 @@ class _HomePageViewState extends State<HomePageView>
       onClickOverlay: (target) {
         print('onClickOverlay: $target');
       },
-    )..show();
+    )
+      ..show();
   }
 
   void initTargets() {
@@ -290,8 +292,13 @@ class _HomePageViewState extends State<HomePageView>
   @override
   Widget build(BuildContext context) {
     uid = auth.currentUser!.uid;
-    final screenWidth = MediaQuery.of(context).size.width;
-    Size medq = MediaQuery.of(context).size;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    Size medq = MediaQuery
+        .of(context)
+        .size;
     return ScrollConfiguration(
       behavior: ScrollBehavior(),
       child: GlowingOverscrollIndicator(
@@ -303,8 +310,8 @@ class _HomePageViewState extends State<HomePageView>
           scrollDirection: Axis.horizontal,
           physics: ClampingScrollPhysics(),
           onPageChanged: (index) {
-              pageChanged = index;
-              print(pageChanged);
+            pageChanged = index;
+            print(pageChanged);
           },
           children: [
             Scaffold(
@@ -358,15 +365,42 @@ class _HomePageViewState extends State<HomePageView>
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 19),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, CameraApp.id);
+                                },
+                                child: TopCircleCards(
+                                  circleImg: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                    // backgroundColor: Colors.transparent,
+                                    radius: 31,
+                                  ),
+                                  text: 'Cycling',
+                                  base: base,
+                                  controller: controller,
+                                  reverse: reverse,
+                                  backgroundColor: controller.isAnimating
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                      : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                  dashes: controller.isAnimating ? 25 : 0,
+                                )),
+                          ],
+                        ),
                         Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
                           height: 65,
                           child: Row(
                             children: [
@@ -400,17 +434,17 @@ class _HomePageViewState extends State<HomePageView>
                                         vertical: 10.0, horizontal: 20.0),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(7.0),
+                                        BorderRadius.circular(7.0),
                                         borderSide: BorderSide.none),
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(7.0),
+                                        BorderRadius.circular(7.0),
                                         borderSide: const BorderSide(
                                             width: 1,
                                             color: ScaapeTheme.kPinkColor)),
                                     errorBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(7.0),
+                                        BorderRadius.circular(7.0),
                                         borderSide: const BorderSide(
                                             width: 0,
                                             color: Colors.transparent)),
@@ -419,8 +453,11 @@ class _HomePageViewState extends State<HomePageView>
                                     hintStyle: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize:
-                                          MediaQuery.of(context).size.height *
-                                              0.018,
+                                      MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.018,
                                       color: const Color(0x5cffffff),
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -456,105 +493,105 @@ class _HomePageViewState extends State<HomePageView>
                         // Filter Buttons
                         showFilter
                             ? Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        recent = false;
-                                        forYou = false;
-                                        trending = !trending;
-                                        val = '';
-                                        setState(() {});
-                                      },
-                                      child: TopCards(
-                                        border: (trending)
-                                            ? Border.all(
-                                                color: ScaapeTheme.kPinkColor)
-                                            : Border.all(
-                                                color: Colors.transparent),
-                                        medq: medq,
-                                        img: Image.asset(
-                                          'images/trend.png',
-                                          height: medq.height * 0.02,
-                                          // width: medq.width * 0.03,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        text: 'Trending',
-                                        color: trending
-                                            ? ScaapeTheme.kPinkColor
-                                                .withOpacity(0.2)
-                                            : ScaapeTheme.kSecondBlue,
-                                        textcolor:
-                                            ScaapeTheme.kSecondTextCollor,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        trending = false;
-                                        recent = !recent;
-                                        forYou = false;
-                                        val = '';
-                                        setState(() {});
-                                      },
-                                      child: TopCards(
-                                        medq: medq,
-                                        border: recent
-                                            ? Border.all(
-                                                color: ScaapeTheme.kPinkColor)
-                                            : Border.all(
-                                                color: Colors.transparent),
-                                        img: Image.asset(
-                                          'images/recent.png',
-                                          height: medq.height * 0.017,
-                                          // width: medq.width * 0.03,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        text: 'Recent',
-                                        color: recent
-                                            ? ScaapeTheme.kPinkColor
-                                                .withOpacity(0.2)
-                                            : ScaapeTheme.kSecondBlue,
-                                        textcolor:
-                                            ScaapeTheme.kSecondTextCollor,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        trending = false;
-                                        recent = false;
-                                        forYou = !forYou;
-                                        val = '';
-                                        setState(() {});
-                                      },
-                                      child: TopCards(
-                                        medq: medq,
-                                        border: forYou
-                                            ? Border.all(
-                                                color: ScaapeTheme.kPinkColor)
-                                            : Border.all(
-                                                color: Colors.transparent),
-                                        img: Image.asset(
-                                          'images/recommendation.png',
-                                          height: medq.height * 0.02,
-                                          // width: medq.width * 0.03,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        text: 'For you',
-                                        color: forYou
-                                            ? ScaapeTheme.kPinkColor
-                                                .withOpacity(0.2)
-                                            : ScaapeTheme.kSecondBlue,
-                                        textcolor:
-                                            ScaapeTheme.kSecondTextCollor,
-                                      ),
-                                    ),
-                                  ],
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  recent = false;
+                                  forYou = false;
+                                  trending = !trending;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  border: (trending)
+                                      ? Border.all(
+                                      color: ScaapeTheme.kPinkColor)
+                                      : Border.all(
+                                      color: Colors.transparent),
+                                  medq: medq,
+                                  img: Image.asset(
+                                    'images/trend.png',
+                                    height: medq.height * 0.02,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'Trending',
+                                  color: trending
+                                      ? ScaapeTheme.kPinkColor
+                                      .withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor:
+                                  ScaapeTheme.kSecondTextCollor,
                                 ),
-                              )
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  trending = false;
+                                  recent = !recent;
+                                  forYou = false;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  medq: medq,
+                                  border: recent
+                                      ? Border.all(
+                                      color: ScaapeTheme.kPinkColor)
+                                      : Border.all(
+                                      color: Colors.transparent),
+                                  img: Image.asset(
+                                    'images/recent.png',
+                                    height: medq.height * 0.017,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'Recent',
+                                  color: recent
+                                      ? ScaapeTheme.kPinkColor
+                                      .withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor:
+                                  ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  trending = false;
+                                  recent = false;
+                                  forYou = !forYou;
+                                  val = '';
+                                  setState(() {});
+                                },
+                                child: TopCards(
+                                  medq: medq,
+                                  border: forYou
+                                      ? Border.all(
+                                      color: ScaapeTheme.kPinkColor)
+                                      : Border.all(
+                                      color: Colors.transparent),
+                                  img: Image.asset(
+                                    'images/recommendation.png',
+                                    height: medq.height * 0.02,
+                                    // width: medq.width * 0.03,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  text: 'For you',
+                                  color: forYou
+                                      ? ScaapeTheme.kPinkColor
+                                      .withOpacity(0.2)
+                                      : ScaapeTheme.kSecondBlue,
+                                  textcolor:
+                                  ScaapeTheme.kSecondTextCollor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                             : Container(),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -634,11 +671,14 @@ class _HomePageViewState extends State<HomePageView>
                               borderRadius: BorderRadius.circular(16),
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    "https://scaape.online/scaape-banner.png",
+                                "https://scaape.online/scaape-banner.png",
                                 fit: BoxFit.contain,
                               ),
                             ),
-                            height: MediaQuery.of(context).size.height * 0.182,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.182,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: ScaapeTheme.kPinkColor,
@@ -1189,478 +1229,802 @@ class _HomePageViewState extends State<HomePageView>
 
                                   return test == 'Trending'
                                       ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8),
-                                          child: Container(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                  'Trending Scaapes',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                SizedBox(
-                                                  height: 12,
-                                                ),
-                                                Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.3,
-                                                  width: double.infinity,
-                                                  child: FutureBuilder(
-                                                    future: getTrendingScaapes(
-                                                        auther
-                                                            .currentUser!.uid),
-                                                    builder:
-                                                        (BuildContext context,
-                                                            AsyncSnapshot
-                                                                snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        var tData =
-                                                            snapshot.data;
-                                                        return ListView.builder(
-                                                            itemCount: snapshot
-                                                                .data.length,
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              var tScaapeName =
-                                                                  tData[index][
-                                                                      'ScaapeName'];
-                                                              var tScaapeImage =
-                                                                  tData[index][
-                                                                      'ScaapeImg'];
-                                                              var tScaapeLocation =
-                                                                  tData[index][
-                                                                          'Location']
-                                                                      .toString();
-                                                              var tScaapeId =
-                                                                  tData[index][
-                                                                      'ScaapeId'];
-                                                              var tScaapeDesc =
-                                                                  tData[index][
-                                                                          'Description']
-                                                                      .toString();
-                                                              var tSAdminName =
-                                                                  tData[index][
-                                                                          'AdminName']
-                                                                      .toString();
-                                                              var tScaapeCount =
-                                                                  tData[index][
-                                                                          'count']
-                                                                      .toString();
-                                                              var tSAdminImg = tData[
-                                                                          index]
-                                                                      [
-                                                                      'AdminDP']
-                                                                  .toString();
-                                                              var tSAdminInsta =
-                                                                  tData[index][
-                                                                          'AdminInsta']
-                                                                      .toString();
-                                                              var tScaapeDate =
-                                                                  tData[index][
-                                                                          'ScaapeDate']
-                                                                      .toString();
-                                                              var present = tData[
-                                                                      index]
-                                                                  ['isPresent'];
-                                                              var admin =
-                                                                  tData[index]
-                                                                      ['Admin'];
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8),
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Trending Scaapes',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight:
+                                                FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          Container(
+                                            height: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height *
+                                                0.3,
+                                            width: double.infinity,
+                                            child: FutureBuilder(
+                                              future: getTrendingScaapes(
+                                                  auther
+                                                      .currentUser!.uid),
+                                              builder:
+                                                  (BuildContext context,
+                                                  AsyncSnapshot
+                                                  snapshot) {
+                                                if (snapshot.hasData) {
+                                                  var tData =
+                                                      snapshot.data;
+                                                  return ListView.builder(
+                                                      itemCount: snapshot
+                                                          .data.length,
+                                                      scrollDirection:
+                                                      Axis.horizontal,
+                                                      itemBuilder:
+                                                          (context,
+                                                          index) {
+                                                        var tScaapeName =
+                                                        tData[index][
+                                                        'ScaapeName'];
+                                                        var tScaapeImage =
+                                                        tData[index][
+                                                        'ScaapeImg'];
+                                                        var tScaapeLocation =
+                                                        tData[index][
+                                                        'Location']
+                                                            .toString();
+                                                        var tScaapeId =
+                                                        tData[index][
+                                                        'ScaapeId'];
+                                                        var tScaapeDesc =
+                                                        tData[index][
+                                                        'Description']
+                                                            .toString();
+                                                        var tSAdminName =
+                                                        tData[index][
+                                                        'AdminName']
+                                                            .toString();
+                                                        var tScaapeCount =
+                                                        tData[index][
+                                                        'count']
+                                                            .toString();
+                                                        var tSAdminImg = tData[
+                                                        index]
+                                                        [
+                                                        'AdminDP']
+                                                            .toString();
+                                                        var tSAdminInsta =
+                                                        tData[index][
+                                                        'AdminInsta']
+                                                            .toString();
+                                                        var tScaapeDate =
+                                                        tData[index][
+                                                        'ScaapeDate']
+                                                            .toString();
+                                                        var present = tData[
+                                                        index]
+                                                        ['isPresent'];
+                                                        var admin =
+                                                        tData[index]
+                                                        ['Admin'];
 
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    showModalBottomSheet<
-                                                                            dynamic>(
-                                                                        isScrollControlled:
-                                                                            true,
-                                                                        backgroundColor:
-                                                                            ScaapeTheme
-                                                                                .kBackColor,
-                                                                        elevation:
-                                                                            13,
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius: BorderRadius.only(
-                                                                                topRight: Radius.circular(
-                                                                                    16),
-                                                                                topLeft: Radius.circular(
-                                                                                    16))),
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (context) {
-                                                                          return StatefulBuilder(
-                                                                            builder:
-                                                                                (BuildContext context, StateSetter setState) {
-                                                                              return Container(
-                                                                                height: MediaQuery.of(context).size.height * 0.7,
-                                                                                child: Column(
-                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Stack(
+                                                        return Padding(
+                                                          padding:
+                                                          const EdgeInsets
+                                                              .all(
+                                                              8.0),
+                                                          child:
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              showModalBottomSheet<
+                                                                  dynamic>(
+                                                                  isScrollControlled:
+                                                                  true,
+                                                                  backgroundColor:
+                                                                  ScaapeTheme
+                                                                      .kBackColor,
+                                                                  elevation:
+                                                                  13,
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius
+                                                                          .only(
+                                                                          topRight: Radius
+                                                                              .circular(
+                                                                              16),
+                                                                          topLeft: Radius
+                                                                              .circular(
+                                                                              16))),
+                                                                  context:
+                                                                  context,
+                                                                  builder:
+                                                                      (
+                                                                      context) {
+                                                                    return StatefulBuilder(
+                                                                      builder:
+                                                                          (
+                                                                          BuildContext context,
+                                                                          StateSetter setState) {
+                                                                        return Container(
+                                                                          height: MediaQuery
+                                                                              .of(
+                                                                              context)
+                                                                              .size
+                                                                              .height *
+                                                                              0.7,
+                                                                          child: Column(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .start,
+                                                                            crossAxisAlignment: CrossAxisAlignment
+                                                                                .start,
+                                                                            children: [
+                                                                              Stack(
+                                                                                children: [
+                                                                                  Container(
+                                                                                    height: MediaQuery
+                                                                                        .of(
+                                                                                        context)
+                                                                                        .size
+                                                                                        .height *
+                                                                                        0.4,
+                                                                                    decoration: BoxDecoration(
+                                                                                      borderRadius: BorderRadius
+                                                                                          .only(
+                                                                                          topRight: Radius
+                                                                                              .circular(
+                                                                                              16),
+                                                                                          topLeft: Radius
+                                                                                              .circular(
+                                                                                              16)),
+                                                                                      color: Colors
+                                                                                          .white,
+                                                                                      image: DecorationImage(
+                                                                                        image: NetworkImage(
+                                                                                            tScaapeImage),
+                                                                                        fit: BoxFit
+                                                                                            .cover,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  Container(
+                                                                                    height: MediaQuery
+                                                                                        .of(
+                                                                                        context)
+                                                                                        .size
+                                                                                        .height *
+                                                                                        0.4,
+                                                                                    decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius
+                                                                                            .only(
+                                                                                            topRight: Radius
+                                                                                                .circular(
+                                                                                                16),
+                                                                                            topLeft: Radius
+                                                                                                .circular(
+                                                                                                16)),
+                                                                                        gradient: LinearGradient(
+                                                                                            colors: [
+                                                                                              ScaapeTheme
+                                                                                                  .kBackColor
+                                                                                                  .withOpacity(
+                                                                                                  0.2),
+                                                                                              ScaapeTheme
+                                                                                                  .kBackColor
+                                                                                            ],
+                                                                                            begin: Alignment
+                                                                                                .topCenter,
+                                                                                            end: Alignment
+                                                                                                .bottomCenter)),
+                                                                                  ),
+                                                                                  Align(
+                                                                                    alignment: Alignment
+                                                                                        .topCenter,
+                                                                                    child: Padding(
+                                                                                      padding: const EdgeInsets
+                                                                                          .all(
+                                                                                          10.0),
+                                                                                      child: Container(
+                                                                                        height: 5.5,
+                                                                                        width: MediaQuery
+                                                                                            .of(
+                                                                                            context)
+                                                                                            .size
+                                                                                            .width *
+                                                                                            0.13,
+                                                                                        decoration: BoxDecoration(
+                                                                                            color: Colors
+                                                                                                .white,
+                                                                                            borderRadius: BorderRadius
+                                                                                                .all(
+                                                                                                Radius
+                                                                                                    .circular(
+                                                                                                    34))),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  Container(
+                                                                                    height: MediaQuery
+                                                                                        .of(
+                                                                                        context)
+                                                                                        .size
+                                                                                        .height *
+                                                                                        0.56,
+                                                                                    child: Column(
+                                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                                          .end,
+                                                                                      crossAxisAlignment: CrossAxisAlignment
+                                                                                          .start,
                                                                                       children: [
-                                                                                        Container(
-                                                                                          height: MediaQuery.of(context).size.height * 0.4,
-                                                                                          decoration: BoxDecoration(
-                                                                                            borderRadius: BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16)),
-                                                                                            color: Colors.white,
-                                                                                            image: DecorationImage(
-                                                                                              image: NetworkImage(tScaapeImage),
-                                                                                              fit: BoxFit.cover,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                        Container(
-                                                                                          height: MediaQuery.of(context).size.height * 0.4,
-                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16)), gradient: LinearGradient(colors: [ScaapeTheme.kBackColor.withOpacity(0.2), ScaapeTheme.kBackColor], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-                                                                                        ),
-                                                                                        Align(
-                                                                                          alignment: Alignment.topCenter,
-                                                                                          child: Padding(
-                                                                                            padding: const EdgeInsets.all(10.0),
-                                                                                            child: Container(
-                                                                                              height: 5.5,
-                                                                                              width: MediaQuery.of(context).size.width * 0.13,
-                                                                                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(34))),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                        Container(
-                                                                                          height: MediaQuery.of(context).size.height * 0.56,
+                                                                                        Padding(
+                                                                                          padding: EdgeInsets
+                                                                                              .symmetric(
+                                                                                              horizontal: 23,
+                                                                                              vertical: 18),
                                                                                           child: Column(
-                                                                                            mainAxisAlignment: MainAxisAlignment.end,
-                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            mainAxisSize: MainAxisSize
+                                                                                                .min,
+                                                                                            crossAxisAlignment: CrossAxisAlignment
+                                                                                                .start,
                                                                                             children: [
-                                                                                              Padding(
-                                                                                                padding: EdgeInsets.symmetric(horizontal: 23, vertical: 18),
-                                                                                                child: Column(
-                                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                  children: [
-                                                                                                    Row(
-                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                      children: [
-                                                                                                        Container(
-                                                                                                          width: MediaQuery.of(context).size.width * 0.6,
-                                                                                                          child: Text(
-                                                                                                            '${tScaapeName.toString().sentenceCase}',
-                                                                                                            style: GoogleFonts.lato(fontSize: 24, fontWeight: FontWeight.w500),
-                                                                                                            maxLines: 2,
-                                                                                                            softWrap: true,
-                                                                                                            overflow: TextOverflow.clip,
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                        Container(
-                                                                                                          child: Row(
-                                                                                                            children: [
-                                                                                                              Icon(Icons.group_outlined),
-                                                                                                              Text(
-                                                                                                                tScaapeCount.toString(),
-                                                                                                                style: GoogleFonts.lato(fontSize: 21, fontWeight: FontWeight.w500),
-                                                                                                              )
-                                                                                                            ],
-                                                                                                          ),
-                                                                                                        )
-                                                                                                      ],
+                                                                                              Row(
+                                                                                                crossAxisAlignment: CrossAxisAlignment
+                                                                                                    .start,
+                                                                                                mainAxisAlignment: MainAxisAlignment
+                                                                                                    .spaceBetween,
+                                                                                                children: [
+                                                                                                  Container(
+                                                                                                    width: MediaQuery
+                                                                                                        .of(
+                                                                                                        context)
+                                                                                                        .size
+                                                                                                        .width *
+                                                                                                        0.6,
+                                                                                                    child: Text(
+                                                                                                      '${tScaapeName
+                                                                                                          .toString()
+                                                                                                          .sentenceCase}',
+                                                                                                      style: GoogleFonts
+                                                                                                          .lato(
+                                                                                                          fontSize: 24,
+                                                                                                          fontWeight: FontWeight
+                                                                                                              .w500),
+                                                                                                      maxLines: 2,
+                                                                                                      softWrap: true,
+                                                                                                      overflow: TextOverflow
+                                                                                                          .clip,
                                                                                                     ),
-                                                                                                    SizedBox(
-                                                                                                      height: MediaQuery.of(context).size.height * 0.014,
-                                                                                                    ),
-                                                                                                    GestureDetector(
-                                                                                                      onTap: () {
-                                                                                                        String auth = FirebaseAuth.instance.currentUser!.uid;
-                                                                                                        auth != uid ? Navigator.pushNamed(context, UserProfileScreen.id, arguments: {"UserId": "${uid}"}) : null;
-                                                                                                      },
-                                                                                                      child: Container(
-                                                                                                        decoration: BoxDecoration(
-                                                                                                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                                                                                                        ),
-                                                                                                        width: MediaQuery.of(context).size.width * 0.56,
-                                                                                                        child: Row(
-                                                                                                          children: [
-                                                                                                            Container(
-                                                                                                              decoration: BoxDecoration(gradient: LinearGradient(colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)], begin: Alignment.topCenter, end: Alignment.bottomCenter), shape: BoxShape.circle),
-                                                                                                              height: 42,
-                                                                                                              width: 42,
-                                                                                                              child: CircleAvatar(
-                                                                                                                // radius: 33,
-                                                                                                                backgroundColor: Color(0xFFFF4B2B).withOpacity(0),
-                                                                                                                child: CircleAvatar(
-                                                                                                                  backgroundImage: NetworkImage('${tSAdminImg}'),
-                                                                                                                  backgroundColor: Colors.transparent,
-                                                                                                                  // radius: 34,
-                                                                                                                ),
-                                                                                                              ),
-                                                                                                            ),
-                                                                                                            SizedBox(
-                                                                                                              width: 8,
-                                                                                                            ),
-                                                                                                            Column(
-                                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                                                              children: [
-                                                                                                                Container(
-                                                                                                                  width: MediaQuery.of(context).size.width * 0.24,
-                                                                                                                  child: Text(
-                                                                                                                    '${tSAdminName.titleCase}',
-                                                                                                                    maxLines: 1,
-                                                                                                                    softWrap: true,
-                                                                                                                    overflow: TextOverflow.clip,
-                                                                                                                    style: GoogleFonts.poppins(
-                                                                                                                      fontSize: 13,
-                                                                                                                      fontWeight: FontWeight.w500,
-                                                                                                                    ),
-                                                                                                                    textAlign: TextAlign.left,
-                                                                                                                  ),
-                                                                                                                ),
-                                                                                                                Text(
-                                                                                                                  '${tScaapeDate.toString().substring(0, 10)}',
-                                                                                                                  maxLines: 1,
-                                                                                                                  style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w400),
-                                                                                                                ),
-                                                                                                              ],
-                                                                                                            ),
-                                                                                                          ],
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                    SizedBox(
-                                                                                                      height: MediaQuery.of(context).size.height * 0.02,
-                                                                                                    ),
-                                                                                                    Container(
-                                                                                                      decoration: BoxDecoration(
-                                                                                                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                                                                                                      ),
-                                                                                                      width: MediaQuery.of(context).size.width * 0.75,
-                                                                                                      child: SingleChildScrollView(
-                                                                                                        scrollDirection: Axis.vertical,
-                                                                                                        child: Text(
-                                                                                                          '${tScaapeDesc.length > 80 ? tScaapeDesc.substring(0, 80) : tScaapeDesc.sentenceCase}',
-                                                                                                          maxLines: 4,
-                                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                                          softWrap: true,
-                                                                                                          style: GoogleFonts.nunitoSans(
-                                                                                                            fontSize: 17,
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                    SizedBox(
-                                                                                                      height: MediaQuery.of(context).size.height * 0.006,
-                                                                                                    ),
-                                                                                                    Row(
-                                                                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                  ),
+                                                                                                  Container(
+                                                                                                    child: Row(
                                                                                                       children: [
                                                                                                         Icon(
-                                                                                                          Icons.location_on_outlined,
-                                                                                                          size: 12,
-                                                                                                        ),
+                                                                                                            Icons
+                                                                                                                .group_outlined),
                                                                                                         Text(
-                                                                                                          '${tScaapeLocation.sentenceCase}',
-                                                                                                          maxLines: 1,
-                                                                                                          style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w400),
+                                                                                                          tScaapeCount
+                                                                                                              .toString(),
+                                                                                                          style: GoogleFonts
+                                                                                                              .lato(
+                                                                                                              fontSize: 21,
+                                                                                                              fontWeight: FontWeight
+                                                                                                                  .w500),
                                                                                                         )
                                                                                                       ],
                                                                                                     ),
-                                                                                                  ],
+                                                                                                  )
+                                                                                                ],
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                height: MediaQuery
+                                                                                                    .of(
+                                                                                                    context)
+                                                                                                    .size
+                                                                                                    .height *
+                                                                                                    0.014,
+                                                                                              ),
+                                                                                              GestureDetector(
+                                                                                                onTap: () {
+                                                                                                  String auth = FirebaseAuth
+                                                                                                      .instance
+                                                                                                      .currentUser!
+                                                                                                      .uid;
+                                                                                                  auth !=
+                                                                                                      uid
+                                                                                                      ? Navigator
+                                                                                                      .pushNamed(
+                                                                                                      context,
+                                                                                                      UserProfileScreen
+                                                                                                          .id,
+                                                                                                      arguments: {
+                                                                                                        "UserId": "${uid}"
+                                                                                                      })
+                                                                                                      : null;
+                                                                                                },
+                                                                                                child: Container(
+                                                                                                  decoration: BoxDecoration(
+                                                                                                    borderRadius: BorderRadius
+                                                                                                        .all(
+                                                                                                        Radius
+                                                                                                            .circular(
+                                                                                                            8)),
+                                                                                                  ),
+                                                                                                  width: MediaQuery
+                                                                                                      .of(
+                                                                                                      context)
+                                                                                                      .size
+                                                                                                      .width *
+                                                                                                      0.56,
+                                                                                                  child: Row(
+                                                                                                    children: [
+                                                                                                      Container(
+                                                                                                        decoration: BoxDecoration(
+                                                                                                            gradient: LinearGradient(
+                                                                                                                colors: [
+                                                                                                                  Color(
+                                                                                                                      0xFFFF416C),
+                                                                                                                  Color(
+                                                                                                                      0xFFFF4B2B)
+                                                                                                                ],
+                                                                                                                begin: Alignment
+                                                                                                                    .topCenter,
+                                                                                                                end: Alignment
+                                                                                                                    .bottomCenter),
+                                                                                                            shape: BoxShape
+                                                                                                                .circle),
+                                                                                                        height: 42,
+                                                                                                        width: 42,
+                                                                                                        child: CircleAvatar(
+                                                                                                          // radius: 33,
+                                                                                                          backgroundColor: Color(
+                                                                                                              0xFFFF4B2B)
+                                                                                                              .withOpacity(
+                                                                                                              0),
+                                                                                                          child: CircleAvatar(
+                                                                                                            backgroundImage: NetworkImage(
+                                                                                                                '${tSAdminImg}'),
+                                                                                                            backgroundColor: Colors
+                                                                                                                .transparent,
+                                                                                                            // radius: 34,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                      SizedBox(
+                                                                                                        width: 8,
+                                                                                                      ),
+                                                                                                      Column(
+                                                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                                                            .start,
+                                                                                                        mainAxisAlignment: MainAxisAlignment
+                                                                                                            .center,
+                                                                                                        children: [
+                                                                                                          Container(
+                                                                                                            width: MediaQuery
+                                                                                                                .of(
+                                                                                                                context)
+                                                                                                                .size
+                                                                                                                .width *
+                                                                                                                0.24,
+                                                                                                            child: Text(
+                                                                                                              '${tSAdminName
+                                                                                                                  .titleCase}',
+                                                                                                              maxLines: 1,
+                                                                                                              softWrap: true,
+                                                                                                              overflow: TextOverflow
+                                                                                                                  .clip,
+                                                                                                              style: GoogleFonts
+                                                                                                                  .poppins(
+                                                                                                                fontSize: 13,
+                                                                                                                fontWeight: FontWeight
+                                                                                                                    .w500,
+                                                                                                              ),
+                                                                                                              textAlign: TextAlign
+                                                                                                                  .left,
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                          Text(
+                                                                                                            '${tScaapeDate
+                                                                                                                .toString()
+                                                                                                                .substring(
+                                                                                                                0,
+                                                                                                                10)}',
+                                                                                                            maxLines: 1,
+                                                                                                            style: GoogleFonts
+                                                                                                                .poppins(
+                                                                                                                fontSize: 10,
+                                                                                                                fontWeight: FontWeight
+                                                                                                                    .w400),
+                                                                                                          ),
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  ),
                                                                                                 ),
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                height: MediaQuery
+                                                                                                    .of(
+                                                                                                    context)
+                                                                                                    .size
+                                                                                                    .height *
+                                                                                                    0.02,
+                                                                                              ),
+                                                                                              Container(
+                                                                                                decoration: BoxDecoration(
+                                                                                                  borderRadius: BorderRadius
+                                                                                                      .all(
+                                                                                                      Radius
+                                                                                                          .circular(
+                                                                                                          8)),
+                                                                                                ),
+                                                                                                width: MediaQuery
+                                                                                                    .of(
+                                                                                                    context)
+                                                                                                    .size
+                                                                                                    .width *
+                                                                                                    0.75,
+                                                                                                child: SingleChildScrollView(
+                                                                                                  scrollDirection: Axis
+                                                                                                      .vertical,
+                                                                                                  child: Text(
+                                                                                                    '${tScaapeDesc
+                                                                                                        .length >
+                                                                                                        80
+                                                                                                        ? tScaapeDesc
+                                                                                                        .substring(
+                                                                                                        0,
+                                                                                                        80)
+                                                                                                        : tScaapeDesc
+                                                                                                        .sentenceCase}',
+                                                                                                    maxLines: 4,
+                                                                                                    overflow: TextOverflow
+                                                                                                        .ellipsis,
+                                                                                                    softWrap: true,
+                                                                                                    style: GoogleFonts
+                                                                                                        .nunitoSans(
+                                                                                                      fontSize: 17,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                height: MediaQuery
+                                                                                                    .of(
+                                                                                                    context)
+                                                                                                    .size
+                                                                                                    .height *
+                                                                                                    0.006,
+                                                                                              ),
+                                                                                              Row(
+                                                                                                mainAxisAlignment: MainAxisAlignment
+                                                                                                    .start,
+                                                                                                children: [
+                                                                                                  Icon(
+                                                                                                    Icons
+                                                                                                        .location_on_outlined,
+                                                                                                    size: 12,
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    '${tScaapeLocation
+                                                                                                        .sentenceCase}',
+                                                                                                    maxLines: 1,
+                                                                                                    style: GoogleFonts
+                                                                                                        .poppins(
+                                                                                                        fontSize: 10,
+                                                                                                        fontWeight: FontWeight
+                                                                                                            .w400),
+                                                                                                  )
+                                                                                                ],
                                                                                               ),
                                                                                             ],
                                                                                           ),
                                                                                         ),
-                                                                                        Container(
-                                                                                          height: MediaQuery.of(context).size.height * 0.67,
-                                                                                          child: Align(
-                                                                                            alignment: Alignment.bottomCenter,
-                                                                                            child: Padding(
-                                                                                                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 19),
-                                                                                                child: (present == "True" || present == "true" || admin == "True" || admin == "true")
-                                                                                                    ? MaterialButton(
-                                                                                                        onPressed: null,
-                                                                                                        elevation: 0,
-                                                                                                        textColor: Colors.white,
-                                                                                                        splashColor: Colors.transparent,
-                                                                                                        shape: RoundedRectangleBorder(
-                                                                                                          borderRadius: BorderRadius.all(Radius.circular(7)),
-                                                                                                        ),
-                                                                                                        disabledColor: ScaapeTheme.kPinkColor.withOpacity(0.15),
-                                                                                                        disabledTextColor: ScaapeTheme.kPinkColor,
-                                                                                                        color: ScaapeTheme.kPinkColor.withOpacity(0.2),
-                                                                                                        height: MediaQuery.of(context).size.height * 0.065,
-                                                                                                        minWidth: double.infinity,
-                                                                                                        child: Text(
-                                                                                                          'YOU HAVE ALREADY JOINED',
-                                                                                                          style: GoogleFonts.roboto(color: ScaapeTheme.kPinkColor, fontSize: 17, fontWeight: FontWeight.w500),
-                                                                                                        ),
-                                                                                                      )
-                                                                                                    : MaterialButton(
-                                                                                                        onPressed: () async {
-                                                                                                          final FirebaseAuth auth = FirebaseAuth.instance;
-                                                                                                          String url = 'https://api.scaape.online/api/createParticipant';
-                                                                                                          Map<String, String> headers = {
-                                                                                                            "Content-type": "application/json"
-                                                                                                          };
-                                                                                                          String json = '{"ScaapeId": "${tScaapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
-                                                                                                          http.Response response = await post(Uri.parse(url), headers: headers, body: json);
-                                                                                                          //print(user.displayName);
-                                                                                                          int statusCode = response.statusCode;
-                                                                                                          // print(statusCode);
-                                                                                                          // print(response.body);
-                                                                                                          Fluttertoast.showToast(
-                                                                                                            msg: "Succesfully joined",
-                                                                                                          );
-                                                                                                          // fun();
-                                                                                                        },
-                                                                                                        elevation: 0,
-                                                                                                        textColor: Colors.white,
-                                                                                                        splashColor: ScaapeTheme.kPinkColor,
-                                                                                                        shape: RoundedRectangleBorder(
-                                                                                                          borderRadius: BorderRadius.all(Radius.circular(7)),
-                                                                                                        ),
-                                                                                                        color: ScaapeTheme.kPinkColor,
-                                                                                                        height: MediaQuery.of(context).size.height * 0.065,
-                                                                                                        minWidth: double.infinity,
-                                                                                                        child: Text(
-                                                                                                          'JOIN THIS SCAAPE',
-                                                                                                          style: GoogleFonts.roboto(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
-                                                                                                        ),
-                                                                                                      )),
-                                                                                          ),
-                                                                                        )
                                                                                       ],
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                        });
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius.circular(12),
-                                                                        image: DecorationImage(image: NetworkImage(tScaapeImage), fit: BoxFit.cover),
-                                                                        gradient: LinearGradient(colors: [
-                                                                          ScaapeTheme
-                                                                              .kShimmerColor
-                                                                              .withOpacity(0.5),
-                                                                          ScaapeTheme
-                                                                              .kShimmerColor
-                                                                              .withOpacity(1),
-                                                                        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.39,
-                                                                    child:
-                                                                        Stack(
-                                                                      children: [
-                                                                        Container(
-                                                                          decoration:
-                                                                              BoxDecoration(color: ScaapeTheme.kBackColor.withOpacity(0.4)),
-                                                                        ),
-                                                                        Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(8.0),
-                                                                          child:
-                                                                              Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.end,
-                                                                            children: [
-                                                                              Text(
-                                                                                tScaapeName.toString().sentenceCase,
-                                                                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                                                              ),
-                                                                              Row(
-                                                                                children: [
-                                                                                  Icon(
-                                                                                    Icons.location_on_outlined,
-                                                                                    color: Colors.white,
-                                                                                    size: 13,
+                                                                                    ),
                                                                                   ),
-                                                                                  tScaapeLocation.length > 13
-                                                                                      ? Text(
-                                                                                          '${tScaapeLocation.substring(0, 13)}...',
-                                                                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          softWrap: true,
-                                                                                          maxLines: 1,
-                                                                                        )
-                                                                                      : Text(
-                                                                                          '${tScaapeLocation.sentenceCase}',
-                                                                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                        ),
+                                                                                  Container(
+                                                                                    height: MediaQuery
+                                                                                        .of(
+                                                                                        context)
+                                                                                        .size
+                                                                                        .height *
+                                                                                        0.67,
+                                                                                    child: Align(
+                                                                                      alignment: Alignment
+                                                                                          .bottomCenter,
+                                                                                      child: Padding(
+                                                                                          padding: const EdgeInsets
+                                                                                              .symmetric(
+                                                                                              vertical: 12,
+                                                                                              horizontal: 19),
+                                                                                          child: (present ==
+                                                                                              "True" ||
+                                                                                              present ==
+                                                                                                  "true" ||
+                                                                                              admin ==
+                                                                                                  "True" ||
+                                                                                              admin ==
+                                                                                                  "true")
+                                                                                              ? MaterialButton(
+                                                                                            onPressed: null,
+                                                                                            elevation: 0,
+                                                                                            textColor: Colors
+                                                                                                .white,
+                                                                                            splashColor: Colors
+                                                                                                .transparent,
+                                                                                            shape: RoundedRectangleBorder(
+                                                                                              borderRadius: BorderRadius
+                                                                                                  .all(
+                                                                                                  Radius
+                                                                                                      .circular(
+                                                                                                      7)),
+                                                                                            ),
+                                                                                            disabledColor: ScaapeTheme
+                                                                                                .kPinkColor
+                                                                                                .withOpacity(
+                                                                                                0.15),
+                                                                                            disabledTextColor: ScaapeTheme
+                                                                                                .kPinkColor,
+                                                                                            color: ScaapeTheme
+                                                                                                .kPinkColor
+                                                                                                .withOpacity(
+                                                                                                0.2),
+                                                                                            height: MediaQuery
+                                                                                                .of(
+                                                                                                context)
+                                                                                                .size
+                                                                                                .height *
+                                                                                                0.065,
+                                                                                            minWidth: double
+                                                                                                .infinity,
+                                                                                            child: Text(
+                                                                                              'YOU HAVE ALREADY JOINED',
+                                                                                              style: GoogleFonts
+                                                                                                  .roboto(
+                                                                                                  color: ScaapeTheme
+                                                                                                      .kPinkColor,
+                                                                                                  fontSize: 17,
+                                                                                                  fontWeight: FontWeight
+                                                                                                      .w500),
+                                                                                            ),
+                                                                                          )
+                                                                                              : MaterialButton(
+                                                                                            onPressed: () async {
+                                                                                              final FirebaseAuth auth = FirebaseAuth
+                                                                                                  .instance;
+                                                                                              String url = 'https://api.scaape.online/api/createParticipant';
+                                                                                              Map<
+                                                                                                  String,
+                                                                                                  String> headers = {
+                                                                                                "Content-type": "application/json"
+                                                                                              };
+                                                                                              String json = '{"ScaapeId": "${tScaapeId}","UserId": "${auth
+                                                                                                  .currentUser!
+                                                                                                  .uid}","TimeStamp": "${DateTime
+                                                                                                  .now()
+                                                                                                  .millisecondsSinceEpoch}","Accepted":"0"}';
+                                                                                              http
+                                                                                                  .Response response = await post(
+                                                                                                  Uri
+                                                                                                      .parse(
+                                                                                                      url),
+                                                                                                  headers: headers,
+                                                                                                  body: json);
+                                                                                              //print(user.displayName);
+                                                                                              int statusCode = response
+                                                                                                  .statusCode;
+                                                                                              // print(statusCode);
+                                                                                              // print(response.body);
+                                                                                              Fluttertoast
+                                                                                                  .showToast(
+                                                                                                msg: "Succesfully joined",
+                                                                                              );
+                                                                                              // fun();
+                                                                                            },
+                                                                                            elevation: 0,
+                                                                                            textColor: Colors
+                                                                                                .white,
+                                                                                            splashColor: ScaapeTheme
+                                                                                                .kPinkColor,
+                                                                                            shape: RoundedRectangleBorder(
+                                                                                              borderRadius: BorderRadius
+                                                                                                  .all(
+                                                                                                  Radius
+                                                                                                      .circular(
+                                                                                                      7)),
+                                                                                            ),
+                                                                                            color: ScaapeTheme
+                                                                                                .kPinkColor,
+                                                                                            height: MediaQuery
+                                                                                                .of(
+                                                                                                context)
+                                                                                                .size
+                                                                                                .height *
+                                                                                                0.065,
+                                                                                            minWidth: double
+                                                                                                .infinity,
+                                                                                            child: Text(
+                                                                                              'JOIN THIS SCAAPE',
+                                                                                              style: GoogleFonts
+                                                                                                  .roboto(
+                                                                                                  color: Colors
+                                                                                                      .white,
+                                                                                                  fontSize: 17,
+                                                                                                  fontWeight: FontWeight
+                                                                                                      .w500),
+                                                                                            ),
+                                                                                          )),
+                                                                                    ),
+                                                                                  )
                                                                                 ],
-                                                                              ),
+                                                                              )
                                                                             ],
                                                                           ),
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  });
+                                                            },
+                                                            child:
+                                                            Container(
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius
+                                                                      .circular(
+                                                                      12),
+                                                                  image: DecorationImage(
+                                                                      image: NetworkImage(
+                                                                          tScaapeImage),
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                  gradient: LinearGradient(
+                                                                      colors: [
+                                                                        ScaapeTheme
+                                                                            .kShimmerColor
+                                                                            .withOpacity(
+                                                                            0.5),
+                                                                        ScaapeTheme
+                                                                            .kShimmerColor
+                                                                            .withOpacity(
+                                                                            1),
+                                                                      ],
+                                                                      begin: Alignment
+                                                                          .topCenter,
+                                                                      end: Alignment
+                                                                          .bottomCenter)),
+                                                              width: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width *
+                                                                  0.39,
+                                                              child:
+                                                              Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    decoration:
+                                                                    BoxDecoration(
+                                                                        color: ScaapeTheme
+                                                                            .kBackColor
+                                                                            .withOpacity(
+                                                                            0.4)),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                    child:
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                      mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                      children: [
+                                                                        Text(
+                                                                          tScaapeName
+                                                                              .toString()
+                                                                              .sentenceCase,
+                                                                          style: TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight
+                                                                                  .w500),
+                                                                        ),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                              Icons
+                                                                                  .location_on_outlined,
+                                                                              color: Colors
+                                                                                  .white,
+                                                                              size: 13,
+                                                                            ),
+                                                                            tScaapeLocation
+                                                                                .length >
+                                                                                13
+                                                                                ? Text(
+                                                                              '${tScaapeLocation
+                                                                                  .substring(
+                                                                                  0,
+                                                                                  13)}...',
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight
+                                                                                      .w400,
+                                                                                  fontSize: 13),
+                                                                              overflow: TextOverflow
+                                                                                  .ellipsis,
+                                                                              softWrap: true,
+                                                                              maxLines: 1,
+                                                                            )
+                                                                                : Text(
+                                                                              '${tScaapeLocation
+                                                                                  .sentenceCase}',
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight
+                                                                                      .w400,
+                                                                                  fontSize: 13),
+                                                                              overflow: TextOverflow
+                                                                                  .ellipsis,
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ],
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              );
-                                                            });
-                                                      } else {
-                                                        return Container();
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      });
+                                                } else {
+                                                  return Container();
+                                                }
+                                              },
                                             ),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.34,
-                                            width: double.infinity,
                                           ),
-                                        )
+                                        ],
+                                      ),
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.34,
+                                      width: double.infinity,
+                                    ),
+                                  )
                                       : HomeCard(() {
-                                          setState(() {});
-                                        },
-                                          medq,
-                                          a[index]["ScaapeImg"],
-                                          a[index]["ScaapeName"],
-                                          a[index]["Description"],
-                                          a[index]["Location"],
-                                          a[index]['UserId'],
-                                          a[index]["ScaapeId"],
-                                          a[index]["ScaapePref"],
-                                          a[index]["Admin"],
-                                          a[index]["isPresent"],
-                                          a[index]["ScaapeDate"],
-                                          a[index]["AdminName"],
-                                          a[index]["AdminEmail"],
-                                          a[index]["AdminDP"],
-                                          a[index]["AdminGender"],
-                                          a[index]["ScaapeDate"],
-                                          a[index]["count"],
-                                          _key2);
+                                    setState(() {});
+                                  },
+                                      medq,
+                                      a[index]["ScaapeImg"],
+                                      a[index]["ScaapeName"],
+                                      a[index]["Description"],
+                                      a[index]["Location"],
+                                      a[index]['UserId'],
+                                      a[index]["ScaapeId"],
+                                      a[index]["ScaapePref"],
+                                      a[index]["Admin"],
+                                      a[index]["isPresent"],
+                                      a[index]["ScaapeDate"],
+                                      a[index]["AdminName"],
+                                      a[index]["AdminEmail"],
+                                      a[index]["AdminDP"],
+                                      a[index]["AdminGender"],
+                                      a[index]["ScaapeDate"],
+                                      a[index]["count"],
+                                      _key2);
                                 },
                               );
                             } else {
@@ -1688,11 +2052,9 @@ class _HomePageViewState extends State<HomePageView>
                       setState(() {});
                     }),
                 completeStateDuration: const Duration(seconds: 1),
-                builder: (
-                    BuildContext context,
+                builder: (BuildContext context,
                     Widget child,
-                    IndicatorController controller,
-                    ) {
+                    IndicatorController controller,) {
                   return Stack(
                     children: <Widget>[
                       AnimatedBuilder(
@@ -1700,7 +2062,8 @@ class _HomePageViewState extends State<HomePageView>
                         builder: (BuildContext context, Widget? _) {
                           _helper.update(controller.state);
                           print(controller.state);
-                          if (controller.scrollingDirection == ScrollDirection.reverse &&
+                          if (controller.scrollingDirection ==
+                              ScrollDirection.reverse &&
                               prevScrollDirection == ScrollDirection.forward) {
                             controller.stopDrag();
                           }
@@ -1710,16 +2073,20 @@ class _HomePageViewState extends State<HomePageView>
 
 
                           /// set [_renderCompleteState] to true when controller.state become completed
-                          if (_helper.didStateChange(to: IndicatorState.complete)) {
+                          if (_helper.didStateChange(
+                              to: IndicatorState.complete)) {
                             _renderCompleteState = true;
 
                             /// set [_renderCompleteState] to false when controller.state become idle
-                          } else if (_helper.didStateChange(to: IndicatorState.idle)) {
+                          } else if (_helper.didStateChange(
+                              to: IndicatorState.idle)) {
                             _renderCompleteState = false;
                           }
-                          final containerHeight = controller.value * _indicatorSize;
+                          final containerHeight = controller.value *
+                              _indicatorSize;
 
-                          return controller.state != IndicatorState.idle ? Container(
+                          return controller.state != IndicatorState.idle
+                              ? Container(
                             alignment: Alignment.center,
                             height: containerHeight,
                             child: OverflowBox(
@@ -1742,7 +2109,8 @@ class _HomePageViewState extends State<HomePageView>
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor:
-                                    AlwaysStoppedAnimation(ScaapeTheme.kPinkColor),
+                                    AlwaysStoppedAnimation(
+                                        ScaapeTheme.kPinkColor),
                                     value:
                                     controller.isDragging || controller.isArmed
                                         ? controller.value.clamp(0.0, 1.0)
@@ -1757,13 +2125,15 @@ class _HomePageViewState extends State<HomePageView>
                                 ),
                               ),
                             ),
-                          ) : Container();
+                          )
+                              : Container();
                         },
                       ),
                       AnimatedBuilder(
                         builder: (context, _) {
                           return Transform.translate(
-                            offset: Offset(0.0, controller.value * _indicatorSize),
+                            offset: Offset(
+                                0.0, controller.value * _indicatorSize),
                             child: child,
                           );
                         },
@@ -1830,25 +2200,25 @@ class _HomePageViewState extends State<HomePageView>
     );
   }
 
-  Future<List<dynamic>> getScapesByAuth(
-      String id, bool trend, bool rec, bool forU, String val) async {
+  Future<List<dynamic>> getScapesByAuth(String id, bool trend, bool rec,
+      bool forU, String val) async {
     String url;
     // print("enter");
     // print(val.isEmpty);
     url =
-        'https://api.scaape.online/api/getScaapesWithAuthAndScaape/UserId=${id}';
+    'https://api.scaape.online/api/getScaapesWithAuthAndScaape/UserId=${id}';
     if (val.isNotEmpty) {
       url =
-          'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
+      'https://api.scaape.online/api/getPrefScaapesWithAuth/UserId=${id}/Pref=${val}';
       // print("stories");
     } else {
       if (trend) {
         url =
-            'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
+        'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
         // print("trend clicked");
       } else if (rec) {
         url =
-            'https://api.scaape.online/api/getLatestScaapesWithAuth/UserId=${id}';
+        'https://api.scaape.online/api/getLatestScaapesWithAuth/UserId=${id}';
         // print("recent clicked");
         // print("recent clicked");
       }
@@ -1866,7 +2236,7 @@ class _HomePageViewState extends State<HomePageView>
     // print("enter");
     // print(val.isEmpty);
     url =
-        'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
+    'https://api.scaape.online/api/getTrendingScaapesWithAuth/UserId=${id}';
     // print("trend clicked");
     // print(url);
     var response = await get(Uri.parse(url));
@@ -1884,204 +2254,170 @@ class _HomePageViewState extends State<HomePageView>
     showMaterialModalBottomSheet(
       // expand: true,
       context: context,
-      builder: (context) => Container(
-        color: Color(0xff161A20),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.80,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                alignment: Alignment.topCenter,
-                image: NetworkImage(
-                  "https://images.unsplash.com/photo-1600699260196-aca47e6d2125?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=748&q=80",
-                ),
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Container(
-                //   decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //       fit: BoxFit.fill,
-                //       image: NetworkImage(
-                //         "https://images.unsplash.com/photo-1600699260196-aca47e6d2125?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=748&q=80",
-                //       ),
-                //     ),
-                //   ),
-                //   height: MediaQuery.of(context).size.height / 2,
-                //   child: BackdropFilter(
-                //     filter: ImageFilter.blur(
-                //       sigmaX: _sigmaX,
-                //       sigmaY: _sigmaY,
-                //     ),
-                //     child: Container(
-                //       color: Colors.black.withOpacity(_opacity),
-                //     ),
-                //   ),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Container(
-                      height: 5,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              offset: Offset(-2, 0),
-                              blurRadius: 10,
-                            )
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20)),
+      builder: (context) =>
+          Container(
+            color: Color(0xff161A20),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.80,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    alignment: Alignment.topCenter,
+                    image: NetworkImage(
+                      "https://images.unsplash.com/photo-1600699260196-aca47e6d2125?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=748&q=80",
                     ),
                   ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                  ),
                 ),
-                // SizedBox(
-                //   height: MediaQuery.of(context).size.height * 0.35,
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 10),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 28,
-                        backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                          backgroundColor: Colors.transparent,
-                          radius: 25,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     image: DecorationImage(
+                    //       fit: BoxFit.fill,
+                    //       image: NetworkImage(
+                    //         "https://images.unsplash.com/photo-1600699260196-aca47e6d2125?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=748&q=80",
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   height: MediaQuery.of(context).size.height / 2,
+                    //   child: BackdropFilter(
+                    //     filter: ImageFilter.blur(
+                    //       sigmaX: _sigmaX,
+                    //       sigmaY: _sigmaY,
+                    //     ),
+                    //     child: Container(
+                    //       color: Colors.black.withOpacity(_opacity),
+                    //     ),
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Container(
+                          height: 5,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black38,
+                                  offset: Offset(-2, 0),
+                                  blurRadius: 10,
+                                )
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
                         ),
                       ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    // SizedBox(
+                    //   height: MediaQuery.of(context).size.height * 0.35,
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0, left: 10),
+                      child: Row(
                         children: [
-                          Text(
-                            'Road Trip',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.03,
-                              fontWeight: FontWeight.w600,
+                          CircleAvatar(
+                            radius: 28,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
+                            child: CircleAvatar(
+                              backgroundImage:
+                              AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 25,
                             ),
                           ),
-                          Text(
-                            '@pasissontraveller',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.02,
-                              color: const Color(0xfff5f6f9),
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.left,
-                          )
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Road Trip',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.03,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                '@pasissontraveller',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize:
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.02,
+                                  color: const Color(0xfff5f6f9),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: 10),
-                  child: Text(
-                    'Dhriti Sharma',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: MediaQuery.of(context).size.height * 0.022,
-                      color: const Color(0xfff5f6f9),
-                      fontWeight: FontWeight.w600,
                     ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0, left: 10),
-                  child: Text(
-                    'Lorem ipsum dolor sit amet, consectetur \nadipiscing elit, sed do eiusmod tempor \nincididunt ut labore.',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: MediaQuery.of(context).size.height * 0.024,
-                      color: const Color(0xfff5f6f9),
-                      fontWeight: FontWeight.normal,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0, left: 10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.location_pin),
-                      Text(
-                        'Delhi, India',
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0, left: 10),
+                      child: Text(
+                        'Dhriti Sharma',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: MediaQuery.of(context).size.height * 0.024,
+                          fontSize: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.022,
                           color: const Color(0xfff5f6f9),
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                         ),
                         textAlign: TextAlign.left,
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: 10),
-                  child: Text(
-                    'People Joined',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: MediaQuery.of(context).size.height * 0.024,
-                      color: const Color(0xfff5f6f9),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 22,
-                        backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
-                          backgroundColor: Colors.transparent,
-                          radius: 20,
-                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, left: 10),
+                      child: Text(
+                        'Lorem ipsum dolor sit amet, consectetur \nadipiscing elit, sed do eiusmod tempor \nincididunt ut labore.',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.024,
+                          color: const Color(0xfff5f6f9),
+                          fontWeight: FontWeight.normal,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, left: 10),
+                      child: Row(
                         children: [
+                          Icon(Icons.location_pin),
                           Text(
-                            'Dhriti',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.023,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            '@pasissontraveller',
+                            'Delhi, India',
                             style: TextStyle(
                               fontFamily: 'Roboto',
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.02,
+                              fontSize: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.024,
                               color: const Color(0xfff5f6f9),
                               fontWeight: FontWeight.w400,
                             ),
@@ -2089,41 +2425,102 @@ class _HomePageViewState extends State<HomePageView>
                           )
                         ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0, left: 10),
+                      child: Text(
+                        'People Joined',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.024,
+                          color: const Color(0xfff5f6f9),
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
+                            child: CircleAvatar(
+                              backgroundImage:
+                              AssetImage('images/profile-photo.jpg'),
+                              backgroundColor: Colors.transparent,
+                              radius: 20,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Dhriti',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.023,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                '@pasissontraveller',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize:
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.02,
+                                  color: const Color(0xfff5f6f9),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
 
-                // Swiper(
-                //   itemBuilder:
-                //       (BuildContext context, int index) {
-                //     return new Image.network(
-                //       "http://via.placeholder.com/350x150",
-                //       fit: BoxFit.fill,
-                //     );
-                //   },
-                //   itemCount: 3,
-                //   pagination: new SwiperPagination(),
-                //   control: new SwiperControl(),
-                // ),
-              ],
+                    // Swiper(
+                    //   itemBuilder:
+                    //       (BuildContext context, int index) {
+                    //     return new Image.network(
+                    //       "http://via.placeholder.com/350x150",
+                    //       fit: BoxFit.fill,
+                    //     );
+                    //   },
+                    //   itemCount: 3,
+                    //   pagination: new SwiperPagination(),
+                    //   control: new SwiperControl(),
+                    // ),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
     );
   }
 }
 
 class TopCircleCards extends StatelessWidget {
-  const TopCircleCards(
-      {Key? key,
-      required this.base,
-      required this.controller,
-      required this.reverse,
-      required this.backgroundColor,
-      required this.dashes,
-      required this.text,
-      required this.circleImg})
+  const TopCircleCards({Key? key,
+    required this.base,
+    required this.controller,
+    required this.reverse,
+    required this.backgroundColor,
+    required this.dashes,
+    required this.text,
+    required this.circleImg})
       : super(key: key);
 
   final Animation<double> base;
@@ -2143,10 +2540,10 @@ class TopCircleCards extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                // gradient: LinearGradient(
-                //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
-                //     begin: Alignment.topCenter,
-                //     end: Alignment.bottomCenter),
+              // gradient: LinearGradient(
+              //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+              //     begin: Alignment.topCenter,
+              //     end: Alignment.bottomCenter),
                 shape: BoxShape.circle),
             height: 69,
             width: 69,
@@ -2310,16 +2707,16 @@ class ShimmerCard extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration:
-                                        BoxDecoration(shape: BoxShape.circle),
+                                    BoxDecoration(shape: BoxShape.circle),
                                     height: 42,
                                     width: 42,
                                     child: CircleAvatar(
                                       // radius: 33,
                                       backgroundColor:
-                                          Color(0xFFFF4B2B).withOpacity(0),
+                                      Color(0xFFFF4B2B).withOpacity(0),
                                       child: CircleAvatar(
                                         backgroundColor:
-                                            ScaapeTheme.kShimmerTextColor,
+                                        ScaapeTheme.kShimmerTextColor,
                                         // radius: 34,
                                       ),
                                     ),
@@ -2329,7 +2726,7 @@ class ShimmerCard extends StatelessWidget {
                                   ),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
@@ -2371,12 +2768,11 @@ class ShimmerCard extends StatelessWidget {
 }
 
 class CircleCards extends StatelessWidget {
-  const CircleCards(
-      {required this.text,
-      required this.circleImg,
-      required this.gap,
-      required this.reverse,
-      required this.base});
+  const CircleCards({required this.text,
+    required this.circleImg,
+    required this.gap,
+    required this.reverse,
+    required this.base});
 
   final String text;
   final CircleAvatar circleImg;
@@ -2393,10 +2789,10 @@ class CircleCards extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                // gradient: LinearGradient(
-                //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
-                //     begin: Alignment.topCenter,
-                //     end: Alignment.bottomCenter),
+              // gradient: LinearGradient(
+              //     colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+              //     begin: Alignment.topCenter,
+              //     end: Alignment.bottomCenter),
                 shape: BoxShape.circle),
             height: 69,
             width: 69,
@@ -2432,14 +2828,13 @@ class CircleCards extends StatelessWidget {
 }
 
 class TopCards extends StatelessWidget {
-  const TopCards(
-      {Key? key,
-      required this.medq,
-      required this.color,
-      required this.img,
-      required this.text,
-      required this.textcolor,
-      required this.border})
+  const TopCards({Key? key,
+    required this.medq,
+    required this.color,
+    required this.img,
+    required this.text,
+    required this.textcolor,
+    required this.border})
       : super(key: key);
 
   final Size medq;
@@ -2459,13 +2854,13 @@ class TopCards extends StatelessWidget {
             borderRadius: BorderRadius.circular(14.0),
             border: border,
             color: color
-            // gradient: LinearGradient(
-            //   begin: Alignment(0.0, -1.0),
-            //   end: Alignment(0.0, 1.0),
-            //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
-            //   stops: [0.0, 1.0],
-            // ),
-            ),
+          // gradient: LinearGradient(
+          //   begin: Alignment(0.0, -1.0),
+          //   end: Alignment(0.0, 1.0),
+          //   colors: [const Color(0x24ff416c), const Color(0x24ff4b2b)],
+          //   stops: [0.0, 1.0],
+          // ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
@@ -2499,8 +2894,7 @@ class TopCards extends StatelessWidget {
 }
 
 class HomeCard extends StatelessWidget {
-  HomeCard(
-      this.fun,
+  HomeCard(this.fun,
       this.medq,
       this.ScapeImage,
       this.ScapeName,
@@ -2559,8 +2953,12 @@ class HomeCard extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(16),
                       topLeft: Radius.circular(16))),
-              builder: (context) => Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
+              builder: (context) =>
+                  Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.7,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2621,13 +3019,13 @@ class HomeCard extends StatelessWidget {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
                                               width: medq.width * 0.6,
@@ -2636,7 +3034,7 @@ class HomeCard extends StatelessWidget {
                                                 style: GoogleFonts.lato(
                                                     fontSize: 24,
                                                     fontWeight:
-                                                        FontWeight.w500),
+                                                    FontWeight.w500),
                                                 maxLines: 2,
                                                 softWrap: true,
                                                 overflow: TextOverflow.clip,
@@ -2651,7 +3049,7 @@ class HomeCard extends StatelessWidget {
                                                     style: GoogleFonts.lato(
                                                         fontSize: 21,
                                                         fontWeight:
-                                                            FontWeight.w500),
+                                                        FontWeight.w500),
                                                   )
                                                 ],
                                               ),
@@ -2667,10 +3065,10 @@ class HomeCard extends StatelessWidget {
                                                 .instance.currentUser!.uid;
                                             auth != uid
                                                 ? Navigator.pushNamed(context,
-                                                    UserProfileScreen.id,
-                                                    arguments: {
-                                                        "UserId": "${uid}"
-                                                      })
+                                                UserProfileScreen.id,
+                                                arguments: {
+                                                  "UserId": "${uid}"
+                                                })
                                                 : null;
                                           },
                                           child: Container(
@@ -2698,14 +3096,14 @@ class HomeCard extends StatelessWidget {
                                                   child: CircleAvatar(
                                                     // radius: 33,
                                                     backgroundColor:
-                                                        Color(0xFFFF4B2B)
-                                                            .withOpacity(0),
+                                                    Color(0xFFFF4B2B)
+                                                        .withOpacity(0),
                                                     child: CircleAvatar(
                                                       backgroundImage:
-                                                          NetworkImage(
-                                                              '${adminDp}'),
+                                                      NetworkImage(
+                                                          '${adminDp}'),
                                                       backgroundColor:
-                                                          Colors.transparent,
+                                                      Colors.transparent,
                                                       // radius: 34,
                                                     ),
                                                   ),
@@ -2715,37 +3113,39 @@ class HomeCard extends StatelessWidget {
                                                 ),
                                                 Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                                   children: [
                                                     Container(
                                                       width: medq.width * 0.24,
                                                       child: Text(
-                                                        '${adminName.titleCase}',
+                                                        '${adminName
+                                                            .titleCase}',
                                                         maxLines: 1,
                                                         softWrap: true,
                                                         overflow:
-                                                            TextOverflow.clip,
+                                                        TextOverflow.clip,
                                                         style:
-                                                            GoogleFonts.poppins(
+                                                        GoogleFonts.poppins(
                                                           fontSize: 13,
                                                           fontWeight:
-                                                              FontWeight.w500,
+                                                          FontWeight.w500,
                                                         ),
                                                         textAlign:
-                                                            TextAlign.left,
+                                                        TextAlign.left,
                                                       ),
                                                     ),
                                                     Text(
-                                                      '${adminInsta.substring(0, 10)}',
+                                                      '${adminInsta.substring(
+                                                          0, 10)}',
                                                       maxLines: 1,
                                                       style:
-                                                          GoogleFonts.poppins(
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
+                                                      GoogleFonts.poppins(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w400),
                                                     ),
                                                   ],
                                                 ),
@@ -2765,7 +3165,11 @@ class HomeCard extends StatelessWidget {
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.vertical,
                                             child: Text(
-                                              '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
+                                              '${ScapeDescription.length > 80
+                                                  ? ScapeDescription.substring(
+                                                  0, 80)
+                                                  : ScapeDescription
+                                                  .sentenceCase}',
                                               maxLines: 4,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: true,
@@ -2780,7 +3184,7 @@ class HomeCard extends StatelessWidget {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             Icon(
                                               Icons.location_on_outlined,
@@ -2802,86 +3206,93 @@ class HomeCard extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.67,
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.67,
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12, horizontal: 19),
                                     child: (present == "True" ||
-                                            present == "true" ||
-                                            admin == "True" ||
-                                            admin == "true")
+                                        present == "true" ||
+                                        admin == "True" ||
+                                        admin == "true")
                                         ? MaterialButton(
-                                            onPressed: null,
-                                            elevation: 0,
-                                            textColor: Colors.white,
-                                            splashColor: Colors.transparent,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(7)),
-                                            ),
-                                            disabledColor: ScaapeTheme
-                                                .kPinkColor
-                                                .withOpacity(0.15),
-                                            disabledTextColor:
-                                                ScaapeTheme.kPinkColor,
-                                            color: ScaapeTheme.kPinkColor
-                                                .withOpacity(0.2),
-                                            height: medq.height * 0.065,
-                                            minWidth: double.infinity,
-                                            child: Text(
-                                              'YOU HAVE ALREADY JOINED',
-                                              style: GoogleFonts.roboto(
-                                                  color: ScaapeTheme.kPinkColor,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          )
-                                        : MaterialButton(
-                                            onPressed: () async {
-                                              final FirebaseAuth auth =
-                                                  FirebaseAuth.instance;
-                                              String url =
-                                                  'https://api.scaape.online/api/createParticipant';
-                                              Map<String, String> headers = {
-                                                "Content-type":
-                                                    "application/json"
-                                              };
-                                              String json =
-                                                  '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
-                                              http.Response response =
-                                                  await post(Uri.parse(url),
-                                                      headers: headers,
-                                                      body: json);
-                                              //print(user.displayName);
-                                              int statusCode =
-                                                  response.statusCode;
-                                              // print(statusCode);
-                                              // print(response.body);
-                                              Fluttertoast.showToast(
-                                                msg: "Succesfully joined",
-                                              );
-                                              fun();
-                                            },
-                                            elevation: 0,
-                                            textColor: Colors.white,
-                                            splashColor: ScaapeTheme.kPinkColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(7)),
-                                            ),
+                                      onPressed: null,
+                                      elevation: 0,
+                                      textColor: Colors.white,
+                                      splashColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7)),
+                                      ),
+                                      disabledColor: ScaapeTheme
+                                          .kPinkColor
+                                          .withOpacity(0.15),
+                                      disabledTextColor:
+                                      ScaapeTheme.kPinkColor,
+                                      color: ScaapeTheme.kPinkColor
+                                          .withOpacity(0.2),
+                                      height: medq.height * 0.065,
+                                      minWidth: double.infinity,
+                                      child: Text(
+                                        'YOU HAVE ALREADY JOINED',
+                                        style: GoogleFonts.roboto(
                                             color: ScaapeTheme.kPinkColor,
-                                            height: medq.height * 0.065,
-                                            minWidth: double.infinity,
-                                            child: Text(
-                                              'JOIN THIS SCAAPE',
-                                              style: GoogleFonts.roboto(
-                                                  color: Colors.white,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          )),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    )
+                                        : MaterialButton(
+                                      onPressed: () async {
+                                        final FirebaseAuth auth =
+                                            FirebaseAuth.instance;
+                                        String url =
+                                            'https://api.scaape.online/api/createParticipant';
+                                        Map<String, String> headers = {
+                                          "Content-type":
+                                          "application/json"
+                                        };
+                                        String json =
+                                            '{"ScaapeId": "${scapeId}","UserId": "${auth
+                                            .currentUser!
+                                            .uid}","TimeStamp": "${DateTime
+                                            .now()
+                                            .millisecondsSinceEpoch}","Accepted":"0"}';
+                                        http.Response response =
+                                        await post(Uri.parse(url),
+                                            headers: headers,
+                                            body: json);
+                                        //print(user.displayName);
+                                        int statusCode =
+                                            response.statusCode;
+                                        // print(statusCode);
+                                        // print(response.body);
+                                        Fluttertoast.showToast(
+                                          msg: "Succesfully joined",
+                                        );
+                                        fun();
+                                      },
+                                      elevation: 0,
+                                      textColor: Colors.white,
+                                      splashColor: ScaapeTheme.kPinkColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7)),
+                                      ),
+                                      color: ScaapeTheme.kPinkColor,
+                                      height: medq.height * 0.065,
+                                      minWidth: double.infinity,
+                                      child: Text(
+                                        'JOIN THIS SCAAPE',
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    )),
                               ),
                             )
                           ],
@@ -2902,7 +3313,7 @@ class HomeCard extends StatelessWidget {
           ),
           child: Stack(
             children: [
-             ClipRRect(
+              ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
 
                 child: ProgressiveImage(
@@ -2932,8 +3343,14 @@ class HomeCard extends StatelessWidget {
                       color: Colors.white,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8))),
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  width: MediaQuery.of(context).size.width * 0.15,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.07,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.15,
                   child: Center(
                     child: RichText(
                       text: TextSpan(
@@ -2947,49 +3364,49 @@ class HomeCard extends StatelessWidget {
                               text: date.toString().substring(3, 5) == '12'
                                   ? '\nDec'
                                   : date.toString().substring(3, 5) == '11'
-                                      ? '\nNov'
-                                      : date.toString().substring(3, 5) == '10'
-                                          ? '\nOct'
-                                          : date.toString().substring(3, 5) ==
-                                                  '09'
-                                              ? '\nSep'
-                                              : date
-                                                          .toString()
-                                                          .substring(3, 5) ==
-                                                      '08'
-                                                  ? '\nAug'
-                                                  : date.toString().substring(
-                                                              3, 5) ==
-                                                          '07'
-                                                      ? '\nJul'
-                                                      : date
-                                                                  .toString()
-                                                                  .substring(
-                                                                      3, 5) ==
-                                                              '06'
-                                                          ? '\nJun'
-                                                          : date
-                                                                      .toString()
-                                                                      .substring(
-                                                                          3,
-                                                                          5) ==
-                                                                  '05'
-                                                              ? '\nMay'
-                                                              : date.toString().substring(
-                                                                          3,
-                                                                          5) ==
-                                                                      '04'
-                                                                  ? '\nApr'
-                                                                  : date.toString().substring(
-                                                                              3,
-                                                                              5) ==
-                                                                          '03'
-                                                                      ? '\nMar'
-                                                                      : date.toString().substring(3, 5) == '02'
-                                                                          ? '\nFeb'
-                                                                          : date.toString().substring(3, 5) == '01'
-                                                                              ? '\nJan'
-                                                                              : '',
+                                  ? '\nNov'
+                                  : date.toString().substring(3, 5) == '10'
+                                  ? '\nOct'
+                                  : date.toString().substring(3, 5) ==
+                                  '09'
+                                  ? '\nSep'
+                                  : date
+                                  .toString()
+                                  .substring(3, 5) ==
+                                  '08'
+                                  ? '\nAug'
+                                  : date.toString().substring(
+                                  3, 5) ==
+                                  '07'
+                                  ? '\nJul'
+                                  : date
+                                  .toString()
+                                  .substring(
+                                  3, 5) ==
+                                  '06'
+                                  ? '\nJun'
+                                  : date
+                                  .toString()
+                                  .substring(
+                                  3,
+                                  5) ==
+                                  '05'
+                                  ? '\nMay'
+                                  : date.toString().substring(
+                                  3,
+                                  5) ==
+                                  '04'
+                                  ? '\nApr'
+                                  : date.toString().substring(
+                                  3,
+                                  5) ==
+                                  '03'
+                                  ? '\nMar'
+                                  : date.toString().substring(3, 5) == '02'
+                                  ? '\nFeb'
+                                  : date.toString().substring(3, 5) == '01'
+                                  ? '\nJan'
+                                  : '',
                               style: TextStyle(
                                   fontSize: 15,
                                   color: ScaapeTheme.kBackColor,
@@ -3021,7 +3438,9 @@ class HomeCard extends StatelessWidget {
                           ),
                           width: medq.width * 0.56,
                           child: Text(
-                            '${ScapeDescription.length > 80 ? ScapeDescription.substring(0, 80) : ScapeDescription.sentenceCase}',
+                            '${ScapeDescription.length > 80 ? ScapeDescription
+                                .substring(0, 80) : ScapeDescription
+                                .sentenceCase}',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
@@ -3038,7 +3457,7 @@ class HomeCard extends StatelessWidget {
                       String auth = FirebaseAuth.instance.currentUser!.uid;
                       auth != uid
                           ? Navigator.pushNamed(context, UserProfileScreen.id,
-                              arguments: {"UserId": "${uid}"})
+                          arguments: {"UserId": "${uid}"})
                           : null;
                     },
                     child: ClipRRect(
@@ -3078,10 +3497,10 @@ class HomeCard extends StatelessWidget {
                                       child: CircleAvatar(
                                         // radius: 33,
                                         backgroundColor:
-                                            Color(0xFFFF4B2B).withOpacity(0),
+                                        Color(0xFFFF4B2B).withOpacity(0),
                                         child: CircleAvatar(
                                           backgroundImage:
-                                              NetworkImage('${adminDp}'),
+                                          NetworkImage('${adminDp}'),
                                           backgroundColor: Colors.transparent,
                                           // radius: 34,
                                         ),
@@ -3092,9 +3511,9 @@ class HomeCard extends StatelessWidget {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Container(
                                           width: medq.width * 0.24,
@@ -3112,7 +3531,7 @@ class HomeCard extends StatelessWidget {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             Icon(
                                               Icons.location_on_outlined,
@@ -3126,7 +3545,8 @@ class HomeCard extends StatelessWidget {
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 10,
-                                                    fontWeight: FontWeight.w400),
+                                                    fontWeight: FontWeight
+                                                        .w400),
                                               ),
                                             )
                                           ],
@@ -3136,50 +3556,54 @@ class HomeCard extends StatelessWidget {
                                   ],
                                 ),
                                 (present == "True" ||
-                                        present == "true" ||
-                                        admin == "True" ||
-                                        admin == "true")
+                                    present == "true" ||
+                                    admin == "True" ||
+                                    admin == "true")
                                     ? OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          primary: ScaapeTheme.kPinkColor,
-                                          side: BorderSide(
-                                              color: ScaapeTheme.kPinkColor,
-                                              width: 1),
-                                        ),
-                                        onPressed: () {},
-                                        child: Text('  Joined  '))
+                                    style: OutlinedButton.styleFrom(
+                                      primary: ScaapeTheme.kPinkColor,
+                                      side: BorderSide(
+                                          color: ScaapeTheme.kPinkColor,
+                                          width: 1),
+                                    ),
+                                    onPressed: () {},
+                                    child: Text('  Joined  '))
                                     : OutlinedButton(
-                                        child: Text('    Join    '),
-                                        style: OutlinedButton.styleFrom(
-                                          primary: ScaapeTheme.kPinkColor,
-                                          side: BorderSide(
-                                              color: ScaapeTheme.kPinkColor,
-                                              width: 1),
-                                        ),
-                                        onPressed: () async {
-                                          final FirebaseAuth auth =
-                                              FirebaseAuth.instance;
-                                          String url =
-                                              'https://api.scaape.online/api/createParticipant';
-                                          Map<String, String> headers = {
-                                            "Content-type": "application/json"
-                                          };
-                                          String json =
-                                              '{"ScaapeId": "${scapeId}","UserId": "${auth.currentUser!.uid}","TimeStamp": "${DateTime.now().millisecondsSinceEpoch}","Accepted":"0"}';
-                                          http.Response response = await post(
-                                              Uri.parse(url),
-                                              headers: headers,
-                                              body: json);
-                                          //print(user.displayName);
-                                          int statusCode = response.statusCode;
-                                          // print(statusCode);
-                                          // print(response.body);
-                                          Fluttertoast.showToast(
-                                            msg: "Succesfully joined",
-                                          );
-                                          fun();
-                                        },
-                                      )
+                                  child: Text('    Join    '),
+                                  style: OutlinedButton.styleFrom(
+                                    primary: ScaapeTheme.kPinkColor,
+                                    side: BorderSide(
+                                        color: ScaapeTheme.kPinkColor,
+                                        width: 1),
+                                  ),
+                                  onPressed: () async {
+                                    final FirebaseAuth auth =
+                                        FirebaseAuth.instance;
+                                    String url =
+                                        'https://api.scaape.online/api/createParticipant';
+                                    Map<String, String> headers = {
+                                      "Content-type": "application/json"
+                                    };
+                                    String json =
+                                        '{"ScaapeId": "${scapeId}","UserId": "${auth
+                                        .currentUser!
+                                        .uid}","TimeStamp": "${DateTime
+                                        .now()
+                                        .millisecondsSinceEpoch}","Accepted":"0"}';
+                                    http.Response response = await post(
+                                        Uri.parse(url),
+                                        headers: headers,
+                                        body: json);
+                                    //print(user.displayName);
+                                    int statusCode = response.statusCode;
+                                    // print(statusCode);
+                                    // print(response.body);
+                                    Fluttertoast.showToast(
+                                      msg: "Succesfully joined",
+                                    );
+                                    fun();
+                                  },
+                                )
                               ],
                             ),
                           ),
@@ -3203,7 +3627,7 @@ void onClick(String ScapeId) async {
     Map<String, String> headers = {"Content-type": "application/json"};
     String json = '{"ScaapeId": "${ScapeId}"}';
     http.Response response =
-        await post(Uri.parse(url), headers: headers, body: json);
+    await post(Uri.parse(url), headers: headers, body: json);
 
     int statusCode = response.statusCode;
     // print(statusCode);
