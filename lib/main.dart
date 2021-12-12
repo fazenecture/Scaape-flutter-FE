@@ -24,10 +24,13 @@ import 'package:scaape/screens/signIn_screen.dart';
 import 'package:scaape/screens/onBoarding0_screen.dart';
 import 'package:scaape/screens/addScaape_screen.dart';
 import 'package:scaape/screens/user_chat_screen.dart';
+import 'package:scaape/screens/view_live_stream.dart';
 import 'package:scaape/utils/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  getCam();
+
   runApp(MyApp());
 }
 
@@ -116,6 +119,7 @@ class _MyAppState extends State<MyApp> {
         ChatDesc.id: (context) => ChatDesc(),
         SearchPage.id: (context) => SearchPage(),
         CameraApp.id : (context) => CameraApp(),
+        VideoApp.id  : (context) => VideoApp(),
       },
       // home: HomeScreen(),
     );
