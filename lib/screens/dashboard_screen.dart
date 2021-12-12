@@ -376,7 +376,7 @@ class _HomePageViewState extends State<HomePageView>
                           children: [
                             GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, CameraExampleHome.id);
+                                  Navigator.pushNamed(context, CameraApp.id);
                                 },
                                 child: TopCircleCards(
                                   circleImg: CircleAvatar(
