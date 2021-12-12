@@ -190,7 +190,7 @@ class TrendingCards extends StatelessWidget {
                                   Color(0xFFFF4B2B).withOpacity(0.5),
                               child: CircleAvatar(
                                 backgroundImage:
-                                    AssetImage('images/profile-photo.jpg'),
+                                    AssetImage('images/dummy_image.png'),
                                 backgroundColor: Colors.transparent,
                                 radius: 25,
                               ),

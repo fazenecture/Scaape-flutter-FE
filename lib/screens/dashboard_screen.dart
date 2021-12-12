@@ -23,11 +23,13 @@ import 'package:scaape/screens/chat_screen.dart';
 import 'package:scaape/screens/create_scaape.dart';
 import 'package:scaape/screens/search_screen.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
+import 'package:scaape/screens/view_live_stream.dart';
 import 'package:scaape/utils/constants.dart';
 import 'package:scaape/utils/location_class.dart';
 import 'package:dashed_circle/dashed_circle.dart';
 import 'package:scaape/utils/ui_components.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:badges/badges.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:recase/recase.dart';
@@ -83,6 +85,7 @@ class _HomePageViewState extends State<HomePageView>
     });
     // print(latitude);
   }
+  String userProImage ='';
 
   Future<int> getUserDetails() async {
     String url =
@@ -96,6 +99,10 @@ class _HomePageViewState extends State<HomePageView>
 
     print(data);
     var tStatus = await data[0]["showTutorial"];
+    setState(() async{
+      userProImage = await data[0]["ProfileImg"];
+      print(userProImage);
+    });
     print(tStatus);
     // if(tStatus){
     //   return true;
@@ -104,6 +111,7 @@ class _HomePageViewState extends State<HomePageView>
     // }
     return tStatus;
   }
+
 
   getCityNameFromLatLong(String lat, String long) async {
     http.Response response = await http.get(Uri.parse(
@@ -289,6 +297,14 @@ class _HomePageViewState extends State<HomePageView>
   final _helper = IndicatorStateHelper();
   ScrollDirection prevScrollDirection = ScrollDirection.idle;
 
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     uid = auth.currentUser!.uid;
@@ -380,12 +396,12 @@ class _HomePageViewState extends State<HomePageView>
                                 },
                                 child: TopCircleCards(
                                   circleImg: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        'https://images.unsplash.com/photo-1541625247055-1a61cfa6a591?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3ljbGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                                    backgroundImage: AssetImage('images/dummy_image.png'),
                                     // backgroundColor: Colors.transparent,
+                                    foregroundImage: NetworkImage(userProImage),
                                     radius: 31,
                                   ),
-                                  text: 'Cycling',
+                                  text: 'You',
                                   base: base,
                                   controller: controller,
                                   reverse: reverse,
@@ -394,6 +410,27 @@ class _HomePageViewState extends State<HomePageView>
                                       : ScaapeTheme.kPinkColor.withOpacity(0.8),
                                   dashes: controller.isAnimating ? 25 : 0,
                                 )),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, VideoApp.id);
+                                },
+                                child: TopCircleCards(
+                                  circleImg: CircleAvatar(
+                                    backgroundImage: AssetImage('images/dummy_image.png'),
+                                    // backgroundColor: Colors.transparent,
+                                    foregroundImage: NetworkImage(userProImage),
+                                    radius: 31,
+                                  ),
+                                  text: 'You',
+                                  base: base,
+                                  controller: controller,
+                                  reverse: reverse,
+                                  backgroundColor: controller.isAnimating
+                                      ? ScaapeTheme.kPinkColor.withOpacity(0)
+                                      : ScaapeTheme.kPinkColor.withOpacity(0.8),
+                                  dashes: controller.isAnimating ? 25 : 0,
+                                )),
+
                           ],
                         ),
                         Container(
@@ -2331,7 +2368,7 @@ class _HomePageViewState extends State<HomePageView>
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                             child: CircleAvatar(
                               backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/dummy_image.png'),
                               backgroundColor: Colors.transparent,
                               radius: 25,
                             ),
@@ -2451,7 +2488,7 @@ class _HomePageViewState extends State<HomePageView>
                             backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
                             child: CircleAvatar(
                               backgroundImage:
-                              AssetImage('images/profile-photo.jpg'),
+                              AssetImage('images/dummy_image.png'),
                               backgroundColor: Colors.transparent,
                               radius: 20,
                             ),
@@ -2554,10 +2591,24 @@ class TopCircleCards extends StatelessWidget {
                 color: ScaapeTheme.kPinkColor,
                 child: RotationTransition(
                   turns: reverse,
-                  child: CircleAvatar(
-                    radius: 34,
-                    backgroundColor: backgroundColor,
-                    child: circleImg,
+                  child: Badge(
+                    toAnimate: false,
+                    position: BadgePosition(
+                      bottom: 0,
+                      end: 0
+                    ),
+                    elevation: 5,
+                    badgeContent: Icon(
+                      CupertinoIcons.plus,
+                      color: Colors.white,
+                      size: 13,
+                    ),
+                    badgeColor: ScaapeTheme.kPinkColor,
+                    child: CircleAvatar(
+                      radius: 34,
+                      backgroundColor: backgroundColor,
+                      child: circleImg,
+                    ),
                   ),
                 ),
               ),
@@ -3870,7 +3921,7 @@ void onClick(String ScapeId) async {
 //                       radius: 28,
 //                       backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
 //                       child: CircleAvatar(
-//                         backgroundImage: AssetImage('images/profile-photo.jpg'),
+//                         backgroundImage: AssetImage('images/dummy_image.png'),
 //                         backgroundColor: Colors.transparent,
 //                         radius: 25,
 //                       ),
@@ -3967,7 +4018,7 @@ void onClick(String ScapeId) async {
 //                       radius: 22,
 //                       backgroundColor: Color(0xFFFF4B2B).withOpacity(0.5),
 //                       child: CircleAvatar(
-//                         backgroundImage: AssetImage('images/profile-photo.jpg'),
+//                         backgroundImage: AssetImage('images/dummy_image.png'),
 //                         backgroundColor: Colors.transparent,
 //                         radius: 20,
 //                       ),
