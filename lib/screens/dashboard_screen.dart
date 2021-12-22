@@ -111,6 +111,29 @@ class _HomePageViewState extends State<HomePageView>
     // }
     return tStatus;
   }
+  Future getUserImage() async {
+    String url =
+        'https://api.scaape.online/api/getUserDetails/${auther.currentUser!
+        .uid}';
+    // print(url);
+    http.Response response = await get(Uri.parse(url));
+    int statusCode = response.statusCode;
+    print("hello");
+    var data = json.decode(response.body);
+
+    print(data);
+      userProImage = await data[0]["ProfileImg"];
+      print(userProImage);
+
+    // if(tStatus){
+    //   return true;
+    // }else{
+    //   return false;
+    // }
+    return userProImage;
+  }
+
+
 
 
   getCityNameFromLatLong(String lat, String long) async {
@@ -146,6 +169,11 @@ class _HomePageViewState extends State<HomePageView>
       });
     // controller.forward();
 
+    getUserImage().then((value){
+      setState(() {
+        userProImage = value;
+      });
+    });
 
     getUserDetails().then((value) {
       print(value);
@@ -332,6 +360,7 @@ class _HomePageViewState extends State<HomePageView>
           children: [
             Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 foregroundColor: Colors.transparent,
                 backgroundColor: ScaapeTheme.kBackColor,
                 shadowColor: ScaapeTheme.kSecondBlue,
@@ -412,7 +441,7 @@ class _HomePageViewState extends State<HomePageView>
                                 )),
                             GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, VideoApp.id);
+                                  // Navigator.pushNamed(context, VideoApp.id);
                                 },
                                 child: TopCircleCards(
                                   circleImg: CircleAvatar(
