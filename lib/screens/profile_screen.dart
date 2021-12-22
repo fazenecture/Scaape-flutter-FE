@@ -8,6 +8,7 @@ import 'package:async/async.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
+import 'package:scaape/screens/user_config_screens.dart';
 import 'package:scaape/utils/image_viewer_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,16 +61,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   File? _image;
   final picker = ImagePicker();
   final pickedImage = ImagePicker();
+  var proImg;
+  var proName;
+  var proInsta;
+  var proEmail;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: IconButton(icon: Icon(Icons.logout,size: 26,),
+      floatingActionButton: IconButton(icon: Icon(Icons.menu_rounded,size: 26,),
         onPressed: ()async{
           // Scaffold.of(context).openEndDrawer();
-          await FirebaseAuth.instance.signOut();
-          Navigator.pushNamedAndRemoveUntil(context, SignInScreen.id, (route) => false);
+          Navigator.pushNamed(context, UserConfigScreen.id, arguments:{
+            "UserImg": "$proImg",
+            "UserName": "$proName",
+            "UserInsta": "$proInsta",
+            "UserEmail": "$proEmail"
+          });
+          // await FirebaseAuth.instance.signOut();
+          // Navigator.pushNamedAndRemoveUntil(context, SignInScreen.id, (route) => false);
 
         },
       ),
@@ -109,6 +122,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }else{
                     if (snapshot.hasData) {
                       var data = snapshot.data[0];
+                      proImg = data['ProfileImg'];
+                      proName = data['Name'];
+                      proInsta = data['InstaId'];
+                      proEmail = data['EmailId'];
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,6 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           Color(0xFFFF4B2B).withOpacity(0.5),
                                           child: GestureDetector(
                                             onTap: () {
+                                              print("this is user image = $proImg");
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

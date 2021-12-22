@@ -12,6 +12,7 @@ import 'package:scaape/screens/explore_page.dart';
 import 'package:scaape/screens/live_streaming.dart';
 import 'package:scaape/screens/onBoarding2_screen.dart';
 import 'package:scaape/screens/search_screen.dart';
+import 'package:scaape/screens/user_config_screens.dart';
 import 'package:scaape/screens/user_profile_screen.dart';
 import 'package:scaape/screens/allNotification_screen.dart';
 import 'package:scaape/screens/chat_screen.dart';
@@ -119,7 +120,7 @@ class _MyAppState extends State<MyApp> {
         ChatDesc.id: (context) => ChatDesc(),
         SearchPage.id: (context) => SearchPage(),
         CameraApp.id : (context) => CameraApp(),
-        VideoApp.id  : (context) => VideoApp(),
+        UserConfigScreen.id: (context) => UserConfigScreen(),
       },
       // home: HomeScreen(),
     );
